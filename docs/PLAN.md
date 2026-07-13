@@ -198,6 +198,18 @@ stateDiagram-v2
 - **4 tools:** `negotiate`, `receive_turn`, `submit_audit`, `receive_control`.
 - **4 artifacts:** `declaration_<id>.json`, `config_<id>_g<NN>.json`, `log_<id>_g<NN>.json`, `result_<id>.json`; shared `game_uid`, distinct `game_id`; symmetric mutual signature.
 
+### 8.1 Interop Freeze — single source of truth (supersedes any divergent detail in per-mechanism PRDs)
+
+These are byte-level, interop-critical and are **frozen here**; a golden-vector test locks the exact bytes. Where a per-mechanism PRD phrased something differently, **this block wins**.
+
+- **Committed payload (frozen):** `payload = {"step": int, "state": {"pos": [row,col], "barriers": [[r,c], …sorted]}, "move": str, "intent": "truth"|"lie"}`. Lowercase keys; `state` = the **mover's own** observable commitment only (own position + own barriers) — never opponent data, so it is deterministic and self-verifiable at audit. The **nonce is appended, not embedded**: `canonical_json(payload) + "|" + nonce`.
+- **`intent` is the one truth/lie field** (values exactly `"truth"`/`"lie"`) and it is what flows into `payload["intent"]`. The `Decision` dataclass carries `intent` (default `"truth"`); any earlier mention of a `verdict` field for the bluff flag is renamed to `intent`. Replies to an opponent's capture/win claim use the separate `claim_response` / `TurnMessage.claim_response` channel, which is **not** the bluff flag.
+- **`commit_payload_spec`** is added to the signed `config/game.json` so both peers agree on the exact payload shape before play; mismatch → handshake refuses to start.
+- **Cell contract:** `Cell = (row, col)`, origin top-left, `axis_*` from `game.json`; wire form is `[row, col]` JSON lists; `barriers` is `frozenset[Cell]` in memory, sorted lists on the wire; `smell_grid` keys are `"row,col"` strings, intensity floats only (F7).
+- **Canonical JSON** (`sort_keys=True, ensure_ascii=False, separators=(",",":")`) is the *same* function for the commit hash, `config_sha256`, and the mutual signature — one implementation, reused.
+- **`legal_moves` order** is deterministic `[N, S, E, W, STAY]` (byte-stable replay/audit).
+- **Config-default toggles** (documented defaults, all in config, resolved at implementation): heuristic weights (`w_center`, `w_belief`, `w_dist`, `w_exits`, `w_scent`, `w_risk`, barrier `λ`), boxed-in `require_cop_adjacent` (default `true`), symmetric thief `BeliefGrid` (default on), and `lie_probability`. None affect interop; all live under `[strategy]`/`[belief]`/`[trash_talk]` or `game.json`.
+
 ## 9. Testing architecture (NFR-7/10)
 - **`FakeTransport`** (in-memory queue pair) replaces MCP/HTTP — a full loopback match runs cop-vs-thief in one test process (mirrors reference `tests/`).
 - **LLM** mocked by patching the provider subprocess (`subprocess.run`) — template provider needs no mock.
