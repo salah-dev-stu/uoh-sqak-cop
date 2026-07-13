@@ -1,0 +1,32 @@
+# === SECRETS — NEVER COMMIT (R12 / F-disqualifier) ===
+.env
+.env.*
+!.env-example
+*.key
+*.pem
+credentials.json
+token.json
+client_secret*.json
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# === Runtime artifacts (a curated sample lives under docs/sample-run/) ===
+logs/
+*.log
+
+# === OS / editor ===
+.DS_Store
+.idea/
+.vscode/
