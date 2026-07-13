@@ -33,27 +33,27 @@
 - [x] T023 (NFR-6) Write failing test `tests/shared/test_version.py` asserting `VERSION == "1.00"`.
 - [x] T024 (NFR-6) Write failing test asserting `check_compatible("1.00")` passes and `check_compatible("2.00")` raises.
 - [x] T025 (NFR-6, FR-I3) Implement `shared/version.py` with single-sourced `VERSION = "1.00"` and `check_compatible(other)` startup guard.
-- [ ] T026 (NFR-6, NFR-11) Write failing test asserting `game.toml`'s `version` field equals `shared/version.py` `VERSION` (single-source sync).
+- [x] T026 (NFR-6, NFR-11) Write failing test asserting `game.toml`'s `version` field equals `shared/version.py` `VERSION` (single-source sync).
 - [x] T027 (NFR-9, NFR-8) `ruff check` = 0 and `check_file_lines.py` ≤150 on `constants.py`, `exceptions.py`, `shared/version.py`.
-- [ ] T028 (FR-I1) Create `config/police/game.json` — signed shared constitution skeleton (`schema_version`, `agreed_between`, `board_and_agents`, `world`, `movement_and_barriers`, `scoring`, `pheromones`, `network_and_league`, `rate_limiter_gatekeeper`, `commit_payload_spec`).
-- [ ] T029 (FR-I1, F2) Copy the byte-identical `game.json` to `config/thief/game.json` (must match cop's bytes).
-- [ ] T030 (FR-A1, NFR-11) Fill `game.json.board_and_agents` (`board_size` 7, thief `[3,3]`, cop `[0,0]`, axis origin top-left).
-- [ ] T031 (FR-A3, NFR-11) Fill `game.json.movement_and_barriers` (`max_barriers` 14, `require_cop_adjacent` true, `directions` `[N,S,E,W,STAY]`).
-- [ ] T032 (FR-A5, NFR-11) Fill `game.json.scoring` (capture 20/5, survival 5/10, tie 2/2, technical_loss 0/0, `diversity_reward` 10, `survival_threshold` 35, `max_moves` 35).
-- [ ] T033 (FR-D1, NFR-11) Fill `game.json.pheromones` (`grid_size` 5, `deposit_intensity` 0.9, `decay_rate` 0.10, `falloff` 0.7, `min_emit` 1e-3, `absorb_gain` 1.0).
-- [ ] T034 (FR-G3, NFR-4) Fill `game.json.rate_limiter_gatekeeper` (rate 30/min, capacity 30, `max_concurrent` 2, `backoff_s` 5, `retries` 3, `queue` 100).
-- [ ] T035 (FR-E1, NFR-11) Fill `game.json.network_and_league` (schema fields for agreed league params; no host/port literals in code).
-- [ ] T036 (FR-I2) Create `config/police/game.toml` — private per-peer (`version`, `[game]`, `[belief]`, `[strategy]`, `[trash_talk]`, `[gui]`, `[paths]`, `[play]`, `[network]`, `[llm]`, `[email]`).
-- [ ] T037 (FR-I2, F2) Create `config/thief/game.toml` — role-swapped (own `my_port`, `opponent_url`, `role`, brain classes).
-- [ ] T038 (FR-C4, NFR-11) Set `[strategy] police_class`/`thief_class` defaults to `cipherchase.strategy.police_heuristic:PoliceBrain` / `...thief_heuristic:ThiefBrain` in both `game.toml`.
-- [ ] T039 (FR-C3, NFR-11) Add `[strategy]`/`[belief]` heuristic weights (`w_center`, `w_belief`, `w_dist`, `w_exits`, `w_scent`, `w_risk`, `lambda`, `min_gain`, `HORIZON`, `smell_trust`, `alpha`) with provisional defaults.
-- [ ] T040 (FR-D4, NFR-11) Add `[trash_talk]` (`provider=template`, `every_n_steps=3`, `lie_probability=0.4`) and `[llm]` (`provider=template`, `model`, `version`) to both `game.toml`.
-- [ ] T041 (FR-E1, NFR-11) Add `[network]` (`host="127.0.0.1"`, `my_port`, `opponent_url`, `rpc_timeout_s`, `queue_maxsize`) to both `game.toml`.
-- [ ] T042 (FR-G2, NFR-11) Add `[email]` (`recipient=rmisegal+uoh26finalgame@gmail.com`, `sender`, `subject_template`) to both `game.toml`.
-- [ ] T043 (FR-G3, NFR-4, FR-I3) Create `config/police/rate_limits.json` and `config/thief/rate_limits.json` (token-bucket params, config-not-code).
+- [x] T028 (FR-I1) Create `config/police/game.json` — signed shared constitution skeleton (`schema_version`, `agreed_between`, `board_and_agents`, `world`, `movement_and_barriers`, `scoring`, `pheromones`, `network_and_league`, `rate_limiter_gatekeeper`, `commit_payload_spec`).
+- [x] T029 (FR-I1, F2) Copy the byte-identical `game.json` to `config/thief/game.json` (must match cop's bytes).
+- [x] T030 (FR-A1, NFR-11) Fill `game.json.board_and_agents` (`board_size` 7, thief `[3,3]`, cop `[0,0]`, axis origin top-left).
+- [x] T031 (FR-A3, NFR-11) Fill `game.json.movement_and_barriers` (`max_barriers` 14, `require_cop_adjacent` true, `directions` `[N,S,E,W,STAY]`).
+- [x] T032 (FR-A5, NFR-11) Fill `game.json.scoring` (capture 20/5, survival 5/10, tie 2/2, technical_loss 0/0, `diversity_reward` 10, `survival_threshold` 35, `max_moves` 35).
+- [x] T033 (FR-D1, NFR-11) Fill `game.json.pheromones` (`grid_size` 5, `deposit_intensity` 0.9, `decay_rate` 0.10, `falloff` 0.7, `min_emit` 1e-3, `absorb_gain` 1.0).
+- [x] T034 (FR-G3, NFR-4) Fill `game.json.rate_limiter_gatekeeper` (rate 30/min, capacity 30, `max_concurrent` 2, `backoff_s` 5, `retries` 3, `queue` 100).
+- [x] T035 (FR-E1, NFR-11) Fill `game.json.network_and_league` (schema fields for agreed league params; no host/port literals in code).
+- [x] T036 (FR-I2) Create `config/police/game.toml` — private per-peer (`version`, `[game]`, `[belief]`, `[strategy]`, `[trash_talk]`, `[gui]`, `[paths]`, `[play]`, `[network]`, `[llm]`, `[email]`).
+- [x] T037 (FR-I2, F2) Create `config/thief/game.toml` — role-swapped (own `my_port`, `opponent_url`, `role`, brain classes).
+- [x] T038 (FR-C4, NFR-11) Set `[strategy] police_class`/`thief_class` defaults to `cipherchase.strategy.police_heuristic:PoliceBrain` / `...thief_heuristic:ThiefBrain` in both `game.toml`.
+- [x] T039 (FR-C3, NFR-11) Add `[strategy]`/`[belief]` heuristic weights (`w_center`, `w_belief`, `w_dist`, `w_exits`, `w_scent`, `w_risk`, `lambda`, `min_gain`, `HORIZON`, `smell_trust`, `alpha`) with provisional defaults.
+- [x] T040 (FR-D4, NFR-11) Add `[trash_talk]` (`provider=template`, `every_n_steps=3`, `lie_probability=0.4`) and `[llm]` (`provider=template`, `model`, `version`) to both `game.toml`.
+- [x] T041 (FR-E1, NFR-11) Add `[network]` (`host="127.0.0.1"`, `my_port`, `opponent_url`, `rpc_timeout_s`, `queue_maxsize`) to both `game.toml`.
+- [x] T042 (FR-G2, NFR-11) Add `[email]` (`recipient=rmisegal+uoh26finalgame@gmail.com`, `sender`, `subject_template`) to both `game.toml`.
+- [x] T043 (FR-G3, NFR-4, FR-I3) Create `config/police/rate_limits.json` and `config/thief/rate_limits.json` (token-bucket params, config-not-code).
 - [x] T044 (NFR-12) Create `.env-example` documenting all env var names (no real secrets).
 - [x] T045 (NFR-12) Create `.gitignore` excluding `.env`, `*.key`, `*.pem`, `credentials.json`, `token.json` BEFORE first commit.
-- [ ] T046 (NFR-12) Add a CI/secret-scan note + `config/*/.env` ignore entries to `.gitignore`.
+- [x] T046 (NFR-12) Add a CI/secret-scan note + `config/*/.env` ignore entries to `.gitignore`.
 - [x] T047 (NFR-8) Reuse HW6 `scripts/check_file_lines.py` (raw + logical line counter) into `scripts/`.
 - [ ] T048 (NFR-8) Write failing test `tests/test_line_limits.py` invoking `check_file_lines.py` over `src/` + `tests/` and asserting exit 0.
 - [ ] T049 (NFR-3) Write failing test `tests/shared/test_gatekeeper.py` asserting `ApiGatekeeper.execute(callable, service=, action=)` returns the callable result and records a ledger event.

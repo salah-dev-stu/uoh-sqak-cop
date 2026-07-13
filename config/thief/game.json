@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "version": "1.00",
+  "agreed_between": ["uoh-sqak", "TBD-opponent"],
+  "board_and_agents": {
+    "board_size": 7,
+    "num_agents": 2,
+    "thief_start": [3, 3],
+    "cop_start": [0, 0],
+    "axis_origin_corner": "top_left",
+    "axis_start_index": 0
+  },
+  "world": {
+    "map_area": "7x7",
+    "hint_max_words": 30
+  },
+  "movement_and_barriers": {
+    "move_set": ["N", "S", "E", "W", "STAY"],
+    "max_barriers": 14,
+    "max_moves": 35,
+    "survival_threshold": 35,
+    "require_cop_adjacent": true
+  },
+  "scoring": {
+    "capture_cop": 20,
+    "capture_thief": 5,
+    "survival_cop": 5,
+    "survival_thief": 10,
+    "tie_score": 2,
+    "technical_loss": 0,
+    "diversity_reward": 10
+  },
+  "pheromones": {
+    "grid_size": 5,
+    "center_intensity": 0.9,
+    "decay": 0.1,
+    "falloff": 0.7,
+    "min_center_intensity": 0.001,
+    "absorb_gain": 1.0
+  },
+  "network_and_league": {
+    "response_timeout_s": 30,
+    "watchdog_s": 60,
+    "num_games": 1,
+    "mini_games_per_match": 6,
+    "diversity_reward": 10,
+    "min_games_to_pass": 2,
+    "max_games_per_team": 10,
+    "token_budget_per_series": 200000
+  },
+  "rate_limiter_gatekeeper": {
+    "requests_per_minute": 30,
+    "concurrent_requests": 2,
+    "retry_backoff_sec": 5,
+    "max_retries": 3,
+    "queue_depth": 100,
+    "response_timeout_sec": 30
+  },
+  "commit_payload_spec": {
+    "keys": ["step", "state", "move", "intent"],
+    "state_keys": ["pos", "barriers"],
+    "nonce_separator": "|",
+    "canonical_json": {"sort_keys": true, "ensure_ascii": false, "separators": [",", ":"]}
+  }
+}

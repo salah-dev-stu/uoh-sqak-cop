@@ -1,0 +1,6 @@
+{
+  "gmail":   {"requests_per_minute": 30, "capacity": 30, "concurrent_requests": 2, "retry_backoff_sec": 5, "max_retries": 3, "queue_depth": 100},
+  "llm":     {"requests_per_minute": 30, "capacity": 30, "concurrent_requests": 2, "retry_backoff_sec": 5, "max_retries": 3, "queue_depth": 100},
+  "mcp":     {"requests_per_minute": 120, "capacity": 120, "concurrent_requests": 4, "retry_backoff_sec": 2, "max_retries": 3, "queue_depth": 100},
+  "subprocess": {"requests_per_minute": 30, "capacity": 30, "concurrent_requests": 2, "retry_backoff_sec": 5, "max_retries": 3, "queue_depth": 100}
+}
