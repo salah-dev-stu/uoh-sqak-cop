@@ -8,33 +8,33 @@
 
 ## Stage 0 — Scaffold & standards
 
-- [ ] T001 (NFR-13) Run `uv init` at repo root to create the `cipherchase` project skeleton (no pip/venv/requirements.txt).
-- [ ] T002 (NFR-13) Add `[project]` metadata (name `cipherchase`, `requires-python = ">=3.13"`) to `pyproject.toml`.
-- [ ] T003 (NFR-13) Declare runtime deps (`fastmcp`, `tomli`/stdlib `tomllib`, google client libs) in `pyproject.toml` via `uv add`.
-- [ ] T004 (NFR-13, NFR-10) Declare dev deps (`pytest`, `pytest-cov`, `ruff`) in `pyproject.toml` via `uv add --dev`.
-- [ ] T005 (NFR-9) Configure `[tool.ruff.lint] select = ["E","F","W","I","N","UP","B","C4","SIM"]` in `pyproject.toml`.
-- [ ] T006 (NFR-10) Configure `[tool.pytest.ini_options]` + `[tool.coverage.*]` (source = `src/cipherchase`, `--cov` fail-under 85) in `pyproject.toml`.
-- [ ] T007 (NFR-13) Run `uv sync` and commit the generated `uv.lock`.
-- [ ] T008 (NFR-2) Create `src/cipherchase/` package skeleton with `__init__.py` and `py.typed`.
-- [ ] T009 (NFR-2) Create empty package dirs `domain/`, `peer/`, `infra/`, `shared/`, `strategy/`, `report/`, `gui/`, `sdk/` each with `__init__.py`.
+- [x] T001 (NFR-13) Run `uv init` at repo root to create the `cipherchase` project skeleton (no pip/venv/requirements.txt).
+- [x] T002 (NFR-13) Add `[project]` metadata (name `cipherchase`, `requires-python = ">=3.13"`) to `pyproject.toml`.
+- [x] T003 (NFR-13) Declare runtime deps (`fastmcp`, `tomli`/stdlib `tomllib`, google client libs) in `pyproject.toml` via `uv add`.
+- [x] T004 (NFR-13, NFR-10) Declare dev deps (`pytest`, `pytest-cov`, `ruff`) in `pyproject.toml` via `uv add --dev`.
+- [x] T005 (NFR-9) Configure `[tool.ruff.lint] select = ["E","F","W","I","N","UP","B","C4","SIM"]` in `pyproject.toml`.
+- [x] T006 (NFR-10) Configure `[tool.pytest.ini_options]` + `[tool.coverage.*]` (source = `src/cipherchase`, `--cov` fail-under 85) in `pyproject.toml`.
+- [x] T007 (NFR-13) Run `uv sync` and commit the generated `uv.lock`.
+- [x] T008 (NFR-2) Create `src/cipherchase/` package skeleton with `__init__.py` and `py.typed`.
+- [x] T009 (NFR-2) Create empty package dirs `domain/`, `peer/`, `infra/`, `shared/`, `strategy/`, `report/`, `gui/`, `sdk/` each with `__init__.py`.
 - [ ] T010 (NFR-2) Create `tests/` tree mirroring the package (`tests/domain/`, `tests/peer/`, `tests/infra/`, `tests/shared/`, `tests/strategy/`, `tests/report/`, `tests/gui/`, `tests/e2e/`, `tests/fakes/`) each with `__init__.py`.
-- [ ] T011 (FR-A1, NFR-2) Write failing test `tests/test_constants.py` asserting `Direction` has exactly `N,S,E,W,STAY` members.
-- [ ] T012 (FR-A5, NFR-2) Extend the failing test to assert `Outcome` has `CAPTURE,SURVIVAL,TIE,TECHNICAL_LOSS` members.
-- [ ] T013 (FR-A1, NFR-2) Implement `constants.py` with `Direction`, `Outcome`, `MoveType` enums and `Cell = tuple[int,int]` alias (enum names / non-config literals only).
-- [ ] T014 (FR-A2) Add the `_DELTAS` enum→unit-vector map location note in `constants.py` docstring (geometry constant, resolved in `board.py`).
+- [x] T011 (FR-A1, NFR-2) Write failing test `tests/test_constants.py` asserting `Direction` has exactly `N,S,E,W,STAY` members.
+- [x] T012 (FR-A5, NFR-2) Extend the failing test to assert `Outcome` has `CAPTURE,SURVIVAL,TIE,TECHNICAL_LOSS` members.
+- [x] T013 (FR-A1, NFR-2) Implement `constants.py` with `Direction`, `Outcome`, `MoveType` enums and `Cell = tuple[int,int]` alias (enum names / non-config literals only).
+- [x] T014 (FR-A2) Add the `_DELTAS` enum→unit-vector map location note in `constants.py` docstring (geometry constant, resolved in `board.py`).
 - [ ] T015 (NFR-11) Write failing test asserting each custom exception class exists and subclasses a common `CipherChaseError`.
-- [ ] T016 (NFR-11) Implement `exceptions.py` with `CipherChaseError` base + `IllegalMoveError`, `IllegalBarrierError`.
-- [ ] T017 (FR-F1) Add `CryptoError` to `exceptions.py`.
-- [ ] T018 (FR-G3, NFR-5) Add `GateLimitError` / `RateLimitExceeded` to `exceptions.py`.
+- [x] T016 (NFR-11) Implement `exceptions.py` with `CipherChaseError` base + `IllegalMoveError`, `IllegalBarrierError`.
+- [x] T017 (FR-F1) Add `CryptoError` to `exceptions.py`.
+- [x] T018 (FR-G3, NFR-5) Add `GateLimitError` / `RateLimitExceeded` to `exceptions.py`.
 - [ ] T019 (FR-B3) Add `TransportError`, `TransportTimeout`, `QueueFullError` to `exceptions.py`.
 - [ ] T020 (FR-I1) Add `ConfigError` and `HandshakeError` to `exceptions.py`.
 - [ ] T021 (FR-D4) Add `ProviderUnavailable` to `exceptions.py`.
 - [ ] T022 (FR-H2) Add `IllegalTransition` to `exceptions.py`.
-- [ ] T023 (NFR-6) Write failing test `tests/shared/test_version.py` asserting `VERSION == "1.00"`.
-- [ ] T024 (NFR-6) Write failing test asserting `check_compatible("1.00")` passes and `check_compatible("2.00")` raises.
-- [ ] T025 (NFR-6, FR-I3) Implement `shared/version.py` with single-sourced `VERSION = "1.00"` and `check_compatible(other)` startup guard.
+- [x] T023 (NFR-6) Write failing test `tests/shared/test_version.py` asserting `VERSION == "1.00"`.
+- [x] T024 (NFR-6) Write failing test asserting `check_compatible("1.00")` passes and `check_compatible("2.00")` raises.
+- [x] T025 (NFR-6, FR-I3) Implement `shared/version.py` with single-sourced `VERSION = "1.00"` and `check_compatible(other)` startup guard.
 - [ ] T026 (NFR-6, NFR-11) Write failing test asserting `game.toml`'s `version` field equals `shared/version.py` `VERSION` (single-source sync).
-- [ ] T027 (NFR-9, NFR-8) `ruff check` = 0 and `check_file_lines.py` ≤150 on `constants.py`, `exceptions.py`, `shared/version.py`.
+- [x] T027 (NFR-9, NFR-8) `ruff check` = 0 and `check_file_lines.py` ≤150 on `constants.py`, `exceptions.py`, `shared/version.py`.
 - [ ] T028 (FR-I1) Create `config/police/game.json` — signed shared constitution skeleton (`schema_version`, `agreed_between`, `board_and_agents`, `world`, `movement_and_barriers`, `scoring`, `pheromones`, `network_and_league`, `rate_limiter_gatekeeper`, `commit_payload_spec`).
 - [ ] T029 (FR-I1, F2) Copy the byte-identical `game.json` to `config/thief/game.json` (must match cop's bytes).
 - [ ] T030 (FR-A1, NFR-11) Fill `game.json.board_and_agents` (`board_size` 7, thief `[3,3]`, cop `[0,0]`, axis origin top-left).
@@ -51,21 +51,21 @@
 - [ ] T041 (FR-E1, NFR-11) Add `[network]` (`host="127.0.0.1"`, `my_port`, `opponent_url`, `rpc_timeout_s`, `queue_maxsize`) to both `game.toml`.
 - [ ] T042 (FR-G2, NFR-11) Add `[email]` (`recipient=rmisegal+uoh26finalgame@gmail.com`, `sender`, `subject_template`) to both `game.toml`.
 - [ ] T043 (FR-G3, NFR-4, FR-I3) Create `config/police/rate_limits.json` and `config/thief/rate_limits.json` (token-bucket params, config-not-code).
-- [ ] T044 (NFR-12) Create `.env-example` documenting all env var names (no real secrets).
-- [ ] T045 (NFR-12) Create `.gitignore` excluding `.env`, `*.key`, `*.pem`, `credentials.json`, `token.json` BEFORE first commit.
+- [x] T044 (NFR-12) Create `.env-example` documenting all env var names (no real secrets).
+- [x] T045 (NFR-12) Create `.gitignore` excluding `.env`, `*.key`, `*.pem`, `credentials.json`, `token.json` BEFORE first commit.
 - [ ] T046 (NFR-12) Add a CI/secret-scan note + `config/*/.env` ignore entries to `.gitignore`.
-- [ ] T047 (NFR-8) Reuse HW6 `scripts/check_file_lines.py` (raw + logical line counter) into `scripts/`.
+- [x] T047 (NFR-8) Reuse HW6 `scripts/check_file_lines.py` (raw + logical line counter) into `scripts/`.
 - [ ] T048 (NFR-8) Write failing test `tests/test_line_limits.py` invoking `check_file_lines.py` over `src/` + `tests/` and asserting exit 0.
 - [ ] T049 (NFR-3) Write failing test `tests/shared/test_gatekeeper.py` asserting `ApiGatekeeper.execute(callable, service=, action=)` returns the callable result and records a ledger event.
 - [ ] T050 (NFR-3) Reuse HW6 `ApiGatekeeper` typed methods (`google_send`, `run_subprocess`, `http_request`) into `shared/gatekeeper.py`.
 - [ ] T051 (NFR-3) Implement the `ApiGatekeeper.execute(callable, *, service, action)` façade (ADR-004) routing to the typed method + ledger record.
 - [ ] T052 (FR-G2, NFR-3) Reuse HW6 `GmailApiSender` (real `gmail.send` OAuth, injectable backend) into `infra/email_sender.py` skeleton.
 - [ ] T053 (FR-D4, NFR-3) Reuse HW6 `ClaudeCliProvider` (API-key-stripped subprocess) into `infra/llm_provider.py` skeleton.
-- [ ] T054 (NFR-14) Reuse HW6 `.github/workflows/ci.yml` targeting Python 3.13.
-- [ ] T055 (NFR-14, NFR-9) Add a CI job step running `uv run ruff check` (must be 0).
-- [ ] T056 (NFR-14, NFR-8) Add a CI job step running `check_file_lines.py` (≤150 raw+logical).
-- [ ] T057 (NFR-14, NFR-6) Add a CI job step running the version-sync check (`game.toml` version == `VERSION`).
-- [ ] T058 (NFR-14, NFR-10) Add a CI job step running `uv run pytest --cov` with fail-under 85.
+- [x] T054 (NFR-14) Reuse HW6 `.github/workflows/ci.yml` targeting Python 3.13.
+- [x] T055 (NFR-14, NFR-9) Add a CI job step running `uv run ruff check` (must be 0).
+- [x] T056 (NFR-14, NFR-8) Add a CI job step running `check_file_lines.py` (≤150 raw+logical).
+- [x] T057 (NFR-14, NFR-6) Add a CI job step running the version-sync check (`game.toml` version == `VERSION`).
+- [x] T058 (NFR-14, NFR-10) Add a CI job step running `uv run pytest --cov` with fail-under 85.
 - [ ] T059 (NFR-13) Add `CONTRIBUTING.md` / dev-setup notes (uv-only workflow, `uv sync`, `uv run pytest`).
 - [ ] T060 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check pass, and CI green on the Stage-0 scaffold branch.
 - [ ] **Milestone S0:** `uv sync` succeeds; CI (Py-3.13) runs ruff-0 + line-check + version-sync + pytest-cov skeleton green; secrets git-ignored before first commit.
