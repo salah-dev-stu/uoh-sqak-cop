@@ -269,54 +269,54 @@
 ## Stage 4 — Language & scent (FR-D1..D4, F6, F7)
 
 ### `domain/smell.py` — SmellField (FR-D1, F7)
-- [ ] T208 (FR-D1, NFR-7) Write failing happy test `tests/domain/test_smell.py`: `deposit` sets center to `deposit_intensity` (0.9), rings to `0.9·falloff^d`.
-- [ ] T209 (FR-D1, NFR-7) Write failing happy test: `decay_all` gives `τ←0.9·τ` when `Δτ=0`; N decays → `0.9^N·τ` within tolerance.
-- [ ] T210 (FR-D1, NFR-7) Write failing error test: repeated decay + a negative `Δτ` never yield `<0` (clamp `max(0,·)`).
-- [ ] T211 (FR-D1, F7, NFR-7) Write failing happy test: `snapshot()` emits only `"r,c"→float` string keys, drops sub-epsilon cells, no tuple/coordinate value.
-- [ ] T212 (FR-D1, NFR-11) Implement `SmellField.__init__(cfg)` reading `grid_size`, `deposit_intensity`, `decay_rate`, `falloff`, `absorb_gain`, `min_emit` from `game.json.pheromones`.
-- [ ] T213 (FR-D1) Implement `deposit(center, intensity)` (center + Chebyshev-ring falloff, accumulate) and `intensity_at`/`strongest_cell`.
-- [ ] T214 (FR-D1) Implement `decay_all` formula `τ←max(0,(1−ρ)·τ+Δτ)` with `ρ=0.10` from config.
-- [ ] T215 (FR-D1, F7) Implement `snapshot()` (`{"r,c": round(τ,6)}` above `min_emit`) and `absorb(smell_map)` (read side, parse same map).
+- [x] T208 (FR-D1, NFR-7) Write failing happy test `tests/domain/test_smell.py`: `deposit` sets center to `deposit_intensity` (0.9), rings to `0.9·falloff^d`.
+- [x] T209 (FR-D1, NFR-7) Write failing happy test: `decay_all` gives `τ←0.9·τ` when `Δτ=0`; N decays → `0.9^N·τ` within tolerance.
+- [x] T210 (FR-D1, NFR-7) Write failing error test: repeated decay + a negative `Δτ` never yield `<0` (clamp `max(0,·)`).
+- [x] T211 (FR-D1, F7, NFR-7) Write failing happy test: `snapshot()` emits only `"r,c"→float` string keys, drops sub-epsilon cells, no tuple/coordinate value.
+- [x] T212 (FR-D1, NFR-11) Implement `SmellField.__init__(cfg)` reading `grid_size`, `deposit_intensity`, `decay_rate`, `falloff`, `absorb_gain`, `min_emit` from `game.json.pheromones`.
+- [x] T213 (FR-D1) Implement `deposit(center, intensity)` (center + Chebyshev-ring falloff, accumulate) and `intensity_at`/`strongest_cell`.
+- [x] T214 (FR-D1) Implement `decay_all` formula `τ←max(0,(1−ρ)·τ+Δτ)` with `ρ=0.10` from config.
+- [x] T215 (FR-D1, F7) Implement `snapshot()` (`{"r,c": round(τ,6)}` above `min_emit`) and `absorb(smell_map)` (read side, parse same map).
 - [ ] T216 (FR-D1, NFR-7) Write test: `absorb(snapshot())` round-trips within tolerance; malformed key/NaN/out-of-range value dropped (no crash).
 - [ ] T217 (FR-D1) Write test: cop never calls `deposit` (asymmetry — only thief deposits), enforced by wiring.
-- [ ] T218 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/smell.py` and its test.
-- [ ] T219 (NFR-10) `pytest --cov` on smell ≥85%.
+- [x] T218 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/smell.py` and its test.
+- [x] T219 (NFR-10) `pytest --cov` on smell ≥85%.
 
 ### `domain/belief.py` — observe_smell read contract (FR-C2, shared)
-- [ ] T220 (FR-D1, F7, NFR-7) Write `tests/domain/test_belief_observe.py`: `observe_smell` raises mass on hot cells, renormalizes to Σ=1; malformed maps ignored.
-- [ ] T221 (FR-D1) Confirm `observe_smell` consumes the exact `snapshot()` dict shape and is called once per received turn BEFORE `diffuse()` (contract with Stage 3).
+- [x] T220 (FR-D1, F7, NFR-7) Write `tests/domain/test_belief_observe.py`: `observe_smell` raises mass on hot cells, renormalizes to Σ=1; malformed maps ignored.
+- [x] T221 (FR-D1) Confirm `observe_smell` consumes the exact `snapshot()` dict shape and is called once per received turn BEFORE `diffuse()` (contract with Stage 3).
 
 ### `strategy/talk_providers.py` + `infra/llm_provider.py` — provider seam (FR-D4)
-- [ ] T222 (FR-D4, NFR-7) Write failing happy test `tests/strategy/test_template_provider.py`: `TemplateProvider.generate` deterministic given a seed, returns non-empty `str`.
+- [x] T222 (FR-D4, NFR-7) Write failing happy test `tests/strategy/test_template_provider.py`: `TemplateProvider.generate` deterministic given a seed, returns non-empty `str`.
 - [ ] T223 (FR-D4, F6, NFR-7) Write failing happy test: `intent="lie"` draws from `BLUFF`, `intent="truth"` from `HONEST` phrase bank.
-- [ ] T224 (FR-D4) Implement `TalkContext` frozen read-only dataclass (role, step, belief_summary, intent, recent) — NO move authority.
-- [ ] T225 (FR-D4) Implement `TalkProvider` Protocol + `TemplateProvider` (0 tokens, seeded `rng.choice` over `HONEST`/`BLUFF` banks).
+- [x] T224 (FR-D4) Implement `TalkContext` frozen read-only dataclass (role, step, belief_summary, intent, recent) — NO move authority.
+- [x] T225 (FR-D4) Implement `TalkProvider` Protocol + `TemplateProvider` (0 tokens, seeded `rng.choice` over `HONEST`/`BLUFF` banks).
 - [ ] T226 (FR-D4) Implement `ClaudeCliProvider`, `OllamaProvider`, `ClaudeApiProvider` thin wrappers (each ≤150 lines).
-- [ ] T227 (FR-D4, NFR-7) Write `tests/infra/test_llm_provider.py`: `ClaudeCliProvider` mocked by patching `subprocess.run` (HW6 pattern), no real process.
+- [x] T227 (FR-D4, NFR-7) Write `tests/infra/test_llm_provider.py`: `ClaudeCliProvider` mocked by patching `subprocess.run` (HW6 pattern), no real process.
 - [ ] T228 (FR-D4, NFR-7) Write failing error test: `build_provider` with unknown provider name → `ConfigError`; missing binary/key → `ProviderUnavailable` preflight.
-- [ ] T229 (FR-D4, NFR-11) Implement `build_provider(cfg)` factory in `infra/llm_provider.py` (maps `[llm]`/`[trash_talk]` provider → class, injects gatekeeper).
+- [x] T229 (FR-D4, NFR-11) Implement `build_provider(cfg)` factory in `infra/llm_provider.py` (maps `[llm]`/`[trash_talk]` provider → class, injects gatekeeper).
 - [ ] T230 (NFR-3) Non-template providers wrap their one external call in `ApiGatekeeper.execute(service="llm", action=...)`.
-- [ ] T231 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `talk_providers.py`, `infra/llm_provider.py`, and tests.
+- [x] T231 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `talk_providers.py`, `infra/llm_provider.py`, and tests.
 
 ### `strategy/trash_talk.py` — orchestration + intent + throttle (FR-D2/D3/D4, F6)
-- [ ] T232 (FR-D3, F6, NFR-7) Write failing happy test: `choose_intent(rng, cfg)` respects `lie_probability` over seeded draws (statistical band).
-- [ ] T233 (FR-D4, NFR-7) Write `tests/strategy/test_trash_talk_throttle.py`: on off-steps (`step % every_n_steps != 0`) the LLM provider is NOT called; template line returned.
+- [x] T232 (FR-D3, F6, NFR-7) Write failing happy test: `choose_intent(rng, cfg)` respects `lie_probability` over seeded draws (statistical band).
+- [x] T233 (FR-D4, NFR-7) Write `tests/strategy/test_trash_talk_throttle.py`: on off-steps (`step % every_n_steps != 0`) the LLM provider is NOT called; template line returned.
 - [ ] T234 (FR-D4, NFR-3, NFR-7) Write test: on on-steps the provider is called via `gatekeeper.execute` (NFR-3 wiring asserted).
-- [ ] T235 (FR-D4, NFR-7) Write failing error test: provider timeout/non-zero exit/empty output → `talk` returns the template fallback (move never blocked).
-- [ ] T236 (FR-D3) Implement `choose_intent(rng, cfg)` (seedable Bernoulli, gated to "something to hide").
-- [ ] T237 (FR-D4) Implement `talk(step, ctx)`: compute intent → throttle → try provider → fall back to template on any failure.
+- [x] T235 (FR-D4, NFR-7) Write failing error test: provider timeout/non-zero exit/empty output → `talk` returns the template fallback (move never blocked).
+- [x] T236 (FR-D3) Implement `choose_intent(rng, cfg)` (seedable Bernoulli, gated to "something to hide").
+- [x] T237 (FR-D4) Implement `talk(step, ctx)`: compute intent → throttle → try provider → fall back to template on any failure.
 - [ ] T238 (FR-D2, F6) Implement `HONEST`/`BLUFF` template banks keyed by role+intent; phrases never encode a physical field.
 - [ ] T239 (FR-D3) Wire `Decision.hint`/`intent` fill by the trash-talk layer (brain leaves `intent="truth"`, `hint=""` by default).
-- [ ] T240 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `strategy/trash_talk.py` and its test.
-- [ ] T241 (NFR-10) `pytest --cov` on trash_talk ≥85%.
+- [x] T240 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `strategy/trash_talk.py` and its test.
+- [x] T241 (NFR-10) `pytest --cov` on trash_talk ≥85%.
 
 ### Stage-4 e2e + gate proofs (F6, F7)
-- [ ] T242 (FR-D4, F8, NFR-7) Write `tests/e2e/test_zero_token_game.py`: full cop-vs-thief game with `provider=template` reaches terminal state, asserts 0 LLM calls / 0 tokens (Milestone).
-- [ ] T243 (FR-D1, F7) In the e2e test assert the scent map is non-empty and UPDATES each step (thief's transmitted `snapshot()` differs turn-to-turn).
+- [x] T242 (FR-D4, F8, NFR-7) Write `tests/e2e/test_zero_token_game.py`: full cop-vs-thief game with `provider=template` reaches terminal state, asserts 0 LLM calls / 0 tokens (Milestone).
+- [x] T243 (FR-D1, F7) In the e2e test assert the scent map is non-empty and UPDATES each step (thief's transmitted `snapshot()` differs turn-to-turn).
 - [ ] T244 (FR-D2, F6) Write board-truth-under-bluff test: a step with `intent="lie"` still has TRUTHFUL `move`/`barrier_placed`/`capture_claim` and re-hashes clean at audit.
 - [ ] T245 (FR-D3, F6) Write test: `intent="lie"` paired with a FALSE physical field is caught at audit as tamper → 0/0 (intent never launders a physical lie).
 - [ ] T246 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check, CI Py-3.13 green on the Stage-4 branch.
-- [ ] **Milestone S4:** Scent map updates each step; the LLM emits a truth-or-lie hint; a full game runs at 0 tokens with `provider=template`.
+- [x] **Milestone S4:** Scent map updates each step; the LLM emits a truth-or-lie hint; a full game runs at 0 tokens with `provider=template`.
 
 ## Stage 5 — Cloud / tunnel (FR-E1, E2, F13)
 

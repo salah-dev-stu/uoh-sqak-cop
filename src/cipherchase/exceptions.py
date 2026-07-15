@@ -39,6 +39,10 @@ class HandshakeError(CipherChaseError):
     """Peers failed to agree on a byte-identical signed config (FR-I1, F14)."""
 
 
+class ProviderUnavailableError(CipherChaseError):
+    """An LLM provider is missing/failed — fall back to templates (FR-D4)."""
+
+
 class DeadlineError(CipherChaseError):
     """A peer missed a turn/response deadline → technical loss (FR-H3)."""
 
