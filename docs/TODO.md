@@ -258,8 +258,8 @@
 - [ ] T201 (NFR-2) Assert `domain/belief.py` + `domain/brains.py` import nothing from `infra/`, `peer/`, `gui/`.
 
 ### `strategy/police_expectimax.py` + `strategy/qlearning.py` (FR-C5, OPTIONAL — excellence)
-- [ ] T202 (FR-C5, NFR-7) [OPTIONAL] Write `tests/strategy/test_expectimax.py`: value monotonicity vs depth; returns a `Decision` shape identical to heuristic.
-- [ ] T203 (FR-C5) [OPTIONAL] Implement `police_expectimax.py` depth-limited (`d≤2`) expectimax over top-K belief cells, reusing `reach.py`.
+- [x] T202 (FR-C5, NFR-7) [OPTIONAL] Write `tests/strategy/test_expectimax.py`: value monotonicity vs depth; returns a `Decision` shape identical to heuristic.
+- [x] T203 (FR-C5) [OPTIONAL] Implement `police_expectimax.py` depth-limited (`d≤2`) expectimax over top-K belief cells, reusing `reach.py`.
 - [ ] T204 (FR-C5, NFR-7) [OPTIONAL] Write `tests/strategy/test_qlearning.py`: Q-update arithmetic; absent-table fallback to heuristic policy.
 - [ ] T205 (FR-C5) [OPTIONAL] Implement tabular `qlearning.py` (belief-summary discrete state, ε-greedy, seeded RNG) selectable only via config seam.
 - [ ] T206 (FR-C5) [OPTIONAL] Add offline trainer script producing `docs/sample-run/qlearning-curve.png` (never on critical path).
