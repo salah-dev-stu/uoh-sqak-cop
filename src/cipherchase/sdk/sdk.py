@@ -11,8 +11,9 @@ from pathlib import Path
 from typing import Any
 
 from cipherchase.constants import Outcome
-from cipherchase.domain.crypto import audit_records
+from cipherchase.domain.board import Board
 from cipherchase.domain.game_ids import game_id, game_uid
+from cipherchase.peer.summary import full_audit
 from cipherchase.report import artifacts, emit
 from cipherchase.report.mutual_signature import mutual_signature
 from cipherchase.sdk.game_loop import GameResult, run_game
@@ -43,7 +44,8 @@ def _assemble(
     outcome = result.outcome.value
     final = _WINNER[result.outcome]
     scores = {"police": result.scores[0], "thief": result.scores[1]}
-    verdict = "verified" if audit_records(result.records)["passed"] else "tamper_forfeit"
+    board = Board(cfg.shared["board_and_agents"]["board_size"])
+    verdict = "verified" if full_audit(result.records, board)["passed"] else "tamper_forfeit"
     signature = mutual_signature(
         game_uid=uid, sub_game=1, outcome=outcome, scores=scores,
         final_result=final, audit_verdict=verdict, config_sha256=cfg.config_sha256,

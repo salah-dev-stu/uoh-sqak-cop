@@ -353,10 +353,10 @@
 - [x] T270 (FR-F3, F4, NFR-7) Write test: an honest cop-vs-thief loopback record → `audit_records` returns `passed=True`, `failed_steps=[]`, `verified_steps==len(records)`.
 - [x] T271 (FR-F3, F4, NFR-7) Write tamper test (payload): flip one byte of a recorded `payload` → `passed=False`, step flagged `commit_mismatch`.
 - [x] T272 (FR-F3, F4, NFR-7) Write tamper test (move): commit move N, reveal move S → flagged `move_altered`.
-- [ ] T273 (FR-F3, F4, NFR-7) Write tamper test (barrier): `barrier_placed` on an illegal cell → `false_barrier` → `tamper_forfeit` 0/0.
-- [ ] T274 (FR-F3, F4, NFR-7) Write tamper test (capture/win): unsupported `capture_claim`/`win_claim` → `false_capture`/`false_win`.
+- [x] T273 (FR-F3, F4, NFR-7) Write tamper test (barrier): `barrier_placed` on an illegal cell → `false_barrier` → `tamper_forfeit` 0/0.
+- [x] T274 (FR-F3, F4, NFR-7) Write tamper test (capture/win): unsupported `capture_claim`/`win_claim` → `false_capture`/`false_win`.
 - [ ] T275 (FR-F3, F4, NFR-7) Write missing-nonce test: drop one step's nonce → `missing_nonce` in `failed_steps`, `passed=False` (absence of proof = tamper).
-- [ ] T276 (FR-F3) Implement `audit_records(records, board_view)` — (a) `verify`, (b) `payload["move"]!=move`, (c) claim cross-checks vs reconstructed board → `{passed, verified_steps, failed_steps}`.
+- [x] T276 (FR-F3) Implement `audit_records(records, board_view)` — (a) `verify`, (b) `payload["move"]!=move`, (c) claim cross-checks vs reconstructed board → `{passed, verified_steps, failed_steps}`.
 - [ ] T277 (FR-F3, NFR-7) Write `CryptoError` test: non-serializable / missing-key payload raises `CryptoError`, handled as a failed step (not a crash).
 - [ ] T278 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on the audit path and its test.
 - [x] T279 (NFR-10) `pytest --cov` on `domain/crypto.py` ≥85%.
