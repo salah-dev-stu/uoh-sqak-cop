@@ -39,11 +39,17 @@ class TemplateProvider:
 
 
 class ClaudeCliProvider:
-    def __init__(self, binary: str = "claude", timeout: float = 8.0) -> None:
+    def __init__(self, binary: str = "claude", timeout: float = 8.0, gate: Any = None) -> None:
         self.binary = binary
         self.timeout = timeout
+        self.gate = gate
 
     def generate(self, ctx: TalkContext) -> str:
+        if self.gate is not None:  # every external call through one gatekeeper (NFR-3)
+            return self.gate.execute(lambda: self._run(ctx), service="llm", action="generate")
+        return self._run(ctx)
+
+    def _run(self, ctx: TalkContext) -> str:
         prompt = f"In one short taunt, {ctx.role} reacts (move {ctx.own_move})."
         env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
         try:
@@ -61,10 +67,10 @@ class ClaudeCliProvider:
         return str(json.loads(proc.stdout).get("result", "")).strip()
 
 
-def build_provider(config: dict[str, Any]) -> Any:
+def build_provider(config: dict[str, Any], gate: Any = None) -> Any:
     name = config.get("provider", "template")
     if name == "template":
         return TemplateProvider()
     if name == "claude_cli":
-        return ClaudeCliProvider(binary=config.get("executable", "claude"))
+        return ClaudeCliProvider(binary=config.get("executable", "claude"), gate=gate)
     raise ProviderUnavailableError(f"provider {name!r} is not available")

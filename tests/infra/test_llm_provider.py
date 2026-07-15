@@ -57,3 +57,18 @@ def test_claude_cli_nonzero_exit_raises() -> None:
     fake = MagicMock(returncode=1, stdout="", stderr="boom")
     with patch("subprocess.run", return_value=fake), pytest.raises(ProviderUnavailableError):
         ClaudeCliProvider(binary="claude").generate(CTX)
+
+
+def test_llm_call_routes_through_the_gatekeeper() -> None:
+    from cipherchase.shared.gatekeeper import ApiGatekeeper
+
+    class _AllowAll:
+        def allow(self, service: str) -> bool:
+            return True
+
+    gate = ApiGatekeeper(_AllowAll(), sleep=lambda _s: None)
+    fake = MagicMock(returncode=0, stdout='{"result": "hi"}', stderr="")
+    with patch("subprocess.run", return_value=fake):
+        text = ClaudeCliProvider(binary="claude", gate=gate).generate(CTX)
+    assert text == "hi"
+    assert gate.ledger[-1] == {"service": "llm", "action": "generate", "status": "ok"}

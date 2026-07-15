@@ -11,7 +11,7 @@ from __future__ import annotations
 import random
 from typing import Any
 
-from cipherchase.exceptions import ProviderUnavailableError
+from cipherchase.exceptions import GateLimitError, ProviderUnavailableError
 
 
 class TrashTalk:
@@ -38,5 +38,5 @@ class TrashTalk:
             return ""
         try:
             return self.provider.generate(ctx)
-        except ProviderUnavailableError:
-            return self.fallback.generate(ctx)
+        except (ProviderUnavailableError, GateLimitError):
+            return self.fallback.generate(ctx)  # rate-limited or down → never blocks

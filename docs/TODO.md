@@ -295,13 +295,13 @@
 - [x] T227 (FR-D4, NFR-7) Write `tests/infra/test_llm_provider.py`: `ClaudeCliProvider` mocked by patching `subprocess.run` (HW6 pattern), no real process.
 - [ ] T228 (FR-D4, NFR-7) Write failing error test: `build_provider` with unknown provider name → `ConfigError`; missing binary/key → `ProviderUnavailable` preflight.
 - [x] T229 (FR-D4, NFR-11) Implement `build_provider(cfg)` factory in `infra/llm_provider.py` (maps `[llm]`/`[trash_talk]` provider → class, injects gatekeeper).
-- [ ] T230 (NFR-3) Non-template providers wrap their one external call in `ApiGatekeeper.execute(service="llm", action=...)`.
+- [x] T230 (NFR-3) Non-template providers wrap their one external call in `ApiGatekeeper.execute(service="llm", action=...)`.
 - [x] T231 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `talk_providers.py`, `infra/llm_provider.py`, and tests.
 
 ### `strategy/trash_talk.py` — orchestration + intent + throttle (FR-D2/D3/D4, F6)
 - [x] T232 (FR-D3, F6, NFR-7) Write failing happy test: `choose_intent(rng, cfg)` respects `lie_probability` over seeded draws (statistical band).
 - [x] T233 (FR-D4, NFR-7) Write `tests/strategy/test_trash_talk_throttle.py`: on off-steps (`step % every_n_steps != 0`) the LLM provider is NOT called; template line returned.
-- [ ] T234 (FR-D4, NFR-3, NFR-7) Write test: on on-steps the provider is called via `gatekeeper.execute` (NFR-3 wiring asserted).
+- [x] T234 (FR-D4, NFR-3, NFR-7) Write test: on on-steps the provider is called via `gatekeeper.execute` (NFR-3 wiring asserted).
 - [x] T235 (FR-D4, NFR-7) Write failing error test: provider timeout/non-zero exit/empty output → `talk` returns the template fallback (move never blocked).
 - [x] T236 (FR-D3) Implement `choose_intent(rng, cfg)` (seedable Bernoulli, gated to "something to hide").
 - [x] T237 (FR-D4) Implement `talk(step, ctx)`: compute intent → throttle → try provider → fall back to template on any failure.
@@ -483,7 +483,7 @@
 - [ ] T367 (FR-G2) Implement `scripts/send_sample_report.py` — the ONE real `gmail.send` (non-CI, excluded from pytest) producing the committed `docs/sample-run/` artifacts.
 - [ ] T368 (F9, F11, F12, NFR-7) Write the Stage-7 Milestone e2e: full FakeTransport match → 4 JSON built + handed to gatekeeper-wrapped sender (fake backend); GUI shows heatmap; Replay reports "Verified OK".
 - [x] T369 (F12) Add a deliberately-tampered log fixture and assert Replay reports "TAMPERED".
-- [ ] T370 (NFR-3) Write single-façade audit test: every external call across the app (gmail/llm/mcp/subprocess) goes through `ApiGatekeeper.execute` (NFR-3 wiring, not decorative).
+- [x] T370 (NFR-3) Write single-façade audit test: every external call across the app (gmail/llm/mcp/subprocess) goes through `ApiGatekeeper.execute` (NFR-3 wiring, not decorative).
 - [ ] T371 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check ≤150 (incl. tests), CI Py-3.13 green on the Stage-7 branch.
 - [ ] **Milestone S7:** A full loopback match is auto-emailed as 4 JSON attachments; the GUI shows the belief heatmap; the Replay Viewer reports "Verified OK" (and "TAMPERED" on a corrupted log).
 

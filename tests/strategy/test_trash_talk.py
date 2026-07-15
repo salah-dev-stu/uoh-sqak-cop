@@ -33,3 +33,12 @@ def test_provider_failure_falls_back_to_template() -> None:
     talk = _talk(broken, fallback=TemplateProvider(), every_n_steps=1)
     text = talk.maybe_generate(TalkContext(role="police", step=1))
     assert text  # never blocks — template fills in
+
+
+def test_gatekeeper_rate_limit_also_falls_back() -> None:
+    from cipherchase.exceptions import GateLimitError
+
+    broken = MagicMock()
+    broken.generate.side_effect = GateLimitError("throttled")
+    talk = _talk(broken, fallback=TemplateProvider(), every_n_steps=1)
+    assert talk.maybe_generate(TalkContext(role="police", step=1))  # move never blocked
