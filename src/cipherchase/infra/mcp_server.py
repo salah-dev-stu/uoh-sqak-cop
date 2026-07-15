@@ -27,6 +27,16 @@ def dispatch(inboxes: Inboxes, kind: str, message: Message) -> Message:
     return {"ack": True, "kind": kind}
 
 
+def serve_params(config: Any) -> dict[str, Any]:
+    """HTTP serving params from config (host/port never hardcoded, FR-E1)."""
+    return {"transport": "http", "host": config.network["host"], "port": config.my_port}
+
+
+def serve(mcp: FastMCP, config: Any) -> None:  # pragma: no cover
+    """Run the peer server (blocks; localhost for dev, 0.0.0.0 behind a tunnel)."""
+    mcp.run(**serve_params(config))
+
+
 def build_peer_server(role: str, inboxes: Inboxes) -> FastMCP:
     """Build the FastMCP server exposing the 4 interop tools for ``role``."""
     mcp: FastMCP = FastMCP(name=f"cipherchase-{role}")

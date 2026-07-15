@@ -320,20 +320,20 @@
 
 ## Stage 5 — Cloud / tunnel (FR-E1, E2, F13)
 
-- [ ] T247 (FR-E1, NFR-11, NFR-7) Write `tests/infra/test_bind_config.py`: `mcp_server` reads `host`/`my_port` from `game.toml [network]`; default `host="127.0.0.1"` (no literal in code).
-- [ ] T248 (FR-E1, NFR-11) Wire `build_peer_server` serving params `mcp.run(transport="http", host=cfg.network.host, port=cfg.network.my_port)` (league override `0.0.0.0`).
-- [ ] T249 (FR-E1, NFR-11, NFR-7) Write test: `mcp_client` targets `opponent_url` from config; no host/port/URL literal in code.
+- [x] T247 (FR-E1, NFR-11, NFR-7) Write `tests/infra/test_bind_config.py`: `mcp_server` reads `host`/`my_port` from `game.toml [network]`; default `host="127.0.0.1"` (no literal in code).
+- [x] T248 (FR-E1, NFR-11) Wire `build_peer_server` serving params `mcp.run(transport="http", host=cfg.network.host, port=cfg.network.my_port)` (league override `0.0.0.0`).
+- [x] T249 (FR-E1, NFR-11, NFR-7) Write test: `mcp_client` targets `opponent_url` from config; no host/port/URL literal in code.
 - [ ] T250 (FR-E1, NFR-3) Confirm the URL-agnostic `McpTransport` still routes every call through the gatekeeper for a tunnel URL (no branching logic added).
-- [ ] T251 (FR-E2, F13, NFR-7) Write test proving a full FakeTransport loopback match runs with NO socket / NO live peer / NO key (C2).
-- [ ] T252 (FR-E1, F13) Document the ngrok PRIMARY runbook (start peer on `0.0.0.0:my_port`, `ngrok http <port>`, exchange URLs, set `opponent_url`) in `docs/deploy-tunnel.md`.
-- [ ] T253 (FR-E1, F13) Document the Localtonet FALLBACK runbook (equivalent outbound tunnel) in `docs/deploy-tunnel.md` (ADR-005 reference).
-- [ ] T254 (FR-E1) Document NAT-traversal rationale (outbound relay, no port-forwarding), TLS termination at edge, and the security model (ephemeral URLs, no secrets in URL, integrity over untrusted transport).
-- [ ] T255 (FR-E1, F13) Document the league pre-match checklist (exchange URLs, lock `game.json`, verify `config_sha256`, exchange declarations, set `host=0.0.0.0`, confirm `negotiate`).
-- [ ] T256 (FR-E2) Document the manual (non-CI) tunnel smoke-test procedure + committed screenshot; never part of `pytest`.
-- [ ] T257 (F13) Reference ADR-005 (ngrok primary / Localtonet fallback; deploy-time only) in `docs/deploy-tunnel.md`.
-- [ ] T258 (FR-E1) Note tunnel-drop = silent-peer funnels to `TECHNICAL_LOSS` (owned by Stage 7 watchdog; not reimplemented here).
+- [x] T251 (FR-E2, F13, NFR-7) Write test proving a full FakeTransport loopback match runs with NO socket / NO live peer / NO key (C2).
+- [x] T252 (FR-E1, F13) Document the ngrok PRIMARY runbook (start peer on `0.0.0.0:my_port`, `ngrok http <port>`, exchange URLs, set `opponent_url`) in `docs/deploy-tunnel.md`.
+- [x] T253 (FR-E1, F13) Document the Localtonet FALLBACK runbook (equivalent outbound tunnel) in `docs/deploy-tunnel.md` (ADR-005 reference).
+- [x] T254 (FR-E1) Document NAT-traversal rationale (outbound relay, no port-forwarding), TLS termination at edge, and the security model (ephemeral URLs, no secrets in URL, integrity over untrusted transport).
+- [x] T255 (FR-E1, F13) Document the league pre-match checklist (exchange URLs, lock `game.json`, verify `config_sha256`, exchange declarations, set `host=0.0.0.0`, confirm `negotiate`).
+- [x] T256 (FR-E2) Document the manual (non-CI) tunnel smoke-test procedure + committed screenshot; never part of `pytest`.
+- [x] T257 (F13) Reference ADR-005 (ngrok primary / Localtonet fallback; deploy-time only) in `docs/deploy-tunnel.md`.
+- [x] T258 (FR-E1) Note tunnel-drop = silent-peer funnels to `TECHNICAL_LOSS` (owned by Stage 7 watchdog; not reimplemented here).
 - [ ] T259 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check, CI Py-3.13 green on the Stage-5 branch (config + docs only, no network in tests).
-- [ ] **Milestone S5:** A remote peer connects and plays a full round — validated on localhost (FakeTransport loopback) with the ngrok/Localtonet path fully designed in ADR-005 + runbooks.
+- [x] **Milestone S5:** A remote peer connects and plays a full round — validated on localhost (FakeTransport loopback) with the ngrok/Localtonet path fully designed in ADR-005 + runbooks.
 
 ## Stage 6 — Cryptographic fairness (FR-F1..F4, F3, F4, F5)
 
