@@ -73,58 +73,58 @@
 ## Stage 1 — Base logic (FR-A1..A5)
 
 ### `domain/board.py` — geometry (FR-A1/A2)
-- [ ] T061 (FR-A1, NFR-7) Write failing happy test `tests/domain/test_board.py`: `Board(size).in_bounds`, `distance` (Manhattan), `neighbors` counts (corner 2, edge 3, center 4).
-- [ ] T062 (FR-A2, NFR-7) Write failing happy test: `legal_moves` on empty board returns `[N,S,E,W,STAY]` order; `step` moves for each direction.
-- [ ] T063 (FR-A2, NFR-7) Write failing error test: `step`/`target_of` off an edge and into a barrier raises `IllegalMoveError`.
-- [ ] T064 (FR-A1) Implement `Board.__init__(size)` + `in_bounds` + `distance` (size injected from config, no literal).
-- [ ] T065 (FR-A2) Implement `Board.target_of`, `neighbors(cell, barriers)`, `legal_moves(cell, barriers)` (deterministic `[N,S,E,W,STAY]` order).
-- [ ] T066 (FR-A2) Implement `Board.step(cell, direction, barriers)` raising `IllegalMoveError` on illegal target.
-- [ ] T067 (FR-A1, NFR-11) Add config-variation test: a 5×5 fixture makes `in_bounds((4,4))` True and `in_bounds((5,5))` False (proves NFR-11).
-- [ ] T068 (NFR-9, NFR-8) `ruff` 0 + `check_file_lines.py` ≤150 on `domain/board.py` and its test.
-- [ ] T069 (NFR-10) `pytest --cov` on `domain/board.py` ≥85%.
+- [x] T061 (FR-A1, NFR-7) Write failing happy test `tests/domain/test_board.py`: `Board(size).in_bounds`, `distance` (Manhattan), `neighbors` counts (corner 2, edge 3, center 4).
+- [x] T062 (FR-A2, NFR-7) Write failing happy test: `legal_moves` on empty board returns `[N,S,E,W,STAY]` order; `step` moves for each direction.
+- [x] T063 (FR-A2, NFR-7) Write failing error test: `step`/`target_of` off an edge and into a barrier raises `IllegalMoveError`.
+- [x] T064 (FR-A1) Implement `Board.__init__(size)` + `in_bounds` + `distance` (size injected from config, no literal).
+- [x] T065 (FR-A2) Implement `Board.target_of`, `neighbors(cell, barriers)`, `legal_moves(cell, barriers)` (deterministic `[N,S,E,W,STAY]` order).
+- [x] T066 (FR-A2) Implement `Board.step(cell, direction, barriers)` raising `IllegalMoveError` on illegal target.
+- [x] T067 (FR-A1, NFR-11) Add config-variation test: a 5×5 fixture makes `in_bounds((4,4))` True and `in_bounds((5,5))` False (proves NFR-11).
+- [x] T068 (NFR-9, NFR-8) `ruff` 0 + `check_file_lines.py` ≤150 on `domain/board.py` and its test.
+- [x] T069 (NFR-10) `pytest --cov` on `domain/board.py` ≥85%.
 
 ### `domain/rules.py` — adjudication (FR-A2/A3/A4)
-- [ ] T070 (FR-A2, NFR-7) Write failing happy test `tests/domain/test_rules.py`: `is_legal_move`/`validate_move` accept legal, return target cell.
-- [ ] T071 (FR-A3, NFR-7) Write failing happy test: `can_place_barrier` accepts adjacent-in-budget target; rejects non-adjacent/duplicate/over-budget.
-- [ ] T072 (FR-A4, NFR-7) Write failing happy test: `is_capture` on co-location True; `is_boxed_in` True only when no legal move AND cop adjacent (config toggle).
-- [ ] T073 (FR-A4, NFR-7) Write failing happy test: `outcome` returns None mid-game, `CAPTURE` on co-location, `SURVIVAL` at threshold; capture precedes survival same turn.
-- [ ] T074 (FR-A2, NFR-7) Write failing error test: `validate_move` raises `IllegalMoveError`; barrier wrapper raises `IllegalBarrierError`.
-- [ ] T075 (FR-A2) Implement `is_legal_move` + `validate_move` (delegates to `Board`).
-- [ ] T076 (FR-A3) Implement `can_place_barrier(board, cop, target, barriers, max_barriers)` + `place_barrier` wrapper raising `IllegalBarrierError`.
-- [ ] T077 (FR-A4) Implement `is_boxed_in(board, thief, cop, barriers)` honoring `require_cop_adjacent` config toggle.
-- [ ] T078 (FR-A4) Implement `is_capture` (co-location OR boxed-in OR barrier-on-thief).
-- [ ] T079 (FR-A4) Implement `outcome(cop, thief, turn, board, barriers, survival_threshold)` (capture checked first).
-- [ ] T080 (FR-A4) Add edge-case test: thief boxed-in but cop NOT adjacent → not capture (SURVIVAL-track).
-- [ ] T081 (FR-A3) Add edge-case test: barrier placed exactly on thief's cell → capture, not error.
-- [ ] T082 (NFR-11) Add config-variation test: `max_barriers=2` fixture rejects the 3rd barrier.
-- [ ] T083 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/rules.py` and its test.
-- [ ] T084 (NFR-10) `pytest --cov` on `domain/rules.py` ≥85%.
+- [x] T070 (FR-A2, NFR-7) Write failing happy test `tests/domain/test_rules.py`: `is_legal_move`/`validate_move` accept legal, return target cell.
+- [x] T071 (FR-A3, NFR-7) Write failing happy test: `can_place_barrier` accepts adjacent-in-budget target; rejects non-adjacent/duplicate/over-budget.
+- [x] T072 (FR-A4, NFR-7) Write failing happy test: `is_capture` on co-location True; `is_boxed_in` True only when no legal move AND cop adjacent (config toggle).
+- [x] T073 (FR-A4, NFR-7) Write failing happy test: `outcome` returns None mid-game, `CAPTURE` on co-location, `SURVIVAL` at threshold; capture precedes survival same turn.
+- [x] T074 (FR-A2, NFR-7) Write failing error test: `validate_move` raises `IllegalMoveError`; barrier wrapper raises `IllegalBarrierError`.
+- [x] T075 (FR-A2) Implement `is_legal_move` + `validate_move` (delegates to `Board`).
+- [x] T076 (FR-A3) Implement `can_place_barrier(board, cop, target, barriers, max_barriers)` + `place_barrier` wrapper raising `IllegalBarrierError`.
+- [x] T077 (FR-A4) Implement `is_boxed_in(board, thief, cop, barriers)` honoring `require_cop_adjacent` config toggle.
+- [x] T078 (FR-A4) Implement `is_capture` (co-location OR boxed-in OR barrier-on-thief).
+- [x] T079 (FR-A4) Implement `outcome(cop, thief, turn, board, barriers, survival_threshold)` (capture checked first).
+- [x] T080 (FR-A4) Add edge-case test: thief boxed-in but cop NOT adjacent → not capture (SURVIVAL-track).
+- [x] T081 (FR-A3) Add edge-case test: barrier placed exactly on thief's cell → capture, not error.
+- [x] T082 (NFR-11) Add config-variation test: `max_barriers=2` fixture rejects the 3rd barrier.
+- [x] T083 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/rules.py` and its test.
+- [x] T084 (NFR-10) `pytest --cov` on `domain/rules.py` ≥85%.
 
 ### `domain/scoring.py` — score table (FR-A5)
-- [ ] T085 (FR-A5, NFR-7) Write failing happy test `tests/domain/test_scoring.py`: each `Outcome` → correct `(cop,thief)` tuple from a fixture table.
-- [ ] T086 (FR-A5, NFR-7) Write failing happy test: `diversity_reward` applied when `new_opponent=True`; `technical_loss()` always `(0,0)`.
-- [ ] T087 (FR-A5, NFR-7) Write failing error test: unknown outcome key raises `KeyError`/`ConfigError` (never a silent default).
-- [ ] T088 (FR-A5) Implement `Scoring.__init__(table, diversity_reward)` reading injected config `scoring` mapping.
-- [ ] T089 (FR-A5) Implement `Scoring.score(outcome, new_opponent)` + `technical_loss()` (zero literals).
-- [ ] T090 (NFR-11) Add config-variation test: a mutated score table changes the returned tuple (proves no hardcoding).
-- [ ] T091 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/scoring.py` and its test.
-- [ ] T092 (NFR-10) `pytest --cov` on `domain/scoring.py` ≥85%.
+- [x] T085 (FR-A5, NFR-7) Write failing happy test `tests/domain/test_scoring.py`: each `Outcome` → correct `(cop,thief)` tuple from a fixture table.
+- [x] T086 (FR-A5, NFR-7) Write failing happy test: `diversity_reward` applied when `new_opponent=True`; `technical_loss()` always `(0,0)`.
+- [x] T087 (FR-A5, NFR-7) Write failing error test: unknown outcome key raises `KeyError`/`ConfigError` (never a silent default).
+- [x] T088 (FR-A5) Implement `Scoring.__init__(table, diversity_reward)` reading injected config `scoring` mapping.
+- [x] T089 (FR-A5) Implement `Scoring.score(outcome, new_opponent)` + `technical_loss()` (zero literals).
+- [x] T090 (NFR-11) Add config-variation test: a mutated score table changes the returned tuple (proves no hardcoding).
+- [x] T091 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/scoring.py` and its test.
+- [x] T092 (NFR-10) `pytest --cov` on `domain/scoring.py` ≥85%.
 
 ### `domain/own_state.py` — local peer truth (foundation for F2)
-- [ ] T093 (F2, NFR-7) Write failing happy test `tests/domain/test_own_state.py`: `OwnState` holds role/position/barriers/turn/history; never opponent data.
-- [ ] T094 (FR-A3, NFR-7) Write failing happy test: `moved_to`, `with_barrier`, `advanced` return NEW instances (immutability).
-- [ ] T095 (NFR-7) Write failing error test: original `OwnState` unchanged after `moved_to` (side-effect-free).
-- [ ] T096 (F2) Implement `OwnState` dataclass (role, position, barriers `frozenset`, turn, history tuple).
-- [ ] T097 (FR-A3) Implement immutable `moved_to`, `with_barrier`, `advanced` update methods.
-- [ ] T098 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/own_state.py` and its test.
-- [ ] T099 (NFR-10) `pytest --cov` on `domain/own_state.py` ≥85%.
+- [x] T093 (F2, NFR-7) Write failing happy test `tests/domain/test_own_state.py`: `OwnState` holds role/position/barriers/turn/history; never opponent data.
+- [x] T094 (FR-A3, NFR-7) Write failing happy test: `moved_to`, `with_barrier`, `advanced` return NEW instances (immutability).
+- [x] T095 (NFR-7) Write failing error test: original `OwnState` unchanged after `moved_to` (side-effect-free).
+- [x] T096 (F2) Implement `OwnState` dataclass (role, position, barriers `frozenset`, turn, history tuple).
+- [x] T097 (FR-A3) Implement immutable `moved_to`, `with_barrier`, `advanced` update methods.
+- [x] T098 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/own_state.py` and its test.
+- [x] T099 (NFR-10) `pytest --cov` on `domain/own_state.py` ≥85%.
 
 ### Stage-1 integration & dependency purity
-- [ ] T100 (FR-A1, FR-A2, NFR-7) Write two-piece legal-move sequence test (the Milestone scenario): cop + thief each move and land where expected.
-- [ ] T101 (FR-A2) Write test: `legal_moves` excludes a barriered direction; out-of-bounds/into-barrier `step` raises `IllegalMoveError`.
-- [ ] T102 (NFR-2) Assert `domain/` imports nothing from `infra/`, `peer/`, `gui/`, or `shared.config` (dependency-inward purity test).
-- [ ] T103 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check, and CI Py-3.13 green on the Stage-1 branch.
-- [ ] **Milestone S1:** Two pieces move legally, are blocked at barriers, and an illegal move is rejected (`Board.step` moves both; `legal_moves` excludes a barriered direction; illegal `step` raises `IllegalMoveError`).
+- [x] T100 (FR-A1, FR-A2, NFR-7) Write two-piece legal-move sequence test (the Milestone scenario): cop + thief each move and land where expected.
+- [x] T101 (FR-A2) Write test: `legal_moves` excludes a barriered direction; out-of-bounds/into-barrier `step` raises `IllegalMoveError`.
+- [x] T102 (NFR-2) Assert `domain/` imports nothing from `infra/`, `peer/`, `gui/`, or `shared.config` (dependency-inward purity test).
+- [x] T103 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check, and CI Py-3.13 green on the Stage-1 branch.
+- [x] **Milestone S1:** Two pieces move legally, are blocked at barriers, and an illegal move is rejected (`Board.step` moves both; `legal_moves` excludes a barriered direction; illegal `step` raises `IllegalMoveError`).
 
 ## Stage 2 — MCP infrastructure (FR-B1..B5, F1, F2)
 
