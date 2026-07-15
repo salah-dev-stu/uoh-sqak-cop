@@ -13,6 +13,9 @@ dependencies = [
     "httpx>=0.27",
 ]
 
+[project.scripts]
+cipherchase = "cipherchase.cli:main"
+
 [project.optional-dependencies]
 # Heavy / external runtime deps used only for the REAL pipeline (live LLM,
 # real Gmail send, GUI). Tests and CI never install these — every external

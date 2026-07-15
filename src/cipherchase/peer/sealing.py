@@ -12,6 +12,17 @@ from cipherchase.domain.crypto import CommitReveal
 from cipherchase.domain.protocol import AuditPayload
 
 
+def move_payload(step: int, state: Any, decision: Any) -> dict[str, Any]:
+    """The committed payload = the mover's OWN observable state (PLAN §8.1)."""
+    barriers = sorted([list(cell) for cell in state.barriers])
+    return {
+        "step": step,
+        "state": {"pos": list(state.position), "barriers": barriers},
+        "move": decision.direction.value,
+        "intent": decision.intent,
+    }
+
+
 class SealBook:
     def __init__(self) -> None:
         self._records: list[dict[str, Any]] = []

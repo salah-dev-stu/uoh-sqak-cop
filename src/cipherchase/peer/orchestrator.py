@@ -12,7 +12,7 @@ from typing import Any
 from cipherchase.domain.brains import Decision
 from cipherchase.domain.own_state import OwnState
 from cipherchase.domain.protocol import TurnMessage
-from cipherchase.peer.sealing import SealBook
+from cipherchase.peer.sealing import SealBook, move_payload
 from cipherchase.peer.state_machine import State, StateMachine
 
 
@@ -33,22 +33,12 @@ class Orchestrator:
             lambda: self.transport.send_turn(message.to_dict()), service="mcp", action=action
         )
 
-    @staticmethod
-    def _payload(step: int, state: OwnState, decision: Decision) -> dict[str, Any]:
-        barriers = sorted([list(cell) for cell in state.barriers])
-        return {
-            "step": step,
-            "state": {"pos": list(state.position), "barriers": barriers},
-            "move": decision.direction.value,
-            "intent": decision.intent,
-        }
-
     def play_move(
         self, state: OwnState, belief: Any, barriers: frozenset[Any], step: int
     ) -> Decision:
         self.sm.transition(State.COMPUTING)
         decision = self.brain.decide(state, belief, barriers)
-        commit, _nonce = self.sealbook.seal(self._payload(step, state, decision))
+        commit, _nonce = self.sealbook.seal(move_payload(step, state, decision))
         self.sm.transition(State.COMMITTING)
         self._send(TurnMessage(step=step, sender=self.role, commit=commit), "send_commit")
         self.sm.transition(State.AWAITING_REVEAL)
