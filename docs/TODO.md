@@ -480,7 +480,7 @@
 - [x] T366 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on all `gui/replay*` modules and tests.
 
 ### `scripts/send_sample_report.py` + Stage-7 integration
-- [ ] T367 (FR-G2) Implement `scripts/send_sample_report.py` — the ONE real `gmail.send` (non-CI, excluded from pytest) producing the committed `docs/sample-run/` artifacts.
+- [x] T367 (FR-G2) Implement `scripts/send_sample_report.py` — the ONE real `gmail.send` (non-CI, excluded from pytest) producing the committed `docs/sample-run/` artifacts.
 - [ ] T368 (F9, F11, F12, NFR-7) Write the Stage-7 Milestone e2e: full FakeTransport match → 4 JSON built + handed to gatekeeper-wrapped sender (fake backend); GUI shows heatmap; Replay reports "Verified OK".
 - [x] T369 (F12) Add a deliberately-tampered log fixture and assert Replay reports "TAMPERED".
 - [x] T370 (NFR-3) Write single-façade audit test: every external call across the app (gmail/llm/mcp/subprocess) goes through `ApiGatekeeper.execute` (NFR-3 wiring, not decorative).
