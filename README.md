@@ -38,6 +38,21 @@ uv run cipherchase replay --log docs/sample-run/log_uoh-sqak-police-c64efc39_g01
 A committed **sample run** (4 signed JSON artifacts + the visuals above) lives in `docs/sample-run/` as
 offline proof — the grader needs no API key, no credentials, and no opponent.
 
+## Live 3D arena
+
+![CipherChase 3D arena](docs/sample-run/arena_3d.png)
+
+Watch a match unfold in **interactive 3D** — orbit the board, scrub the timeline, and hit **"New match"** to
+run a brand-new game through the real engine and animate it live:
+
+```bash
+uv run python scripts/viz_server.py     # → http://localhost:8777
+```
+
+The **cyan cop** (light-beam) hunts the **magenta thief**; the floor is the cop's **live belief heatmap**
+(bright = "probably here"); **amber walls** are barriers it raises to box the thief in. Self-contained
+Three.js (vendored under `viz/`, no build step) — every barrier, belief cell, and move is real engine output.
+
 ---
 
 ## Academic report

@@ -1,0 +1,5 @@
+{
+  "name": "cipherchase-viz",
+  "private": true,
+  "note": "Three.js vendored under viz/vendor — no build step. Serve via: uv run python scripts/viz_server.py"
+}

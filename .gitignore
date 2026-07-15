@@ -30,3 +30,7 @@ logs/
 .DS_Store
 .idea/
 .vscode/
+
+# 3D viz — vendored three kept, npm install ignored
+viz/node_modules/
+viz/package-lock.json
