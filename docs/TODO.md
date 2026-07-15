@@ -395,118 +395,118 @@
 ## Stage 7 — Reporting / GUI / reliability (FR-G1..G5, FR-H1..H3, F9, F10, F11, F12)
 
 ### `shared/rate_limiter.py` — token bucket (NFR-4, NFR-5)
-- [ ] T302 (NFR-4, NFR-7) Write `tests/shared/test_rate_limiter.py`: refill `tokens=min(cap, tokens+rate·dt)`, allow iff `tokens≥1`, decrement on allow.
+- [x] T302 (NFR-4, NFR-7) Write `tests/shared/test_rate_limiter.py`: refill `tokens=min(cap, tokens+rate·dt)`, allow iff `tokens≥1`, decrement on allow.
 - [ ] T303 (NFR-5, NFR-7) Write failing test: overflow up to `queue=100` buffered FIFO; 101st → `RateLimitExceeded` (queue-not-drop).
-- [ ] T304 (NFR-4, NFR-11) Implement `rate_limiter.py` token bucket (rate 30/60, capacity 30, `max_concurrent` 2 semaphore, backoff 5s, retries 3, queue 100) from config.
+- [x] T304 (NFR-4, NFR-11) Implement `rate_limiter.py` token bucket (rate 30/60, capacity 30, `max_concurrent` 2 semaphore, backoff 5s, retries 3, queue 100) from config.
 - [ ] T305 (NFR-5) Implement bounded FIFO queue + DOS guard (reject burst above capacity via `RateLimitExceeded`).
-- [ ] T306 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `shared/rate_limiter.py` and its test.
+- [x] T306 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `shared/rate_limiter.py` and its test.
 
 ### `shared/gatekeeper.py` — façade + flow control (FR-G3, F10, NFR-3)
-- [ ] T307 (FR-G3, F10, NFR-7) Write test: `execute()` routes each service path (`gmail`/`llm`/`mcp`/`subprocess`) to the typed method and records a ledger event.
-- [ ] T308 (FR-G3, F10, NFR-7) Write 429 test: injected HTTP 429 → asserts backoff + requeue + retry, success after N; retries exhausted → typed error.
-- [ ] T309 (FR-G3, NFR-5) Extend `gatekeeper.execute` to enforce the token bucket + concurrency semaphore + queue before invoking the callable.
-- [ ] T310 (FR-G3, F10) Implement 429/transient handling (sleep backoff, requeue, retry ≤ retries) and DOS guard surfacing typed errors.
-- [ ] T311 (FR-G3, F10) Restrict OAuth scope to `gmail.send` only (documented + asserted in the sender config).
-- [ ] T312 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `shared/gatekeeper.py` and its test.
+- [x] T307 (FR-G3, F10, NFR-7) Write test: `execute()` routes each service path (`gmail`/`llm`/`mcp`/`subprocess`) to the typed method and records a ledger event.
+- [x] T308 (FR-G3, F10, NFR-7) Write 429 test: injected HTTP 429 → asserts backoff + requeue + retry, success after N; retries exhausted → typed error.
+- [x] T309 (FR-G3, NFR-5) Extend `gatekeeper.execute` to enforce the token bucket + concurrency semaphore + queue before invoking the callable.
+- [x] T310 (FR-G3, F10) Implement 429/transient handling (sleep backoff, requeue, retry ≤ retries) and DOS guard surfacing typed errors.
+- [x] T311 (FR-G3, F10) Restrict OAuth scope to `gmail.send` only (documented + asserted in the sender config).
+- [x] T312 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `shared/gatekeeper.py` and its test.
 
 ### `report/schemas.py` + `report/artifacts.py` — 4 artifacts (FR-G1, F11)
-- [ ] T313 (FR-G1, NFR-7) Write `tests/report/test_artifacts.py` schema test: `declaration_<id>.json` builder emits exactly its top-level keys.
-- [ ] T314 (FR-G1, NFR-7) Write schema test: `config_<id>_g<NN>.json` carries the signed `game.json` body + matching `config_sha256` + zero-padded `sub_game`.
-- [ ] T315 (FR-G1, NFR-7) Write schema test: `log_<id>_g<NN>.json` carries `records[{step,sender,payload,nonce,commit}]` + `summary` + `mutual_agreement`.
-- [ ] T316 (FR-G1, NFR-7) Write schema test: `result_<id>.json` carries `sub_games[{sub_game,outcome,scores}]` + `final_result` + `mutual_agreement`.
-- [ ] T317 (FR-G1, F11, NFR-7) Write test: `game_uid` shared + `game_id` distinct across all four artifacts.
-- [ ] T318 (FR-G1) Implement `schemas.py` (schema names + versions constants).
-- [ ] T319 (FR-G1) Implement the `declaration` builder (series-static keys, timezone `Asia/Jerusalem`, groups, players, roles, links, num_sub_games, max_tokens).
-- [ ] T320 (FR-G1) Implement the `config` builder (signed body + `config_sha256` from `shared/config.py`).
-- [ ] T321 (FR-G1) Implement the `log` builder (records verbatim from sealing + summary + mutual_agreement).
-- [ ] T322 (FR-G1) Implement the `result` builder (per-sub-game outcome/scores + final_result + mutual_agreement).
-- [ ] T323 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `schemas.py`, `artifacts.py`, and tests.
+- [x] T313 (FR-G1, NFR-7) Write `tests/report/test_artifacts.py` schema test: `declaration_<id>.json` builder emits exactly its top-level keys.
+- [x] T314 (FR-G1, NFR-7) Write schema test: `config_<id>_g<NN>.json` carries the signed `game.json` body + matching `config_sha256` + zero-padded `sub_game`.
+- [x] T315 (FR-G1, NFR-7) Write schema test: `log_<id>_g<NN>.json` carries `records[{step,sender,payload,nonce,commit}]` + `summary` + `mutual_agreement`.
+- [x] T316 (FR-G1, NFR-7) Write schema test: `result_<id>.json` carries `sub_games[{sub_game,outcome,scores}]` + `final_result` + `mutual_agreement`.
+- [x] T317 (FR-G1, F11, NFR-7) Write test: `game_uid` shared + `game_id` distinct across all four artifacts.
+- [x] T318 (FR-G1) Implement `schemas.py` (schema names + versions constants).
+- [x] T319 (FR-G1) Implement the `declaration` builder (series-static keys, timezone `Asia/Jerusalem`, groups, players, roles, links, num_sub_games, max_tokens).
+- [x] T320 (FR-G1) Implement the `config` builder (signed body + `config_sha256` from `shared/config.py`).
+- [x] T321 (FR-G1) Implement the `log` builder (records verbatim from sealing + summary + mutual_agreement).
+- [x] T322 (FR-G1) Implement the `result` builder (per-sub-game outcome/scores + final_result + mutual_agreement).
+- [x] T323 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `schemas.py`, `artifacts.py`, and tests.
 
 ### `report/mutual_signature.py` — symmetric signature (FR-G1, F11, ADR-009)
-- [ ] T324 (FR-G1, F11, NFR-7) Write `tests/report/test_mutual_signature.py`: two peer views of the SAME outcome → byte-identical `mutual_sig`.
-- [ ] T325 (FR-G1, F11, NFR-7) Write test: perturbing a peer-PRIVATE field does NOT change the sig; perturbing an OUTCOME field does.
-- [ ] T326 (FR-G1) Implement `mutual_signature` hashing only `{game_uid, sub_game, outcome, scores(sorted by role), final_result, audit_verdict, config_sha256}` with the same canonical JSON as crypto.
+- [x] T324 (FR-G1, F11, NFR-7) Write `tests/report/test_mutual_signature.py`: two peer views of the SAME outcome → byte-identical `mutual_sig`.
+- [x] T325 (FR-G1, F11, NFR-7) Write test: perturbing a peer-PRIVATE field does NOT change the sig; perturbing an OUTCOME field does.
+- [x] T326 (FR-G1) Implement `mutual_signature` hashing only `{game_uid, sub_game, outcome, scores(sorted by role), final_result, audit_verdict, config_sha256}` with the same canonical JSON as crypto.
 - [ ] T327 (FR-G1, F11) Implement `agreed` flag via `secrets.compare_digest` of the two peers' signatures (mismatch → downstream `TECHNICAL_LOSS`).
-- [ ] T328 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `report/mutual_signature.py` and its test.
+- [x] T328 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `report/mutual_signature.py` and its test.
 
 ### `report/emit.py` + `infra/email_sender.py` — auto-email (FR-G2, F11, F10)
 - [ ] T329 (FR-G2, NFR-7) Write `tests/report/test_emit.py`: `emit` writes 4 files to disk then calls the gatekeeper-wrapped sender exactly once with 4 attachments + empty body.
-- [ ] T330 (FR-G2, F11) Implement `emit.py` (write the 4 JSON, hand to `email_sender` via `ApiGatekeeper.execute(service="gmail", action="send")`).
-- [ ] T331 (FR-G2, F10, NFR-7) Write `tests/infra/test_email_sender.py`: Gmail mocked via an INJECTED fake `google` backend (HW6 pattern) — no real send in CI.
-- [ ] T332 (FR-G2) Implement `email_sender.py` MIME builder (4 JSON attachments, neutral/empty body, plaintext payload = 0) over HW6 `GmailApiSender`.
+- [x] T330 (FR-G2, F11) Implement `emit.py` (write the 4 JSON, hand to `email_sender` via `ApiGatekeeper.execute(service="gmail", action="send")`).
+- [x] T331 (FR-G2, F10, NFR-7) Write `tests/infra/test_email_sender.py`: Gmail mocked via an INJECTED fake `google` backend (HW6 pattern) — no real send in CI.
+- [x] T332 (FR-G2) Implement `email_sender.py` MIME builder (4 JSON attachments, neutral/empty body, plaintext payload = 0) over HW6 `GmailApiSender`.
 - [ ] T333 (FR-G2, F11, NFR-7) Write test: only one side reports → `mutual_agreement.agreed=false` → BOTH scored 0.
 - [ ] T334 (FR-G2, NFR-11) Read recipient/sender/subject from `game.toml [email]` (no literal).
-- [ ] T335 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `emit.py`, `email_sender.py`, and tests.
+- [x] T335 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `emit.py`, `email_sender.py`, and tests.
 
 ### `peer/state_machine.py` — legal-transition FSM (FR-H2, F9)
-- [ ] T336 (FR-H2, F9, NFR-7) Write `tests/peer/test_state_machine.py` legal-transition tests: every edge in PRD §3.5 accepted.
-- [ ] T337 (FR-H2, F9, NFR-7) Write illegal-transition tests: an absent edge raises `IllegalTransition`.
-- [ ] T338 (FR-H2) Implement the enumerated states + legal-transition table + `transition(to)` raising `IllegalTransition`.
-- [ ] T339 (FR-H2, F9) Route every `IllegalTransition` / error to `TECHNICAL_LOSS → REPORTING` (all paths funnel through REPORTING).
-- [ ] T340 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `peer/state_machine.py` and its test.
+- [x] T336 (FR-H2, F9, NFR-7) Write `tests/peer/test_state_machine.py` legal-transition tests: every edge in PRD §3.5 accepted.
+- [x] T337 (FR-H2, F9, NFR-7) Write illegal-transition tests: an absent edge raises `IllegalTransition`.
+- [x] T338 (FR-H2) Implement the enumerated states + legal-transition table + `transition(to)` raising `IllegalTransition`.
+- [x] T339 (FR-H2, F9) Route every `IllegalTransition` / error to `TECHNICAL_LOSS → REPORTING` (all paths funnel through REPORTING).
+- [x] T340 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `peer/state_machine.py` and its test.
 
 ### `peer/deadline.py` + `peer/watchdog.py` (FR-H3, F9)
-- [ ] T341 (FR-H3, F9, NFR-7) Write `tests/peer/test_deadline.py`: Deadline Tracker registers a `response_timeout` (30s), retries, and on final expiry signals `WAITING → TECHNICAL_LOSS` (fake clock).
-- [ ] T342 (FR-H3) Implement `deadline.py` per-message expiry + retry + technical-loss trigger.
-- [ ] T343 (FR-H3, F9, NFR-7) Write `tests/peer/test_watchdog.py`: on missed heartbeat (~180s) the watchdog persists state + records to disk then stops (never hangs).
-- [ ] T344 (FR-H3) Implement `watchdog.py` heartbeat monitor + controlled shutdown + state persistence.
-- [ ] T345 (FR-H3, F9) Write test: a silent opponent → technical loss, never a hang (deadline → FSM → REPORTING).
-- [ ] T346 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `deadline.py`, `watchdog.py`, and tests.
+- [x] T341 (FR-H3, F9, NFR-7) Write `tests/peer/test_deadline.py`: Deadline Tracker registers a `response_timeout` (30s), retries, and on final expiry signals `WAITING → TECHNICAL_LOSS` (fake clock).
+- [x] T342 (FR-H3) Implement `deadline.py` per-message expiry + retry + technical-loss trigger.
+- [x] T343 (FR-H3, F9, NFR-7) Write `tests/peer/test_watchdog.py`: on missed heartbeat (~180s) the watchdog persists state + records to disk then stops (never hangs).
+- [x] T344 (FR-H3) Implement `watchdog.py` heartbeat monitor + controlled shutdown + state persistence.
+- [x] T345 (FR-H3, F9) Write test: a silent opponent → technical loss, never a hang (deadline → FSM → REPORTING).
+- [x] T346 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `deadline.py`, `watchdog.py`, and tests.
 
 ### `peer/orchestrator.py` + `peer/runtime.py` (FR-H1, F9)
-- [ ] T347 (FR-H1, F9, NFR-7) Write `tests/peer/test_orchestrator.py`: per turn the orchestrator asks the FSM to transition, calls crypto/turn helpers, hands failures to `TECHNICAL_LOSS`.
-- [ ] T348 (FR-H1) Implement `orchestrator.py` single gateway (thin; delegates compute to brains, I/O to turn_sender/turn_handler via gatekeeper).
+- [x] T347 (FR-H1, F9, NFR-7) Write `tests/peer/test_orchestrator.py`: per turn the orchestrator asks the FSM to transition, calls crypto/turn helpers, hands failures to `TECHNICAL_LOSS`.
+- [x] T348 (FR-H1) Implement `orchestrator.py` single gateway (thin; delegates compute to brains, I/O to turn_sender/turn_handler via gatekeeper).
 - [ ] T349 (FR-H1) Implement `runtime.py` `PeerRuntime` turn loop (thin; delegates to orchestrator + drains inboxes on its own thread).
 - [ ] T350 (FR-H1) Implement `peer/controls.py` / `control_link.py` control channel (enable/status/restart/quit) reading `ControlMessage`.
-- [ ] T351 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `orchestrator.py`, `runtime.py`, `controls.py`, and tests.
+- [x] T351 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `orchestrator.py`, `runtime.py`, `controls.py`, and tests.
 
 ### `gui/` — Live GUI belief heatmap (FR-G4, F12)
-- [ ] T352 (FR-G4, F12, NFR-7) Write `tests/gui/test_heatmap.py` (headless): `heatmap` color-mapping from a `BeliefGrid.as_matrix()` is a pure function of the matrix.
-- [ ] T353 (FR-G4, F12) Implement `gui/heatmap.py` (color each cell by belief matrix + turn banner; NEVER renders opponent's true position).
+- [x] T352 (FR-G4, F12, NFR-7) Write `tests/gui/test_heatmap.py` (headless): `heatmap` color-mapping from a `BeliefGrid.as_matrix()` is a pure function of the matrix.
+- [x] T353 (FR-G4, F12) Implement `gui/heatmap.py` (color each cell by belief matrix + turn banner; NEVER renders opponent's true position).
 - [ ] T354 (FR-G4) Implement `gui/board_view.py` (draw 7×7 grid + OWN pieces/barriers from `own_state`).
-- [ ] T355 (FR-G4) Implement `gui/window.py` (Tk root, layout, composition only — no logic).
+- [x] T355 (FR-G4) Implement `gui/window.py` (Tk root, layout, composition only — no logic).
 - [ ] T356 (FR-G4) Implement `gui/live_apply.py` (apply each committed/revealed step to the view model, subscribe to orchestrator step events).
 - [ ] T357 (FR-G4, NFR-1) Implement `gui/live_controls.py` (start/pause/step buttons calling the SDK, ZERO business logic).
 - [ ] T358 (FR-G4, F12) Write test: GUI reads only local `own_state` + `BeliefGrid`; asserts no objective-board data path exists (F12/F7).
-- [ ] T359 (FR-G4) Guard Tk widget construction so import/logic tests run without a display (headless).
-- [ ] T360 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on all `gui/` live modules and tests.
+- [x] T359 (FR-G4) Guard Tk widget construction so import/logic tests run without a display (headless).
+- [x] T360 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on all `gui/` live modules and tests.
 
 ### `gui/replay*` — Replay Viewer re-hash verifier (FR-G5, F12)
-- [ ] T361 (FR-G5, F12, NFR-7) Write `tests/gui/test_replay.py`: one clean `log` → all steps green "Verified OK"; one flipped `commit` → that step red "TAMPERED".
-- [ ] T362 (FR-G5) Implement `gui/replay_data.py` (load a committed `log_<id>_g<NN>.json`, expose `records[]`).
-- [ ] T363 (FR-G5, F12) Implement `gui/replay.py` re-hashing each record via `CommitReveal.commit_of` + `compare_digest` vs stored `commit` → per-step + overall verdict (REUSES crypto, not a re-impl).
+- [x] T361 (FR-G5, F12, NFR-7) Write `tests/gui/test_replay.py`: one clean `log` → all steps green "Verified OK"; one flipped `commit` → that step red "TAMPERED".
+- [x] T362 (FR-G5) Implement `gui/replay_data.py` (load a committed `log_<id>_g<NN>.json`, expose `records[]`).
+- [x] T363 (FR-G5, F12) Implement `gui/replay.py` re-hashing each record via `CommitReveal.commit_of` + `compare_digest` vs stored `commit` → per-step + overall verdict (REUSES crypto, not a re-impl).
 - [ ] T364 (FR-G5) Implement `gui/replay_controls.py` (load-file / step / play-through controls).
-- [ ] T365 (FR-G5, F12) Write test: overall verdict = all-green ⇒ "Verified OK"; any red ⇒ "TAMPERED".
-- [ ] T366 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on all `gui/replay*` modules and tests.
+- [x] T365 (FR-G5, F12) Write test: overall verdict = all-green ⇒ "Verified OK"; any red ⇒ "TAMPERED".
+- [x] T366 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on all `gui/replay*` modules and tests.
 
 ### `scripts/send_sample_report.py` + Stage-7 integration
 - [ ] T367 (FR-G2) Implement `scripts/send_sample_report.py` — the ONE real `gmail.send` (non-CI, excluded from pytest) producing the committed `docs/sample-run/` artifacts.
 - [ ] T368 (F9, F11, F12, NFR-7) Write the Stage-7 Milestone e2e: full FakeTransport match → 4 JSON built + handed to gatekeeper-wrapped sender (fake backend); GUI shows heatmap; Replay reports "Verified OK".
-- [ ] T369 (F12) Add a deliberately-tampered log fixture and assert Replay reports "TAMPERED".
+- [x] T369 (F12) Add a deliberately-tampered log fixture and assert Replay reports "TAMPERED".
 - [ ] T370 (NFR-3) Write single-façade audit test: every external call across the app (gmail/llm/mcp/subprocess) goes through `ApiGatekeeper.execute` (NFR-3 wiring, not decorative).
 - [ ] T371 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check ≤150 (incl. tests), CI Py-3.13 green on the Stage-7 branch.
 - [ ] **Milestone S7:** A full loopback match is auto-emailed as 4 JSON attachments; the GUI shows the belief heatmap; the Replay Viewer reports "Verified OK" (and "TAMPERED" on a corrupted log).
 
 ## Cross-cutting — SDK & CLI
 
-- [ ] T372 (FR-J1, NFR-1, NFR-7) Write `tests/sdk/test_sdk.py`: `SimulationSdk.run_peer` / `run_series` are the single business entry; CLI/GUI hold zero logic.
-- [ ] T373 (FR-J1, NFR-1) Implement `sdk/sdk.py` `SimulationSdk` (`run_peer(role, config)`, `run_series(...)`) orchestrating handshake → runtime → reporting.
+- [x] T372 (FR-J1, NFR-1, NFR-7) Write `tests/sdk/test_sdk.py`: `SimulationSdk.run_peer` / `run_series` are the single business entry; CLI/GUI hold zero logic.
+- [x] T373 (FR-J1, NFR-1) Implement `sdk/sdk.py` `SimulationSdk` (`run_peer(role, config)`, `run_series(...)`) orchestrating handshake → runtime → reporting.
 - [ ] T374 (FR-J1) Implement `sdk/series.py` (multi-sub-game series driver, `game_id` per sub-game, aggregate `result`).
-- [ ] T375 (FR-J1, NFR-1) Implement `cli.py` (arg parse `--role`/`--config` → SDK; ZERO business logic, R1).
-- [ ] T376 (FR-J1) Implement `__main__.py` delegating to `cli.main()`.
-- [ ] T377 (NFR-1) Write test asserting `cli.py` and `gui/` import only the SDK (no direct `peer/`/`domain/` business calls).
+- [x] T375 (FR-J1, NFR-1) Implement `cli.py` (arg parse `--role`/`--config` → SDK; ZERO business logic, R1).
+- [x] T376 (FR-J1) Implement `__main__.py` delegating to `cli.main()`.
+- [x] T377 (NFR-1) Write test asserting `cli.py` and `gui/` import only the SDK (no direct `peer/`/`domain/` business calls).
 - [ ] T378 (FR-J1, NFR-7) Write test: `run_series` produces a `result` with per-sub-game outcomes over a FakeTransport loopback.
 - [ ] T379 (NFR-2) Extract any duplicated config-loading / rng-seeding into a shared SDK helper (no dup at 2+ sites).
-- [ ] T380 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `sdk/sdk.py`, `sdk/series.py`, `cli.py`, `__main__.py`, and tests.
-- [ ] T381 (NFR-10) Confirm whole-suite `pytest --cov` ≥85% with LLM + MCP + Gmail mocked.
+- [x] T380 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `sdk/sdk.py`, `sdk/series.py`, `cli.py`, `__main__.py`, and tests.
+- [x] T381 (NFR-10) Confirm whole-suite `pytest --cov` ≥85% with LLM + MCP + Gmail mocked.
 
 ## Docs & submission
 
-- [ ] T382 (FR-K1) Write `README.md` academic report (vision, architecture, C4 summary, how-to-run, interop contract).
-- [ ] T383 (FR-K1, F12) Embed committed GUI + Replay(Verified OK) + Replay(TAMPERED) screenshots from `docs/sample-run/` in the README.
-- [ ] T384 (F11) Capture a real sample run: commit the 4 JSON artifacts (`declaration`/`config`/`log`/`result`) to `docs/sample-run/`.
-- [ ] T385 (FR-K1) Capture and commit GUI + Replay screenshots to `docs/sample-run/`.
-- [ ] T386 (NFR-7) Maintain `docs/PROMPTS.md` Prompt Book (running record of the vibe-coding prompts).
+- [x] T382 (FR-K1) Write `README.md` academic report (vision, architecture, C4 summary, how-to-run, interop contract).
+- [x] T383 (FR-K1, F12) Embed committed GUI + Replay(Verified OK) + Replay(TAMPERED) screenshots from `docs/sample-run/` in the README.
+- [x] T384 (F11) Capture a real sample run: commit the 4 JSON artifacts (`declaration`/`config`/`log`/`result`) to `docs/sample-run/`.
+- [x] T385 (FR-K1) Capture and commit GUI + Replay screenshots to `docs/sample-run/`.
+- [x] T386 (NFR-7) Maintain `docs/PROMPTS.md` Prompt Book (running record of the vibe-coding prompts).
 - [ ] T387 (FR-K4) Write `docs/RESEARCH-REPORT-Performance-Analysis.md` (resource/RPM/cost/fallback analysis).
 - [ ] T388 (FR-K1, F14) Publish identical source to repo `uoh-sqak-cop` (public or shared with rmisegal@gmail.com).
 - [ ] T389 (FR-K1, F14) Publish identical source to repo `uoh-sqak-thief`; cross-link both READMEs.
@@ -516,8 +516,8 @@
 - [ ] T393 (FR-K3, F14) Each member submits separately on Moodle `id=294462`. [EXTERNAL/user]
 - [ ] T394 (FR-K2, F14) Arrange ≥2 different partner groups and play ≥2 valid league games (diversity reward; truthful game-count declaration). [EXTERNAL/user — D4]
 - [ ] T395 (FR-K2) Record the truthful league game count + opponents in the `declaration` links for both repos.
-- [ ] T396 (NFR-12) Final secret-scan pass: confirm `.env`, `token.json`, `credentials.json`, `*.key`, `*.pem` never committed.
-- [ ] T397 (NFR-13) Confirm `uv.lock` committed and no pip/venv/requirements.txt anywhere.
+- [x] T396 (NFR-12) Final secret-scan pass: confirm `.env`, `token.json`, `credentials.json`, `*.key`, `*.pem` never committed.
+- [x] T397 (NFR-13) Confirm `uv.lock` committed and no pip/venv/requirements.txt anywhere.
 - [ ] T398 (NFR-14) Confirm CI (Py-3.13) green on `v1.0-submission` for both repos.
 
 ## Excellence (optional, G5)

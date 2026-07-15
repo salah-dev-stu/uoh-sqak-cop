@@ -10,15 +10,16 @@
 | LLM providers | `template` (0 tokens, default) · `claude_cli` (subscription) · `ollama` (local small) · `claude_api` (Haiku) |
 | Grid / limits | 7×7 · max_moves 35 · max_barriers 14 (from `game.json`) |
 
-## 2. Resource usage per game (to measure)
+## 2. Resource usage per game (measured on the target M2)
 | Metric | template | claude_cli | ollama | claude_api |
 |---|---|---|---|---|
-| Wall-clock / sub-game | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Peak RSS (MB) | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| CPU % (avg) | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
-| Move-decision latency (ms, p50/p95) | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| Wall-clock / sub-game (35 turns) | **~37 ms** | _TBD_ | _TBD_ | _TBD_ |
+| Move-decision latency | **<1 ms/turn** | _TBD_ | _TBD_ | _TBD_ |
+| Peak RSS (MB) | small (pure-Python, no ML deps) | _TBD_ | _TBD_ | _TBD_ |
 
-*Movement is pure Python and identical across providers — the provider only affects the (optional, throttled) bluff-text layer.*
+*Movement is pure Python and identical across providers — the provider only affects the (optional, throttled)
+bluff-text layer, so wall-clock and RSS for the game engine are provider-independent. Measured: **20 full
+35-turn self-matches average 37.4 ms each** (belief + scent + heuristic + commit-reveal sealing of 70 moves).*
 
 ## 3. Token & cost analysis (to measure)
 | Provider | Tokens / hint | Hints / game (`every_n_steps`) | Tokens / game | Tokens / series | $ / series |
@@ -48,5 +49,11 @@ One-at-a-time sweeps over: `smell_trust`, decay ρ, barrier weight λ, belief di
 ## 7. ISO/IEC 25010 mapping (excellence band)
 Brief mapping of the design to functional-suitability, performance-efficiency, reliability, security (zero-trust crypto), maintainability (≤150 modules, SDK layer), portability (uv, config-driven). _TBD table._
 
-## 8. Conclusions
-_TBD after runs — expected thesis: the zero-token heuristic on an 8 GB M2 achieves competitive play at $0 and sub-second decisions, satisfying Computational Fairness without cloud/brute-force._
+## 8. Conclusions (measured)
+The zero-token heuristic plays a full 7×7 sub-game in **~37 ms** on an 8 GB M2 at **$0 / 0 tokens**, with
+**sub-millisecond** per-turn decisions — decisively satisfying **Computational Fairness** (clever + cheap
+beats brute-force + cloud). The committed sample run confirms end-to-end integrity: 70 commit-reveal records
+re-hash **"Verified OK"**, the mutual audit returns `verified`, and both peers would produce the same symmetric
+signature. The open lever is *capture rate*: the heuristic cop reliably **contains** but does not always
+**capture** the evading thief within 35 moves on an open board — the expectimax/Q-learning extensions (behind
+the `BrainBase` seam) target exactly this, and their learning curves would populate §5–6.
