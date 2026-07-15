@@ -38,6 +38,19 @@ def validate_barrier(
     return target
 
 
+def reachable_cells(board: Board, start: Cell, barriers: frozenset[Cell]) -> frozenset[Cell]:
+    """BFS closure of cells reachable from ``start`` without crossing a barrier."""
+    seen: set[Cell] = {start}
+    frontier = [start]
+    while frontier:
+        cell = frontier.pop()
+        for nb in board.neighbors(cell, barriers):
+            if nb not in seen:
+                seen.add(nb)
+                frontier.append(nb)
+    return frozenset(seen)
+
+
 def is_boxed_in(board: Board, thief: Cell, cop: Cell, barriers: frozenset[Cell]) -> bool:
     """True when the thief has no escape cell (all neighbours blocked/cop)."""
     escapes = [c for c in board.neighbors(thief, barriers) if c != cop]

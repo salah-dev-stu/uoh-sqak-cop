@@ -74,6 +74,15 @@ def test_boxed_in_requires_cop_adjacent_by_config() -> None:
     assert rules.is_capture(B, (1, 0), (0, 0), frozenset({(0, 1)}))
 
 
+def test_reachable_cells_open_board_is_everything() -> None:
+    assert len(rules.reachable_cells(B, (0, 0), EMPTY)) == 49
+
+
+def test_reachable_cells_shrinks_with_barriers() -> None:
+    boxed = rules.reachable_cells(B, (0, 0), frozenset({(1, 0), (0, 1)}))
+    assert boxed == frozenset({(0, 0)})
+
+
 def test_outcome_capture_survival_none() -> None:
     assert rules.outcome(B, (2, 2), (2, 2), EMPTY, 3, survival_threshold=35) is Outcome.CAPTURE
     assert rules.outcome(B, (0, 0), (6, 6), EMPTY, 35, survival_threshold=35) is Outcome.SURVIVAL

@@ -186,8 +186,8 @@
 ### Stage-2 config separation & loopback (F1, F2)
 - [ ] T145 (F2, NFR-7) Write test `test_two_config_dirs_distinct_inboxes`: two processes/config dirs yield DISTINCT `Inboxes` objects (no shared memory).
 - [ ] T146 (F2) Write test asserting no module holds a reference reachable from both peers (zero-shared-memory guard).
-- [ ] T147 (FR-B4, NFR-11) Add `shared/config.py` `ConfigManager` loading `game.toml ⊕ signed game.json ⊕ rate_limits.json` (host/port/opponent-url/timeouts/queue-maxsize).
-- [ ] T148 (FR-I2, FR-I1) Write test: private `game.toml` NEVER overrides signed `game.json` values.
+- [x] T147 (FR-B4, NFR-11) Add `shared/config.py` `ConfigManager` loading `game.toml ⊕ signed game.json ⊕ rate_limits.json` (host/port/opponent-url/timeouts/queue-maxsize).
+- [x] T148 (FR-I2, FR-I1) Write test: private `game.toml` NEVER overrides signed `game.json` values.
 - [x] T149 (FR-B2, NFR-7) Write `test_game_ids_deterministic` + `test_negotiation_byte_identical_match` at the peer boundary.
 - [x] T150 (F1, F2, NFR-7) Write the Milestone test `test_loopback_A_to_B_over_fake_transport`: A builds a `TurnMessage`, `send_turn`; B `poll_turn` returns byte-equal msg + `from_dict` reconstructs it.
 - [x] T151 (F7, FR-B5) Write `test_no_opponent_coords_on_wire` at transport level (only `smell_grid` intensities cross).
@@ -199,59 +199,59 @@
 ## Stage 3 — Strategy brain (FR-C1..C5, F8)
 
 ### `domain/brains.py` — BrainBase seam + Decision (FR-C1, F8)
-- [ ] T155 (FR-C1, NFR-7) Write failing happy test `tests/domain/test_brains.py`: `Decision` frozen dataclass carries `move_type,direction,hint,intent,fallback,random_move,response_seconds,reasoning,barrier_cell`.
+- [x] T155 (FR-C1, NFR-7) Write failing happy test `tests/domain/test_brains.py`: `Decision` frozen dataclass carries `move_type,direction,hint,intent,fallback,random_move,response_seconds,reasoning,barrier_cell`.
 - [ ] T156 (FR-C1, NFR-7) Write failing happy test: `BrainBase.decide` times the pick, stamps `reasoning`/`response_seconds`, returns a `Decision`.
-- [ ] T157 (FR-C1, NFR-7) Write failing error test: `BrainBase._pick_move`/`_decide_move` raise `NotImplementedError`.
-- [ ] T158 (FR-C1) Implement `Decision` dataclass (default `intent="truth"`, `hint=""` — safe truthful default per interop freeze §8.1).
-- [ ] T159 (FR-C1, F8) Implement `BrainBase.__init__(board, config, rng)` + concrete pure-Python `decide(state, belief)` (never calls an LLM).
-- [ ] T160 (FR-C1) Implement `_pick_move`/`_decide_move` abstract hooks raising `NotImplementedError`; `decide` packs the returned internal tuple.
-- [ ] T161 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/brains.py` and its test.
+- [x] T157 (FR-C1, NFR-7) Write failing error test: `BrainBase._pick_move`/`_decide_move` raise `NotImplementedError`.
+- [x] T158 (FR-C1) Implement `Decision` dataclass (default `intent="truth"`, `hint=""` — safe truthful default per interop freeze §8.1).
+- [x] T159 (FR-C1, F8) Implement `BrainBase.__init__(board, config, rng)` + concrete pure-Python `decide(state, belief)` (never calls an LLM).
+- [x] T160 (FR-C1) Implement `_pick_move`/`_decide_move` abstract hooks raising `NotImplementedError`; `decide` packs the returned internal tuple.
+- [x] T161 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/brains.py` and its test.
 
 ### `domain/belief.py` — Bayesian belief map (FR-C2)
-- [ ] T162 (FR-C2, NFR-7) Write failing happy test `tests/domain/test_belief.py`: uniform prior `1/49`; `observe_smell` shifts mass to high-τ cells and stays normalized (Σ=1±ε).
-- [ ] T163 (FR-C2, NFR-7) Write failing happy test: `diffuse` conserves total mass on a bounded board WITH barriers (Σ before == Σ after).
-- [ ] T164 (FR-C2, NFR-7) Write failing happy test: `most_likely` argmax with DETERMINISTIC seeded tie-break then `(row,col)` order.
-- [ ] T165 (FR-C2, NFR-7) Write failing error test: excluding all cells → uniform-live fallback (`fallback` path), never divide-by-zero.
+- [x] T162 (FR-C2, NFR-7) Write failing happy test `tests/domain/test_belief.py`: uniform prior `1/49`; `observe_smell` shifts mass to high-τ cells and stays normalized (Σ=1±ε).
+- [x] T163 (FR-C2, NFR-7) Write failing happy test: `diffuse` conserves total mass on a bounded board WITH barriers (Σ before == Σ after).
+- [x] T164 (FR-C2, NFR-7) Write failing happy test: `most_likely` argmax with DETERMINISTIC seeded tie-break then `(row,col)` order.
+- [x] T165 (FR-C2, NFR-7) Write failing error test: excluding all cells → uniform-live fallback (`fallback` path), never divide-by-zero.
 - [ ] T166 (FR-C2, NFR-11) Implement `BeliefGrid.__init__(size, smell_trust, alpha, rng)` (config-driven, validate ranges → `ConfigError`).
-- [ ] T167 (FR-C2) Implement `observe_smell(smell_cells)` Bayesian likelihood blend `L=smell_trust·τ+(1−smell_trust)/N` + renormalize.
-- [ ] T168 (FR-C2) Implement `exclude(cells)` (zero own cell / seen-empty / barrier cells) + renormalize + all-zero uniform fallback.
-- [ ] T169 (FR-C2) Implement `diffuse` motion model `P_next=alpha·P+(1−alpha)·Σ P(n)/deg(n)` with in-bounds/non-barrier `deg`.
-- [ ] T170 (FR-C2, FR-G4) Implement `most_likely`, `mass_at`, `as_matrix` (heatmap feed).
+- [x] T167 (FR-C2) Implement `observe_smell(smell_cells)` Bayesian likelihood blend `L=smell_trust·τ+(1−smell_trust)/N` + renormalize.
+- [x] T168 (FR-C2) Implement `exclude(cells)` (zero own cell / seen-empty / barrier cells) + renormalize + all-zero uniform fallback.
+- [x] T169 (FR-C2) Implement `diffuse` motion model `P_next=alpha·P+(1−alpha)·Σ P(n)/deg(n)` with in-bounds/non-barrier `deg`.
+- [x] T170 (FR-C2, FR-G4) Implement `most_likely`, `mass_at`, `as_matrix` (heatmap feed).
 - [ ] T171 (FR-C2, NFR-11) Add parametrized test: `smell_trust=0` ignores scent, `=1` pure Bayesian.
-- [ ] T172 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/belief.py` and its test.
-- [ ] T173 (NFR-10) `pytest --cov` on belief ≥85%.
+- [x] T172 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/belief.py` and its test.
+- [x] T173 (NFR-10) `pytest --cov` on belief ≥85%.
 
 ### `strategy/factory.py` — student seam (FR-C4)
-- [ ] T174 (FR-C4, NFR-7) Write failing happy test `tests/strategy/test_factory.py`: `load_brain("pkg.mod:Class", ...)` returns a `BrainBase`.
-- [ ] T175 (FR-C4, NFR-7) Write failing error test: bad spec / non-BrainBase / missing symbol → typed `ConfigError`.
-- [ ] T176 (FR-C4) Implement `load_brain(spec, board, config, rng)` (`importlib` resolve `package.module:Class`, isinstance guard).
-- [ ] T177 (FR-C4) Write test: swapping `police_class` to a stub brain changes moves with NO engine edit.
-- [ ] T178 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `strategy/factory.py` and its test.
+- [x] T174 (FR-C4, NFR-7) Write failing happy test `tests/strategy/test_factory.py`: `load_brain("pkg.mod:Class", ...)` returns a `BrainBase`.
+- [x] T175 (FR-C4, NFR-7) Write failing error test: bad spec / non-BrainBase / missing symbol → typed `ConfigError`.
+- [x] T176 (FR-C4) Implement `load_brain(spec, board, config, rng)` (`importlib` resolve `package.module:Class`, isinstance guard).
+- [x] T177 (FR-C4) Write test: swapping `police_class` to a stub brain changes moves with NO engine edit.
+- [x] T178 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `strategy/factory.py` and its test.
 
 ### `strategy/police_heuristic.py` — pursuit + barrier box-in (FR-C3)
-- [ ] T179 (FR-C3, NFR-7) Write failing happy test `tests/strategy/test_police_brain.py` (path convergence): given a known target + no barriers, repeated `decide()` strictly reduces `manhattan(cop,target)` and reaches it (the Milestone assertion).
-- [ ] T180 (FR-C3, NFR-7) Write failing happy test (barrier reduces reachable): after a placed barrier `|reach(thief)|` strictly decreases; an articulation-point barrier splits the region.
+- [x] T179 (FR-C3, NFR-7) Write failing happy test `tests/strategy/test_police_brain.py` (path convergence): given a known target + no barriers, repeated `decide()` strictly reduces `manhattan(cop,target)` and reaches it (the Milestone assertion).
+- [x] T180 (FR-C3, NFR-7) Write failing happy test (barrier reduces reachable): after a placed barrier `|reach(thief)|` strictly decreases; an articulation-point barrier splits the region.
 - [ ] T181 (FR-C3, NFR-7) Write failing error/edge test: a self-trapping barrier candidate is rejected (cop stays connected to thief region).
-- [ ] T182 (FR-C3, NFR-11) Implement greedy Manhattan movement scoring `−manhattan(c',t)+w_center·(−manhattan(c',center))+w_belief·mass_at(c')` (weights from config).
-- [ ] T183 (FR-C3, NFR-2) Extract BFS `reach(from_cell, barriers, HORIZON)` + `splits_region` into `strategy/reach.py` (shared, avoids dup, keeps ≤150).
-- [ ] T184 (FR-C3) Implement barrier heuristic: `gain(q)=|R0|−|Rq|` (+ `cut_bonus`), `score_barrier=gain−λ·manhattan(q,t)`, place only if `max(gain)≥min_gain` and not self-trapping.
-- [ ] T185 (FR-C3) Implement `_decide_move` returning step + optional `barrier_cell` (capture-by-boxing emerges when `reach(t)→{t}`).
+- [x] T182 (FR-C3, NFR-11) Implement greedy Manhattan movement scoring `−manhattan(c',t)+w_center·(−manhattan(c',center))+w_belief·mass_at(c')` (weights from config).
+- [x] T183 (FR-C3, NFR-2) Extract BFS `reach(from_cell, barriers, HORIZON)` + `splits_region` into `strategy/reach.py` (shared, avoids dup, keeps ≤150).
+- [x] T184 (FR-C3) Implement barrier heuristic: `gain(q)=|R0|−|Rq|` (+ `cut_bonus`), `score_barrier=gain−λ·manhattan(q,t)`, place only if `max(gain)≥min_gain` and not self-trapping.
+- [x] T185 (FR-C3) Implement `_decide_move` returning step + optional `barrier_cell` (capture-by-boxing emerges when `reach(t)→{t}`).
 - [ ] T186 (FR-A3) Write test: `max_barriers` exhausted → barrier disabled, still returns a legal move (graceful degrade).
-- [ ] T187 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `police_heuristic.py`, `reach.py`, and tests.
-- [ ] T188 (NFR-10) `pytest --cov` on police heuristic ≥85%.
+- [x] T187 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `police_heuristic.py`, `reach.py`, and tests.
+- [x] T188 (NFR-10) `pytest --cov` on police heuristic ≥85%.
 
 ### `strategy/thief_heuristic.py` — evasion (FR-C3)
-- [ ] T189 (FR-C3, NFR-7) Write failing happy test `tests/strategy/test_thief_brain.py`: chooses the legal move that INCREASES distance from `danger` when one exists.
+- [x] T189 (FR-C3, NFR-7) Write failing happy test `tests/strategy/test_thief_brain.py`: chooses the legal move that INCREASES distance from `danger` when one exists.
 - [ ] T190 (FR-C3, NFR-7) Write failing happy test: prefers the higher-degree (more-exit) cell when distances tie.
 - [ ] T191 (FR-C3, NFR-7) Write failing error test: no legal move → `STAY` + `fallback=True`.
-- [ ] T192 (FR-C3, NFR-11) Implement evasion scoring `w_dist·dist + w_exits·exits + w_scent·(−own_scent) − w_risk·risk` (weights from config), seeded tie-break.
-- [ ] T193 (FR-C3) Implement `_pick_move` (pure move, no barriers; thief maintains its own symmetric `BeliefGrid` over the cop).
-- [ ] T194 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `thief_heuristic.py` and its test.
-- [ ] T195 (NFR-10) `pytest --cov` on thief heuristic ≥85%.
+- [x] T192 (FR-C3, NFR-11) Implement evasion scoring `w_dist·dist + w_exits·exits + w_scent·(−own_scent) − w_risk·risk` (weights from config), seeded tie-break.
+- [x] T193 (FR-C3) Implement `_pick_move` (pure move, no barriers; thief maintains its own symmetric `BeliefGrid` over the cop).
+- [x] T194 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `thief_heuristic.py` and its test.
+- [x] T195 (NFR-10) `pytest --cov` on thief heuristic ≥85%.
 
 ### F8 hard gate + edge cases
 - [ ] T196 (F8, NFR-7) Write `tests/strategy/test_f8_no_llm.py`: patch/spy the provider + `subprocess.run`, run a full heuristic game via `FakeTransport`, assert provider NEVER called and every move produced (0 tokens).
-- [ ] T197 (F8) Write static test asserting no LLM/provider/`subprocess` symbol is reachable from `BrainBase.decide` or subclasses.
+- [x] T197 (F8) Write static test asserting no LLM/provider/`subprocess` symbol is reachable from `BrainBase.decide` or subclasses.
 - [ ] T198 (NFR-C, FR-C1) Write determinism test: fixed `seed` → `decide()` totally deterministic across runs (seeded RNG for all tie-breaks).
 - [ ] T199 (FR-C2) Write edge test: empty smell field at turn 0 → `observe_smell({})` no-op, cop pursues center default.
 - [ ] T200 (FR-C3) Write edge test: NaN/negative config weight → constructor raises `ConfigError`.
@@ -264,7 +264,7 @@
 - [ ] T205 (FR-C5) [OPTIONAL] Implement tabular `qlearning.py` (belief-summary discrete state, ε-greedy, seeded RNG) selectable only via config seam.
 - [ ] T206 (FR-C5) [OPTIONAL] Add offline trainer script producing `docs/sample-run/qlearning-curve.png` (never on critical path).
 - [ ] T207 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check, CI Py-3.13 green on the Stage-3 branch (optional files excluded from DoD).
-- [ ] **Milestone S3:** With a known target cell, `PoliceBrain` computes and executes a path that reaches it autonomously, deterministically, at zero LLM tokens (`test_path_convergence` green).
+- [x] **Milestone S3:** With a known target cell, `PoliceBrain` computes and executes a path that reaches it autonomously, deterministically, at zero LLM tokens (`test_path_convergence` green).
 
 ## Stage 4 — Language & scent (FR-D1..D4, F6, F7)
 
