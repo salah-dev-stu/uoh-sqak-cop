@@ -338,59 +338,59 @@
 ## Stage 6 — Cryptographic fairness (FR-F1..F4, F3, F4, F5)
 
 ### `domain/crypto.py` — CommitReveal (FR-F1, F3)
-- [ ] T260 (FR-F1, F3, NFR-7) Write failing happy test `tests/domain/test_crypto.py`: `seal(payload)` → `verify(payload, nonce, commit)` is True; mutated payload / wrong nonce → False.
-- [ ] T261 (FR-F1, NFR-7) Write failing test asserting `verify` uses `secrets.compare_digest` (a one-char-different commit → False; no `==` on digests).
-- [ ] T262 (FR-F1, F3, NFR-7) Write the GOLDEN-VECTOR byte-exact test: `CommitReveal.canonical({"b":2,"a":1}) == '{"a":1,"b":2}'` AND a known `(payload,nonce)` hashes to a hard-coded expected hex digest.
-- [ ] T263 (FR-F1) Implement `CommitReveal.canonical(payload)` = `json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",",":"))`.
-- [ ] T264 (FR-F1, F3) Implement the FROZEN `commit_of(payload, nonce)` = `sha256((canonical+"|"+nonce).encode()).hexdigest()` (interop-critical, single source).
-- [ ] T265 (FR-F1) Implement `seal(payload)` (`nonce=secrets.token_hex(16)`, 32 hex) and `verify` (`secrets.compare_digest`).
+- [x] T260 (FR-F1, F3, NFR-7) Write failing happy test `tests/domain/test_crypto.py`: `seal(payload)` → `verify(payload, nonce, commit)` is True; mutated payload / wrong nonce → False.
+- [x] T261 (FR-F1, NFR-7) Write failing test asserting `verify` uses `secrets.compare_digest` (a one-char-different commit → False; no `==` on digests).
+- [x] T262 (FR-F1, F3, NFR-7) Write the GOLDEN-VECTOR byte-exact test: `CommitReveal.canonical({"b":2,"a":1}) == '{"a":1,"b":2}'` AND a known `(payload,nonce)` hashes to a hard-coded expected hex digest.
+- [x] T263 (FR-F1) Implement `CommitReveal.canonical(payload)` = `json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",",":"))`.
+- [x] T264 (FR-F1, F3) Implement the FROZEN `commit_of(payload, nonce)` = `sha256((canonical+"|"+nonce).encode()).hexdigest()` (interop-critical, single source).
+- [x] T265 (FR-F1) Implement `seal(payload)` (`nonce=secrets.token_hex(16)`, 32 hex) and `verify` (`secrets.compare_digest`).
 - [ ] T266 (FR-F1, NFR-7) Write nonce distinctness/width test: many `seal` calls → all nonces distinct, each 32 hex chars.
 - [ ] T267 (FR-F1) Write test asserting non-ASCII payload/hint hashes consistently (`ensure_ascii=False` + `.encode()` mandatory).
 - [ ] T268 (NFR-11) Source separator / hash name / nonce width as module constants (from `constants.py`/config), never scattered literals.
-- [ ] T269 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/crypto.py` and its test.
+- [x] T269 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/crypto.py` and its test.
 
 ### `audit_records` — mutual audit (FR-F3, F4)
-- [ ] T270 (FR-F3, F4, NFR-7) Write test: an honest cop-vs-thief loopback record → `audit_records` returns `passed=True`, `failed_steps=[]`, `verified_steps==len(records)`.
-- [ ] T271 (FR-F3, F4, NFR-7) Write tamper test (payload): flip one byte of a recorded `payload` → `passed=False`, step flagged `commit_mismatch`.
-- [ ] T272 (FR-F3, F4, NFR-7) Write tamper test (move): commit move N, reveal move S → flagged `move_altered`.
+- [x] T270 (FR-F3, F4, NFR-7) Write test: an honest cop-vs-thief loopback record → `audit_records` returns `passed=True`, `failed_steps=[]`, `verified_steps==len(records)`.
+- [x] T271 (FR-F3, F4, NFR-7) Write tamper test (payload): flip one byte of a recorded `payload` → `passed=False`, step flagged `commit_mismatch`.
+- [x] T272 (FR-F3, F4, NFR-7) Write tamper test (move): commit move N, reveal move S → flagged `move_altered`.
 - [ ] T273 (FR-F3, F4, NFR-7) Write tamper test (barrier): `barrier_placed` on an illegal cell → `false_barrier` → `tamper_forfeit` 0/0.
 - [ ] T274 (FR-F3, F4, NFR-7) Write tamper test (capture/win): unsupported `capture_claim`/`win_claim` → `false_capture`/`false_win`.
 - [ ] T275 (FR-F3, F4, NFR-7) Write missing-nonce test: drop one step's nonce → `missing_nonce` in `failed_steps`, `passed=False` (absence of proof = tamper).
 - [ ] T276 (FR-F3) Implement `audit_records(records, board_view)` — (a) `verify`, (b) `payload["move"]!=move`, (c) claim cross-checks vs reconstructed board → `{passed, verified_steps, failed_steps}`.
 - [ ] T277 (FR-F3, NFR-7) Write `CryptoError` test: non-serializable / missing-key payload raises `CryptoError`, handled as a failed step (not a crash).
 - [ ] T278 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on the audit path and its test.
-- [ ] T279 (NFR-10) `pytest --cov` on `domain/crypto.py` ≥85%.
+- [x] T279 (NFR-10) `pytest --cov` on `domain/crypto.py` ≥85%.
 
 ### `shared/sysinfo.py` — system probe (FR-F4)
-- [ ] T280 (FR-F4, NFR-7) Write `tests/shared/test_sysinfo.py`: probe returns `{os,cpu,ram_gb,gpu}`; patched failing subprocess → fields default to `"unknown"` (never raises).
+- [x] T280 (FR-F4, NFR-7) Write `tests/shared/test_sysinfo.py`: probe returns `{os,cpu,ram_gb,gpu}`; patched failing subprocess → fields default to `"unknown"` (never raises).
 - [ ] T281 (FR-F4, NFR-3) Implement `sysinfo` probes (`platform`/`sw_vers`, `sysctl machdep.cpu.brand_string`, `hw.memsize`, `system_profiler`) — ALL subprocess via `ApiGatekeeper.execute(service="subprocess")`.
-- [ ] T282 (FR-F4) Implement field-level graceful degrade to `"unknown"`.
-- [ ] T283 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `shared/sysinfo.py` and its test.
+- [x] T282 (FR-F4) Implement field-level graceful degrade to `"unknown"`.
+- [x] T283 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `shared/sysinfo.py` and its test.
 
 ### `peer/sealing.py` + `turn_sender.py` + `turn_handler.py` (FR-F2)
-- [ ] T284 (FR-F2, NFR-7) Write `tests/peer/test_sealing.py`: each step appends `{step,payload,nonce,commit,move,barrier_placed,capture_claim,win_claim}`; nonces held private until `all_records()`.
-- [ ] T285 (FR-F2) Implement `sealing.py` record bookkeeping + `all_records()` end-of-game reveal.
+- [x] T284 (FR-F2, NFR-7) Write `tests/peer/test_sealing.py`: each step appends `{step,payload,nonce,commit,move,barrier_placed,capture_claim,win_claim}`; nonces held private until `all_records()`.
+- [x] T285 (FR-F2) Implement `sealing.py` record bookkeeping + `all_records()` end-of-game reveal.
 - [ ] T286 (FR-F2, NFR-3, NFR-7) Write `tests/peer/test_turn_sender.py`: commit path calls `crypto.seal`, records via sealing, sends `TurnMessage{commit,...}` through the gatekeeper (nonce withheld).
-- [ ] T287 (FR-F2) Implement `turn_sender.py` (commit send, then reveal `{move,intent,hint}` with nonce STILL hidden until game end).
-- [ ] T288 (FR-F2, F6) Bind `intent` into the committed payload `{state, move, intent, step}` per interop freeze §8.1 (payload = mover's own observable commitment only).
+- [x] T287 (FR-F2) Implement `turn_sender.py` (commit send, then reveal `{move,intent,hint}` with nonce STILL hidden until game end).
+- [x] T288 (FR-F2, F6) Bind `intent` into the committed payload `{state, move, intent, step}` per interop freeze §8.1 (payload = mover's own observable commitment only).
 - [ ] T289 (FR-F2, NFR-7) Write `tests/peer/test_turn_handler.py`: on commit → ack (lock); on reveal → apply move + update belief; store opponent `{payload,move,commit}` awaiting nonce.
-- [ ] T290 (FR-F2) Implement `turn_handler.py` receive path (ack → apply → store).
-- [ ] T291 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `sealing.py`, `turn_sender.py`, `turn_handler.py`, and tests.
+- [x] T290 (FR-F2) Implement `turn_handler.py` receive path (ack → apply → store).
+- [x] T291 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `sealing.py`, `turn_sender.py`, `turn_handler.py`, and tests.
 
 ### `peer/handshake.py` (declaration) + `peer/summary.py` (FR-F3/F4, F4/F5)
-- [ ] T292 (FR-F4, F5, NFR-7) Write declaration test: build → sign → `verify` True; tamper any body field or `git_commit` → verify False → handshake rejects.
-- [ ] T293 (FR-F4, F5) Implement Step-0 declaration builder in `handshake.py` (schema, team, players, role, `git_commit`, llm, system from sysinfo, version, signature).
-- [ ] T294 (FR-F4, F5) Implement declaration signing = SHA-256 over `canonical_json(body excluding signature)` (same canonical as commit); verify with `compare_digest`.
-- [ ] T295 (FR-F3, F4, NFR-7) Write `tests/peer/test_summary.py`: exchange full record lists, run `audit_records` over the OPPONENT's records, decide `tamper_forfeit` vs verified outcome.
+- [x] T292 (FR-F4, F5, NFR-7) Write declaration test: build → sign → `verify` True; tamper any body field or `git_commit` → verify False → handshake rejects.
+- [x] T293 (FR-F4, F5) Implement Step-0 declaration builder in `handshake.py` (schema, team, players, role, `git_commit`, llm, system from sysinfo, version, signature).
+- [x] T294 (FR-F4, F5) Implement declaration signing = SHA-256 over `canonical_json(body excluding signature)` (same canonical as commit); verify with `compare_digest`.
+- [x] T295 (FR-F3, F4, NFR-7) Write `tests/peer/test_summary.py`: exchange full record lists, run `audit_records` over the OPPONENT's records, decide `tamper_forfeit` vs verified outcome.
 - [ ] T296 (FR-F3, F4) Implement `summary.py` (end-of-game reveal exchange, audit trigger, `tamper_forfeit` → `AUDIT→TECHNICAL_LOSS`, emit `failed_steps` evidence for Stage 7).
-- [ ] T297 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on declaration + `summary.py` code and tests.
+- [x] T297 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on declaration + `summary.py` code and tests.
 
 ### Stage-6 integration + threat-model proofs
-- [ ] T298 (F3, F4, F5, NFR-7) Write the Milestone test: `seal→send commit→ack→reveal→record`, declaration builds+verifies, `audit_records` passes on honest log AND fails (→0/0) on a mutated copy.
+- [x] T298 (F3, F4, F5, NFR-7) Write the Milestone test: `seal→send commit→ack→reveal→record`, declaration builds+verifies, `audit_records` passes on honest log AND fails (→0/0) on a mutated copy.
 - [ ] T299 (FR-F3, F4) Write replay-attack test: a replayed prior nonce won't hash against this game's payload/step (`game_uid`/`git_commit` bind the record).
-- [ ] T300 (NFR-6) Confirm version-sync green (declaration `version` == `VERSION`) in CI for Stage 6.
-- [ ] T301 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check, CI Py-3.13 green on the Stage-6 branch.
-- [ ] **Milestone S6:** A move is committed then revealed with a valid nonce; the Step-0 declaration verifies; the mutual audit voids a tampered log (passes clean, forfeits 0/0 on tamper).
+- [x] T300 (NFR-6) Confirm version-sync green (declaration `version` == `VERSION`) in CI for Stage 6.
+- [x] T301 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check, CI Py-3.13 green on the Stage-6 branch.
+- [x] **Milestone S6:** A move is committed then revealed with a valid nonce; the Step-0 declaration verifies; the mutual audit voids a tampered log (passes clean, forfeits 0/0 on tamper).
 
 ## Stage 7 — Reporting / GUI / reliability (FR-G1..G5, FR-H1..H3, F9, F10, F11, F12)
 
