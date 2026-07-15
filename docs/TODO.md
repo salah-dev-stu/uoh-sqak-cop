@@ -129,72 +129,72 @@
 ## Stage 2 — MCP infrastructure (FR-B1..B5, F1, F2)
 
 ### `domain/protocol.py` — wire dataclasses (FR-B2)
-- [ ] T104 (FR-B2, NFR-7) Write failing happy test `tests/domain/test_protocol.py`: `TurnMessage.to_dict → from_dict` round-trip identity.
-- [ ] T105 (FR-B2, NFR-7) Write failing happy test: `ControlMessage` and `AuditPayload` round-trip; `from_dict` ignores unknown keys, fills defaults.
-- [ ] T106 (FR-B2, NFR-7) Write failing error test: `from_dict` on a dict missing required fields surfaces an error (never crashes).
-- [ ] T107 (FR-B2, F6) Implement `TurnMessage` dataclass (step, sender, hint, smell_grid, commit, timestamp, barrier_placed, capture_claim, claim_response, win_claim) + `to_dict`/`from_dict`.
-- [ ] T108 (FR-B2) Implement `ControlMessage` dataclass (kind, sender, sub_game_number, status, step_budget, payload) + `to_dict`/`from_dict`.
-- [ ] T109 (FR-B2, F3) Implement `AuditPayload` dataclass (sender, records, result_claim) with `records[*]` = `{payload, nonce, commit}` passthrough + `to_dict`/`from_dict`.
-- [ ] T110 (FR-B5, F7) Write test `test_no_opponent_coords_on_wire`: serialized `TurnMessage` carries only `smell_grid` intensities, never an opponent-coordinate field.
-- [ ] T111 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/protocol.py` and its test.
+- [x] T104 (FR-B2, NFR-7) Write failing happy test `tests/domain/test_protocol.py`: `TurnMessage.to_dict → from_dict` round-trip identity.
+- [x] T105 (FR-B2, NFR-7) Write failing happy test: `ControlMessage` and `AuditPayload` round-trip; `from_dict` ignores unknown keys, fills defaults.
+- [x] T106 (FR-B2, NFR-7) Write failing error test: `from_dict` on a dict missing required fields surfaces an error (never crashes).
+- [x] T107 (FR-B2, F6) Implement `TurnMessage` dataclass (step, sender, hint, smell_grid, commit, timestamp, barrier_placed, capture_claim, claim_response, win_claim) + `to_dict`/`from_dict`.
+- [x] T108 (FR-B2) Implement `ControlMessage` dataclass (kind, sender, sub_game_number, status, step_budget, payload) + `to_dict`/`from_dict`.
+- [x] T109 (FR-B2, F3) Implement `AuditPayload` dataclass (sender, records, result_claim) with `records[*]` = `{payload, nonce, commit}` passthrough + `to_dict`/`from_dict`.
+- [x] T110 (FR-B5, F7) Write test `test_no_opponent_coords_on_wire`: serialized `TurnMessage` carries only `smell_grid` intensities, never an opponent-coordinate field.
+- [x] T111 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/protocol.py` and its test.
 
 ### `domain/game_ids.py` — deterministic ids
-- [ ] T112 (F1, NFR-7) Write failing happy test `tests/domain/test_game_ids.py`: both "peers" derive identical `game_uid` from same inputs.
-- [ ] T113 (NFR-7) Write failing happy test: `game_id(game_uid, sub_game_number)` distinct per sub-game, deterministic.
-- [ ] T114 (F1) Implement `game_uid(agreed_between, config_sha256, series_seed)` (hash of sorted party ids + sha + seed).
-- [ ] T115 (F1) Implement `game_id(game_uid, sub_game_number)`.
-- [ ] T116 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/game_ids.py` and its test.
+- [x] T112 (F1, NFR-7) Write failing happy test `tests/domain/test_game_ids.py`: both "peers" derive identical `game_uid` from same inputs.
+- [x] T113 (NFR-7) Write failing happy test: `game_id(game_uid, sub_game_number)` distinct per sub-game, deterministic.
+- [x] T114 (F1) Implement `game_uid(agreed_between, config_sha256, series_seed)` (hash of sorted party ids + sha + seed).
+- [x] T115 (F1) Implement `game_id(game_uid, sub_game_number)`.
+- [x] T116 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/game_ids.py` and its test.
 
 ### `domain/negotiation.py` — game.json agreement (FR-I1)
-- [ ] T117 (FR-I1, NFR-7) Write failing happy test `tests/domain/test_negotiation.py`: matching `game.json` → `compare_agreements` True.
-- [ ] T118 (F5, NFR-7) Write failing error test: mismatched `game.json` → `compare_agreements` False (via `secrets.compare_digest`).
-- [ ] T119 (FR-I1) Implement `build_agreement(game_json, my_party)` assembling constitution + `agreed_between`.
-- [ ] T120 (FR-F1, FR-I1) Implement `sign_agreement(game_json)` = `config_sha256` over canonical JSON (same canonical rule as crypto).
-- [ ] T121 (F5) Implement `compare_agreements(mine, theirs)` byte-identical check with `secrets.compare_digest`.
-- [ ] T122 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/negotiation.py` and its test.
+- [x] T117 (FR-I1, NFR-7) Write failing happy test `tests/domain/test_negotiation.py`: matching `game.json` → `compare_agreements` True.
+- [x] T118 (F5, NFR-7) Write failing error test: mismatched `game.json` → `compare_agreements` False (via `secrets.compare_digest`).
+- [x] T119 (FR-I1) Implement `build_agreement(game_json, my_party)` assembling constitution + `agreed_between`.
+- [x] T120 (FR-F1, FR-I1) Implement `sign_agreement(game_json)` = `config_sha256` over canonical JSON (same canonical rule as crypto).
+- [x] T121 (F5) Implement `compare_agreements(mine, theirs)` byte-identical check with `secrets.compare_digest`.
+- [x] T122 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `domain/negotiation.py` and its test.
 
 ### `infra/mcp_server.py` — FastMCP server + 4 tools (FR-B1/B2/B3, F1)
-- [ ] T123 (FR-B3, NFR-5, NFR-7) Write failing happy test `tests/infra/test_mcp_server.py`: `Inboxes.put` blocks/backpressures at cap (queue-not-drop), `drain` returns FIFO order.
-- [ ] T124 (FR-B2, NFR-7) Write failing happy test `test_build_peer_server_has_exactly_four_tools`: names exactly `negotiate`, `receive_turn`, `submit_audit`, `receive_control`.
-- [ ] T125 (FR-B3, NFR-7) Write failing happy test `test_tool_enqueues_not_inline`: `receive_turn(msg)` enqueues + returns ack WITHOUT running game logic (patched brain asserted uncalled).
+- [x] T123 (FR-B3, NFR-5, NFR-7) Write failing happy test `tests/infra/test_mcp_server.py`: `Inboxes.put` blocks/backpressures at cap (queue-not-drop), `drain` returns FIFO order.
+- [x] T124 (FR-B2, NFR-7) Write failing happy test `test_build_peer_server_has_exactly_four_tools`: names exactly `negotiate`, `receive_turn`, `submit_audit`, `receive_control`.
+- [x] T125 (FR-B3, NFR-7) Write failing happy test `test_tool_enqueues_not_inline`: `receive_turn(msg)` enqueues + returns ack WITHOUT running game logic (patched brain asserted uncalled).
 - [ ] T126 (FR-B3, NFR-7) Write failing error test `test_malformed_message_not_enqueued`: bad dict → `{"ok": False}`, queue empty.
-- [ ] T127 (FR-B3, NFR-5) Implement `Inboxes` container (4 bounded `queue.Queue`, `maxsize` from config) with blocking `put` (backpressure) + `drain`.
-- [ ] T128 (FR-B1, NFR-11) Implement `build_peer_server(role, inboxes)` reading `host`/`port` from config, returning configured `FastMCP` (no `mcp.run` inside builder).
-- [ ] T129 (FR-B2, FR-B3) Implement the 4 `@mcp.tool`s (`negotiate`/`receive_turn`/`submit_audit`/`receive_control`), each validate-shape → enqueue → ack `(message: dict) -> dict`.
-- [ ] T130 (NFR-5) Write test `test_queue_overflow_is_fifo_not_drop`: push `maxsize+1`, assert backpressure + FIFO + zero loss.
-- [ ] T131 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `infra/mcp_server.py` and its test.
+- [x] T127 (FR-B3, NFR-5) Implement `Inboxes` container (4 bounded `queue.Queue`, `maxsize` from config) with blocking `put` (backpressure) + `drain`.
+- [x] T128 (FR-B1, NFR-11) Implement `build_peer_server(role, inboxes)` reading `host`/`port` from config, returning configured `FastMCP` (no `mcp.run` inside builder).
+- [x] T129 (FR-B2, FR-B3) Implement the 4 `@mcp.tool`s (`negotiate`/`receive_turn`/`submit_audit`/`receive_control`), each validate-shape → enqueue → ack `(message: dict) -> dict`.
+- [x] T130 (NFR-5) Write test `test_queue_overflow_is_fifo_not_drop`: push `maxsize+1`, assert backpressure + FIFO + zero loss.
+- [x] T131 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `infra/mcp_server.py` and its test.
 
 ### `infra/mcp_client.py` — McpTransport (FR-B3, NFR-3)
-- [ ] T132 (FR-B3, NFR-7) Write failing happy test `tests/infra/test_mcp_client.py`: `send_turn`/`exchange_agreement`/`exchange_audit` call the opponent URL; `poll_turn`/`drain_inboxes` read local queues.
+- [x] T132 (FR-B3, NFR-7) Write failing happy test `tests/infra/test_mcp_client.py`: `send_turn`/`exchange_agreement`/`exchange_audit` call the opponent URL; `poll_turn`/`drain_inboxes` read local queues.
 - [ ] T133 (NFR-3, NFR-7) Write failing test `test_every_outbound_call_routes_through_gatekeeper`: each `send_*`/`exchange_*` goes through `ApiGatekeeper.execute(service="mcp", action=<tool>)`.
-- [ ] T134 (FR-B3, NFR-7) Write failing error test `test_rpc_timeout_maps_to_transport_timeout`: outbound past `rpc_timeout_s` raises `TransportTimeout`.
-- [ ] T135 (FR-B3, NFR-11) Implement `McpTransport(opponent_url, inboxes)` with `exchange_agreement`, `send_turn`, `send_control`, `exchange_audit` (all gatekept, URL from config).
-- [ ] T136 (FR-B3) Implement inbound-read methods `poll_turn`, `poll_control`, `drain_inboxes` (non-network, non-blocking on `timeout=None`).
+- [x] T134 (FR-B3, NFR-7) Write failing error test `test_rpc_timeout_maps_to_transport_timeout`: outbound past `rpc_timeout_s` raises `TransportTimeout`.
+- [x] T135 (FR-B3, NFR-11) Implement `McpTransport(opponent_url, inboxes)` with `exchange_agreement`, `send_turn`, `send_control`, `exchange_audit` (all gatekept, URL from config).
+- [x] T136 (FR-B3) Implement inbound-read methods `poll_turn`, `poll_control`, `drain_inboxes` (non-network, non-blocking on `timeout=None`).
 - [ ] T137 (NFR-3) Wrap every outbound MCP call in `ApiGatekeeper.execute(..., service="mcp", action=<tool>)`.
-- [ ] T138 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `infra/mcp_client.py` and its test.
+- [x] T138 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `infra/mcp_client.py` and its test.
 
 ### `tests/fakes/fake_transport.py` — test harness (FR-E2)
-- [ ] T139 (FR-E2, NFR-7) Implement `FakeTransport` in-memory queue-pair mirroring `McpTransport`'s 7-method surface (A.send_turn → B.inboxes.turn).
-- [ ] T140 (FR-E2) Write test `test_fake_transport_wires_A_to_B`: A's `send_turn` lands in B's `turn` inbox and vice-versa (no HTTP/FastMCP).
+- [x] T139 (FR-E2, NFR-7) Implement `FakeTransport` in-memory queue-pair mirroring `McpTransport`'s 7-method surface (A.send_turn → B.inboxes.turn).
+- [x] T140 (FR-E2) Write test `test_fake_transport_wires_A_to_B`: A's `send_turn` lands in B's `turn` inbox and vice-versa (no HTTP/FastMCP).
 
 ### `peer/handshake.py` — handshake glue (F5, F14)
-- [ ] T141 (F5, NFR-7) Write failing happy test `tests/peer/test_handshake.py`: `run_handshake` builds agreement → exchange → match → returns locked `Agreement` with `game_uid`/`game_id`.
-- [ ] T142 (F5, NFR-7) Write failing error test `test_agreement_mismatch_raises_handshake_error`: mismatch → `HandshakeError` (→ technical loss, no hang).
-- [ ] T143 (F14, F5) Implement `run_handshake(transport, config, my_party)` (build → `exchange_agreement` → `compare_agreements` → derive ids → lock) with a Step-0 declaration hook for crypto.
-- [ ] T144 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `peer/handshake.py` and its test (handshake declaration body completed in Stage 6).
+- [x] T141 (F5, NFR-7) Write failing happy test `tests/peer/test_handshake.py`: `run_handshake` builds agreement → exchange → match → returns locked `Agreement` with `game_uid`/`game_id`.
+- [x] T142 (F5, NFR-7) Write failing error test `test_agreement_mismatch_raises_handshake_error`: mismatch → `HandshakeError` (→ technical loss, no hang).
+- [x] T143 (F14, F5) Implement `run_handshake(transport, config, my_party)` (build → `exchange_agreement` → `compare_agreements` → derive ids → lock) with a Step-0 declaration hook for crypto.
+- [x] T144 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `peer/handshake.py` and its test (handshake declaration body completed in Stage 6).
 
 ### Stage-2 config separation & loopback (F1, F2)
 - [ ] T145 (F2, NFR-7) Write test `test_two_config_dirs_distinct_inboxes`: two processes/config dirs yield DISTINCT `Inboxes` objects (no shared memory).
 - [ ] T146 (F2) Write test asserting no module holds a reference reachable from both peers (zero-shared-memory guard).
 - [ ] T147 (FR-B4, NFR-11) Add `shared/config.py` `ConfigManager` loading `game.toml ⊕ signed game.json ⊕ rate_limits.json` (host/port/opponent-url/timeouts/queue-maxsize).
 - [ ] T148 (FR-I2, FR-I1) Write test: private `game.toml` NEVER overrides signed `game.json` values.
-- [ ] T149 (FR-B2, NFR-7) Write `test_game_ids_deterministic` + `test_negotiation_byte_identical_match` at the peer boundary.
-- [ ] T150 (F1, F2, NFR-7) Write the Milestone test `test_loopback_A_to_B_over_fake_transport`: A builds a `TurnMessage`, `send_turn`; B `poll_turn` returns byte-equal msg + `from_dict` reconstructs it.
-- [ ] T151 (F7, FR-B5) Write `test_no_opponent_coords_on_wire` at transport level (only `smell_grid` intensities cross).
+- [x] T149 (FR-B2, NFR-7) Write `test_game_ids_deterministic` + `test_negotiation_byte_identical_match` at the peer boundary.
+- [x] T150 (F1, F2, NFR-7) Write the Milestone test `test_loopback_A_to_B_over_fake_transport`: A builds a `TurnMessage`, `send_turn`; B `poll_turn` returns byte-equal msg + `from_dict` reconstructs it.
+- [x] T151 (F7, FR-B5) Write `test_no_opponent_coords_on_wire` at transport level (only `smell_grid` intensities cross).
 - [ ] T152 (NFR-3) Write `test_gatekeeper_ledger_records_mcp_calls`: MCP sends recorded with `service="mcp"`.
 - [ ] T153 (NFR-9, NFR-8, NFR-14) Confirm ruff-0, line-check ≤150 (incl. tests), CI Py-3.13 green on the Stage-2 branch.
 - [ ] T154 (F1) Document a manual two-process localhost smoke run (A `send_turn` lands in B's queue) in `docs/`.
-- [ ] **Milestone S2:** A message from peer A is received and interpreted by peer B over localhost (`test_loopback_A_to_B_over_fake_transport` green + manual two-process smoke).
+- [x] **Milestone S2:** A message from peer A is received and interpreted by peer B over localhost (`test_loopback_A_to_B_over_fake_transport` green + manual two-process smoke).
 
 ## Stage 3 — Strategy brain (FR-C1..C5, F8)
 

@@ -35,8 +35,28 @@ class ProtocolError(CipherChaseError):
     """A wire message is malformed or arrived in an illegal state (FR-B)."""
 
 
+class HandshakeError(CipherChaseError):
+    """Peers failed to agree on a byte-identical signed config (FR-I1, F14)."""
+
+
 class DeadlineError(CipherChaseError):
     """A peer missed a turn/response deadline → technical loss (FR-H3)."""
+
+
+class TransportError(CipherChaseError):
+    """An MCP send/receive failed (FR-B3)."""
+
+
+class TransportTimeoutError(TransportError):
+    """No message arrived within the poll deadline (FR-B3)."""
+
+
+class QueueFullError(CipherChaseError):
+    """An inbox reached its bounded capacity — backpressure, never drop (NFR-5)."""
+
+
+class IllegalTransitionError(CipherChaseError):
+    """A state-machine transition is not permitted (FR-H2)."""
 
 
 class IncompatibleVersionError(CipherChaseError):
