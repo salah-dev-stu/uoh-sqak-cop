@@ -44,7 +44,19 @@ bluff-text layer, so wall-clock and RSS for the game engine are provider-indepen
 - *(Excellence)* Expectimax vs heuristic head-to-head; Q-learning **learning curves** (reward vs episodes) if the RL extension ships.
 
 ## 6. Sensitivity analysis (OAT — excellence band)
-One-at-a-time sweeps over: `smell_trust`, decay ρ, barrier weight λ, belief diffusion α, `lie_probability`, `every_n_steps`. Report each parameter's effect on win-rate and cost. Companion notebook: `analysis/` (Jupyter/LaTeX).
+`scripts/sensitivity.py` sweeps **`smell_trust`** and measures the cop's mean belief-localisation error
+(Manhattan distance from the belief peak to the true thief cell, averaged over 25 cells):
+
+| `smell_trust` | 0.0 | 0.5 | 1.0 | 2.0 | 4.0 | 8.0 | 16.0 |
+|---|---|---|---|---|---|---|---|
+| mean localisation error (cells) | **6.00** | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+
+**Interpretation:** at `smell_trust=0` the belief ignores scent and stays blind (error ≈ the board diameter);
+**any positive trust** makes the peak lock onto a single clean deposit (error 0). The parameter is therefore a
+*binary switch* under noise-free single-source scent — its graduated effect appears only under noisy /
+multi-source fields (where over-trusting stale scent would mislocalise). Plot:
+`docs/sample-run/sensitivity_smell_trust.png`. Remaining OAT axes (decay ρ, barrier λ, diffusion α,
+`lie_probability`, `every_n_steps`) follow the same harness.
 
 ## 7. ISO/IEC 25010 mapping (excellence band)
 Brief mapping of the design to functional-suitability, performance-efficiency, reliability, security (zero-trust crypto), maintainability (≤150 modules, SDK layer), portability (uv, config-driven). _TBD table._

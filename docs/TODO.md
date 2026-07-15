@@ -522,7 +522,7 @@
 
 ## Excellence (optional, G5)
 
-- [ ] T399 (FR-C5) [OPTIONAL] Run an OAT (one-at-a-time) sensitivity analysis over `smell_trust`, `alpha`, and heuristic weights.
+- [x] T399 (FR-C5) [OPTIONAL] Run an OAT (one-at-a-time) sensitivity analysis over `smell_trust`, `alpha`, and heuristic weights.
 - [ ] T400 (FR-K4) [OPTIONAL] Produce a Jupyter/LaTeX analysis notebook of the OAT sweep + results.
 - [ ] T401 (FR-G4) [OPTIONAL] Run a Nielsen-heuristics UI review pass over the Live GUI + Replay and record fixes.
 - [ ] T402 (FR-K4) [OPTIONAL] Add cost/token & RPM tables (per provider) to the research report.
