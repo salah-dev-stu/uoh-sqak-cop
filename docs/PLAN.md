@@ -60,11 +60,13 @@ flowchart TB
 
 ## 3. C4 Level 3 — Component & module inventory (target files, each ≤150 lines raw+logical)
 
-> **Inventory status (2026-07-19):** built and shipping except the live-runtime set — `peer/runtime.py`,
-> `peer/controls.py`/`control_link.py`, `sdk/series.py` (specified in `PRD_league_runtime.md`, phase P1) — and
-> the GUI live/replay control split + `strategy/qlearning.py` (`PRD_masterclass_viz.md` / `PRD_winning_brain.md`,
-> P4/P2). `talk_providers.py` was folded into `infra/llm_provider.py` + `strategy/trash_talk.py` (same seam,
-> fewer files). This note supersedes any unqualified claim below.
+> **Inventory status (2026-07-19):** the live-runtime set (`peer/runtime.py`, `sdk/series.py`) now ships.
+> `talk_providers.py` was folded into `infra/llm_provider.py` + `strategy/trash_talk.py` (same seam, fewer
+> files). Phenomenal-phase modules added beyond this baseline inventory: **strategy/** `apex_cop`,
+> `opponent_model`, `endgame`, `police_herder`, `police_expectimax`, `thief_evader_v2`, `archetypes`,
+> `deception`; **domain/** `scent_decode`, `hint_belief`; **analysis/** `stats` (Wilson CI + Elo); **sdk/**
+> `game_loop`, `step0`, `spectate`, `live_match` (F14 live stream). This note supersedes any unqualified claim
+> below.
 
 > Small-module discipline is a *design output*, not an afterthought — each file has one purpose so it fits R8 and is independently testable (NFR-7/8).
 
