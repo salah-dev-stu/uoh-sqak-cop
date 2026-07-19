@@ -20,5 +20,11 @@
 - **Prompt (TODO):** "Write 400–650 TDD-ordered tasks (Red-Green-Refactor per module), each tagged with its FR/NFR/F-gate ID, Stage 0–7 + cross-cutting + excellence, ending with a full coverage matrix."
   - *Critical verification:* grep-checked that every FR-*, NFR-1..14, and F1..14 maps to ≥1 real task line; the single gap (FR-I3) was tagged onto T025/T043.
 
-## Phase 2 — Build (append per stage as we go)
-_(To be filled in during implementation: notable prompts for tricky modules — belief-map math, barrier min-cut heuristic, commit-reveal golden vector, gatekeeper `execute()` façade, GUI heatmap, Replay verifier — plus any prompt that needed iteration and why.)_
+## Phase 2 — Build (Stages 0–7, Jul 13–15)
+- Per-stage TDD prompts: RED test first, minimal GREEN, ruff/line-check gates each module (board/rules/scoring, protocol/canonical/game_ids/negotiation, belief/brains/heuristics, smell/providers/trash-talk, crypto/sealing/declaration, gatekeeper/reporting/FSM/orchestrator, SDK/CLI/GUI). Notable iterations: the FSM rejected the orchestrator's first turn flow (missing VERIFYING hop — the state machine caught a real bug); the game loop surfaced a move-vs-barrier ordering bug fixed under test.
+- Post-stage closes: physical-claim audit, LLM-through-gatekeeper, expectimax seam variant, real gmail.send scripts, OAT sensitivity, live 3D arena (Three.js, tuned from "chaotic" to legible after user feedback).
+
+## Phase 3 — Championship planning (2026-07-19)
+- **Prompt (4 parallel audits):** "Scan every file, every line" → (1) line-level source audit vs R1–R13; (2) protocol/league-readiness audit extracting the reference peer's exact wire choreography and our gap list; (3) docs-vs-code drift audit (every claim verified); (4) competitive strategy lab — 120-game win-rate matrices, root-cause diagnosis (phantom-trail belief, greedy-parity stall, squandered barriers), upgrade probes (HerderCop won).
+  - *Key discoveries:* the P2P layer is test-only; our per-turn reveal is wrong vs the reference's sealed-single-message choreography (and two payload shapes would crash a reference peer today); our cop captures 0% vs any belief-using thief; the scent-delta decoder achieves near-oracle localisation from legal information.
+- **Prompt (plan):** synthesize audits → `docs/PLAN-CHAMPIONSHIP.md` (league math, blockers, P0–P5 roadmap, risks) + three championship PRDs (`PRD_league_runtime`, `PRD_winning_brain`, `PRD_integrity_hardening` — 28 IH requirements) + TODO §Championship (T406+). Implementation deliberately deferred pending approval (planning gate).
