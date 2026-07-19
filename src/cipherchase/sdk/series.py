@@ -25,7 +25,7 @@ def role_for(natural: str, sub_game_number: int) -> str:
 
 
 def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
-               now: Any = None) -> SeriesResult:
+               now: Any = None, listener: Any = None) -> SeriesResult:
     result = SeriesResult()
     num_games = int(cfg.shared["network_and_league"]["num_games"])
     for n in range(1, num_games + 1):
@@ -33,7 +33,7 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
         # (reference behaviour: drain only on explicit restart, §2.6/§2.7).
         runtime = PeerRuntime(
             role=role_for(natural_role, n), cfg=cfg, transport=transport,
-            sub_game_number=n, gate=gate, now=now,
+            sub_game_number=n, gate=gate, now=now, listener=listener,
         )
         summary = runtime.run()
         result.game_id = result.game_id or summary["game_id"]

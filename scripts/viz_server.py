@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
-"""Serve the live 3D arena + generate a FRESH game per request.
+"""Serve the live 3D arena: fresh replay per request + live league match room.
 
 Run from the repo root:  uv run python scripts/viz_server.py
-Then open http://localhost:8777 — "New match" plays a brand-new game in 3D.
+Then open http://localhost:8777 — "New match" plays a fresh game in 3D, and the
+match-room panel starts a real league match against a peer URL and streams it
+live. Bound to 127.0.0.1 only (SH-8): the match room is never a remote hole.
 """
 
 from __future__ import annotations
 
 import json
 import sys
+import tempfile
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 sys.path.insert(0, "scripts")
 sys.path.insert(0, "src")
 from make_replay_data import capture  # noqa: E402
 
+from cipherchase.sdk.live_match import MatchController  # noqa: E402
+
 PORT = 8777
+MATCH = MatchController(Path(tempfile.gettempdir()) / "cipherchase_spectate.jsonl")
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -26,17 +33,34 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         super().end_headers()
 
+    def _json(self, status: int, obj) -> None:
+        body = json.dumps(obj).encode()
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self) -> None:  # noqa: N802
         if self.path.startswith("/api/game"):
-            body = json.dumps(capture(randomize=True)).encode()
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Cache-Control", "no-store")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            self._json(200, capture(randomize=True))
+        elif self.path.startswith("/api/spectate"):
+            self._json(200, MATCH.spectate())
+        else:
+            super().do_GET()
+
+    def do_POST(self) -> None:  # noqa: N802
+        if not self.path.startswith("/api/match"):
+            self._json(404, {"ok": False, "error": "not found"})
             return
-        super().do_GET()
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+            status, resp = MATCH.start(json.loads(self.rfile.read(length) or b"{}"))
+        except (ValueError, json.JSONDecodeError):
+            status, resp = 400, {"ok": False, "error": "bad json"}
+        except Exception as exc:  # never leak an HTML traceback
+            status, resp = 500, {"ok": False, "error": str(exc)}
+        self._json(status, resp)
 
     def log_message(self, *args) -> None:  # keep the console quiet
         return

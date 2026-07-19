@@ -7,10 +7,12 @@ import { createBarriers } from './barriers.js';
 import { createRig } from './camera_rig.js';
 import { createFinales } from './finales.js';
 import { createRail } from './crypto_rail.js';
-import { createHud, bindTransport, pressView } from './hud.js';
+import { createHud, bindTransport } from './hud.js';
 import { createViews } from './views.js';
 import { initCapture } from './capture.js';
 import { createShowtime } from './showtime.js';
+import { bindKeys } from './keys.js';
+import { bindMatchPanel, createLive, serverHasMatch } from './live.js';
 import * as D from './data.js';
 import * as T from './timeline.js';
 
@@ -42,17 +44,19 @@ async function fetchGame(fresh){
   return (await fetch('replay3d.json')).json();
 }
 
-async function loadGame(fresh){
+async function loadGame(fresh, override){
   let raw;
-  try { raw = D.parseGame(await fetchGame(fresh)); }
+  try { raw = D.parseGame(override ?? await fetchGame(fresh)); }
   catch (e){ if (!S.game) throw e; return; }             // keep current game on failure
+  const grew = !S.game || S.game.size !== raw.size;       // avoid rebuild flicker live
   S.game = raw; S.turn = 0; S.last = -1; S.ended = false; S.playing = true;
   S.dist = D.distanceSeries(raw); S.err = D.beliefErrorSeries(raw);
   S.hints = raw.frames.reduce((acc, f, i) => {
     acc.push(f.hint ? { text: f.hint, intent: f.intent, turn: f.turn } : acc[i - 1] ?? null);
     return acc;
   }, []);
-  board.rebuild(raw.size); scent.reset(); walls.reset(); finales.reset();
+  if (grew) board.rebuild(raw.size);
+  scent.reset(); walls.reset(); finales.reset();
   rail.setGame(D.glyphModel(raw)); rail.reset();
   hud.setMarkers(D.deriveEvents(raw), raw.frames.length);
   $('play').textContent = 'Pause';
@@ -125,18 +129,14 @@ bindTransport({
   onQuality(){ return sc.toggleQuality(); },
 });
 
-addEventListener('keydown', e => {
-  if (e.key === ' '){ e.preventDefault(); $('play').click(); }
-  else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
-    e.preventDefault(); S.playing = false; $('play').textContent = 'Play';
-    if (S.game) setTurn(T.stepTurn(S.turn, e.key === 'ArrowRight' ? 1 : -1,
-      S.game.frames.length));
-  }
-  else if (e.key === '1' || e.key === '2' || e.key === '3') pressView(e.key);
-  else if (e.key === 'n' || e.key === 'N') $('new').click();
-  else if (e.key === 's' || e.key === 'S') shoot();
-  else if (e.key === 'q' || e.key === 'Q') $('quality').click();
+bindKeys({ $, S, T, setTurn, shoot });
+
+const live = createLive({
+  onGame: g => loadGame(false, g).then(() => { S.turn = S.game.frames.length - 1; S.playing = false; }),
+  onEnd: () => { $('play').textContent = 'Ended'; },
 });
+bindMatchPanel({ onStart: () => { document.body.classList.add('live'); live.start(); } });
+serverHasMatch().then(ok => { if (!ok) $('match')?.setAttribute('hidden', ''); });
 
 let prev = performance.now();
 function tick(now){

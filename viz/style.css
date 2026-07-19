@@ -105,6 +105,24 @@ body.tamper::after{content:"";position:fixed;inset:0;z-index:3;pointer-events:no
 #keys{position:fixed;left:24px;bottom:74px;z-index:4;font-size:9px;
   letter-spacing:.12em;color:var(--dim);text-transform:uppercase;opacity:.6}
 
+/* match room panel (top-right) + LIVE chip */
+#match{position:fixed;right:18px;top:70px;z-index:7;display:flex;flex-direction:column;gap:6px;
+  width:210px;padding:12px 14px;border-radius:12px;background:rgba(10,14,24,.7);
+  backdrop-filter:blur(12px);border:1px solid rgba(120,150,220,.2)}
+#match .mh{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+#match input,#match select,#match button{font:inherit;font-size:12px;padding:6px 8px;border-radius:8px;
+  border:1px solid rgba(120,150,220,.25);background:rgba(6,8,16,.6);color:#e8ecf6}
+#match button{cursor:pointer;background:rgba(37,224,255,.16);border-color:rgba(37,224,255,.5);
+  color:#bff3ff;letter-spacing:.06em}
+#match button:hover{background:rgba(37,224,255,.28)}
+#match-err{font-size:11px;color:var(--bad);min-height:12px}
+#live-chip{display:none;position:fixed;left:50%;top:22px;transform:translateX(-50%);z-index:8;
+  font-size:11px;letter-spacing:.22em;color:#ff5a7a;padding:4px 12px;border-radius:999px;
+  background:rgba(30,6,12,.6);border:1px solid rgba(255,90,122,.5);animation:livepulse 1.4s ease-in-out infinite}
+body.live #live-chip{display:block}
+@keyframes livepulse{0%,100%{opacity:.5}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){#live-chip{animation:none}}
+
 /* split-screen dual-belief chrome (shown only while body.split) */
 #split-ui{display:none}
 body.split #split-ui{display:block;position:fixed;inset:0;z-index:6;pointer-events:none}

@@ -40,7 +40,8 @@ class SimulationSdk:
 
     @staticmethod
     def run_peer(
-        cfg: Any, *, natural_role: str, transport: Any = None, gate: Any = None
+        cfg: Any, *, natural_role: str, transport: Any = None, gate: Any = None,
+        listener: Any = None,
     ) -> dict[str, Any]:
         """Live league entry (F1/F14): validate terms → serve → play the series."""
         from cipherchase.peer.terms import validate_terms
@@ -54,7 +55,7 @@ class SimulationSdk:
 
             inboxes = start_peer_server(natural_role, cfg)
             transport = McpTransport.from_config(cfg, inboxes, gate=gate)
-        series = run_series(cfg, natural_role, transport, gate=gate)
+        series = run_series(cfg, natural_role, transport, gate=gate, listener=listener)
         return {
             "game_id": series.game_id, "game_uid": series.game_uid,
             "sub_games": [

@@ -7,6 +7,7 @@ audit exchange via ``summary.finish``.
 
 from __future__ import annotations
 
+import contextlib
 import random
 import time
 from typing import Any
@@ -29,7 +30,7 @@ from cipherchase.strategy.trash_talk import TrashTalk
 
 class PeerRuntime:
     def __init__(self, *, role: str, cfg: Any, transport: Any, sub_game_number: int,
-                 gate: Any = None, now: Any = None) -> None:
+                 gate: Any = None, now: Any = None, listener: Any = None) -> None:
         ba = cfg.shared["board_and_agents"]
         mb = cfg.shared["movement_and_barriers"]
         ph = cfg.shared["pheromones"]
@@ -70,6 +71,7 @@ class PeerRuntime:
         self.game_id, self.game_uid, self.peer_identity = "", "", {}
         self.sm = StateMachine(State.HANDSHAKE)
         self.now = now or time.monotonic
+        self.listener = listener  # spectate stream (SH-1); None = zero behaviour change
 
     def _intent(self) -> str:
         if self.deception_mode != "strategic":
@@ -84,21 +86,34 @@ class PeerRuntime:
         hint = self.talk.maybe_generate(TalkContext(role=self.role, step=step, intent=intent))
         return (intent if hint else "truth"), hint
 
+    def _emit(self, phase: str, wire: dict | None = None, outcome: dict | None = None) -> None:
+        if not self.listener:
+            return
+        from cipherchase.sdk.spectate import build_frame
+        with contextlib.suppress(Exception):  # spectating never kills a league match
+            self.listener(build_frame(self, phase, wire, outcome))
+
     def take_turn(self, claim_response: dict | None) -> tuple[str, str] | None:
         self.sm.transition(State.COMPUTING)
         result = turn_sender.take_turn(self, claim_response)
         self.sm.transition(State.COMMITTING)
         self.sm.transition(State.WAITING)
+        self._emit("sent")
         return result
 
     def handle(self, wire: dict) -> turn_handler.Incoming:
-        return turn_handler.process(self, wire)
+        outcome = turn_handler.process(self, wire)
+        if not (outcome.duplicate or outcome.malformed):
+            self._emit("received", wire)
+        return outcome
 
     def run(self) -> dict[str, Any]:
         try:
-            return self._run()
+            result = self._run()
         except Exception as exc:  # crash boundary (F9): a result, never a hung port
-            return summary.finish(self, ("error", "-"), note=repr(exc))
+            result = summary.finish(self, ("error", "-"), note=repr(exc))
+        self._emit("ended", outcome={"result": result["result"], "winner": result["winner"]})
+        return result
 
     def _run(self) -> dict[str, Any]:
         net = self.cfg.network

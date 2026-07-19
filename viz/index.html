@@ -33,6 +33,16 @@
 <div id="hint-ticker" aria-live="polite">
   <span id="badge" hidden></span><span id="hint-text">···</span>
 </div>
+<div id="match" aria-label="league match room">
+  <span class="mh">Match room</span>
+  <input id="match-url" type="url" placeholder="opponent https://…/mcp" aria-label="opponent MCP URL" />
+  <select id="match-role" aria-label="our role">
+    <option value="police">play Cop</option><option value="thief">play Thief</option>
+  </select>
+  <button id="match-go">Start match</button>
+  <span id="match-err" role="alert"></span>
+</div>
+<span id="live-chip" aria-hidden="true">● LIVE</span>
 <div id="split-ui" aria-hidden="true"><span class="sl cop">Cop belief</span><span class="sl thief">Thief belief</span></div>
 <div id="tour-cap" role="status" aria-live="polite" hidden></div>
 <div id="keys">drag orbit · space play · ←/→ step · 1/2/3 view · 4 split · T tour · R rec · N new · S shot · Q quality</div>
