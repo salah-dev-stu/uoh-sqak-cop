@@ -967,3 +967,284 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 - **Milestone M-V1:** modular arena (all files ≤150) plays a replay with follow-cam, particle scent, slam barriers, capture finale; node smoke tests green.
 - **Milestone M-V2:** commit rail + audit wave green on honest log, red shatter on tampered fixture; three views + timeline markers work.
 - **Milestone M-V3:** live localhost league match spectated in 3D; tour recorded; README media refreshed.
+
+## Phenomenal (P6-P8) — from PLAN-PHENOMENAL + PRD_apex_brain + PRD_showtime_arena + PRD_ironclad
+
+### P6 · Apex Brain — opponent model (never cut)
+- [ ] T623 (AB-3, R2) Write `test_opponent_model.py` red: predicted reply == the real brain's reply for each archetype on 20 seeded positions (`still` ⇒ `R={t̂}`).
+- [ ] T624 (AB-4, AB-5) Add red tests: EvaderV2 realised reply ∈ predicted near-tie set every turn; paranoid ⊇ every model's set; unknown model name → `ConfigError`.
+- [ ] T625 (AB-3, R2) Implement `strategy/opponent_model.py`: model registry + single `predict(reply_context)->set[Cell]` seam delegating to the real brains' `_score` (no duplicated scoring).
+- [ ] T626 (AB-4) Implement `evader_v2` support-exact near-tie set `{r: score(r) ≥ max − tie_epsilon}` for worst-case minimax.
+- [ ] T627 (AB-5) Implement `paranoid` default (all legal replies) + `ConfigError` on unknown `apex_opponent_model`.
+- [ ] T628 (AB-3, R8, R9) Verify opponent_model: ruff 0 + `check_file_lines.py` ≤150 raw+logical + coverage 100%.
+
+### P6 · Apex Brain — ApexCop L1/L2 (never cut)
+- [ ] T629 (AB-1) Write `test_apex_cop.py` red: `ApexCop` loads via `factory.load_brain`; `PoliceBrain`/`HerderCop`/`PoliceExpectimax` stay byte-identical.
+- [ ] T630 (AB-2) Add red test: joint `(move,barrier)` candidate set respects hold-fire discipline, no-self-trap, and `apex_barrier_topk` cap.
+- [ ] T631 (AB-6) Add red test: unlocked belief → `PoliceBrain._decide_move` fallback (spy); locked+trigger → solver consulted before L2.
+- [ ] T632 (AB-2, AB-6) Add red test: joint `(move,barrier)` beats any same-position move-only choice on a constructed intercept; tie prefers `q=None`; same seed ⇒ identical transcript.
+- [ ] T633 (AB-1, AB-6) Implement `strategy/apex_cop.py` layered dispatch (L1 lock check → L3 → L2) with `PoliceBrain` L1 fallback.
+- [ ] T634 (AB-2) Implement joint candidate enumeration (disciplined adjacent barriers, reach-gain ranked, top-k).
+- [ ] T635 (AB-6) Implement escape-value `E(m,r,B')` scoring + worst-case-over-`R` argmin + deterministic tie-break.
+- [ ] T636 (AB-7, AT-6) Verify ApexCop worst-turn latency ≤50 ms via lab `--timing` on the M2.
+- [ ] T637 (AB-1, R8, R9) Verify apex_cop: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P6 · Apex Brain — endgame solver (never cut)
+- [ ] T638 (AB-11) Write `test_endgame.py` red: forced-win corner-pocket fixture returns a capture line; open-board `d=4` fixture returns `None`.
+- [ ] T639 (AB-9) Add red test: alpha-beta returns first action of a forced line iff capture proven against every reply within horizon.
+- [ ] T640 (AB-10) Add red test: depth cap (win at depth 10 with `endgame_depth=8` → `None`), node-cap short-circuit (counter spy), memo hit-count > 0.
+- [ ] T641 (AB-8) Add red test: trigger boundaries (`wall_dist` 2 in/3 out; `gap` 4 in/5 out); ambiguous decoder never enters L3.
+- [ ] T642 (AB-8) Implement `strategy/endgame.py` trigger predicate (locked ∧ wall_dist ∧ gap).
+- [ ] T643 (AB-9) Implement exact depth-bounded alpha-beta over true positions with all-reply thief and shortest-mate ordering.
+- [ ] T644 (AB-10) Implement `endgame_depth`/`endgame_nodes` caps + per-turn transposition memo; cap-hit ⇒ `None` fallback.
+- [ ] T645 (AB-11) Generate & commit the two proof-position fixtures deterministically (no RNG), with a worst-case-reply playout assertion to `Outcome.CAPTURE`.
+- [ ] T646 (AB-9, R8, R9) Verify endgame: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P6 · Apex Brain — bluff-aware belief (cut order #2)
+- [ ] T647 (AB-13) [OPTIONAL] Write `test_hint_belief.py` red: every tagged bank entry round-trips through `hint_tags`; foreign free text → all-`None` tags, zero effect.
+- [ ] T648 (AB-12, F6, F7) [OPTIONAL] Add red tests: Beta `(α,β)→P(honest)` fractions; audit batch-fold arithmetic; live scent cross-check (decoded S-move vs "N" hint ⇒ `β+=1`; no fix ⇒ no update).
+- [ ] T649 (AB-14) [OPTIONAL] Add red tests: cone nudge `P=1` boosts, `P=0` inverts, `P=0.5` no-op; `bluff_weight=0` leaves grid bit-identical.
+- [ ] T650 (AB-13) [OPTIONAL] Upgrade `infra/llm_provider.py` `_PHRASES` to the tagged schema; `TemplateProvider.generate` returns `entry["text"]` unchanged.
+- [ ] T651 (AB-13) [OPTIONAL] Implement pure `hint_tags(text)->Tags` matching incoming text against all banks by normalised exact text.
+- [ ] T652 (AB-12, F6) [OPTIONAL] Implement `domain/hint_belief.py` `HonestyTracker` Beta posterior + audit fold + live cross-check updates.
+- [ ] T653 (AB-14) [OPTIONAL] Implement multiplicative cone nudge over the hinted half-plane + renormalise; sign flips for liars.
+- [ ] T654 (AB-13, R8, R9) [OPTIONAL] Verify hint_belief + llm_provider stay ≤150: ruff 0 + line-check + coverage 100%.
+
+### P6 · Apex Brain — strategic deception (cut order #2, F8)
+- [ ] T655 (AB-16) [OPTIONAL] Write `test_deception.py` red: cop lies iff `gap ≤ lie_gap` (boundary sweep); thief lies iff cornered.
+- [ ] T656 (AB-17) [OPTIONAL] Add red tests: opposite-axis lie selection (heading N ⇒ S-tagged text); truthful turn picks matching-`dir` entry.
+- [ ] T657 (AB-18) [OPTIONAL] Add red tests: cadence + seal payload shape byte-unchanged (guard); `"random"` mode reproduces today's distribution.
+- [ ] T658 (AB-16) [OPTIONAL] Implement `strategy/deception.py` `DeceptionPolicy` adversarial rule (cop gap-close lie / honesty credit; thief corner lie).
+- [ ] T659 (AB-17) [OPTIONAL] Implement adversarial lie-content selection from the tagged bank (opposite-direction entry, cadence fallback).
+- [ ] T660 (AB-18, F8, F6) [OPTIONAL] Wire `choose_intent` substitution keeping `TrashTalk` cadence + sealing order; guard test asserts `deception.py` imports nothing from `infra/`.
+- [ ] T661 (AB-16, R8, R9) [OPTIONAL] Verify deception: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P6 · Apex Brain — QBrain + training + policy artifact (cut order #1)
+- [ ] T662 (AB-19) [OPTIONAL] Write `test_qbrain.py` red: feature bucketing boundaries (gap 5 → "4–5", 6 → "6+"; wall-dist/barriers buckets).
+- [ ] T663 (AB-20) [OPTIONAL] Add red tests: one Q-update by hand-computed arithmetic; ε linear-anneal endpoints (0.3→0.02).
+- [ ] T664 (AB-21) [OPTIONAL] Add red tests: policy JSON round-trip; missing file / bad `features_version` → `ConfigError`; factory loads `QBrain`.
+- [ ] T665 (AB-20) [OPTIONAL] Add red test: seeded 50-episode micro-train is reproducible and improves vs `Still` (CI-fast smoke).
+- [ ] T666 (AB-19) [OPTIONAL] Implement `strategy/qbrain.py` feature encode + greedy argmax + deterministic tie order.
+- [ ] T667 (AB-21) [OPTIONAL] Implement policy load from `qbrain_policy_path` + typed `ConfigError` guards; 0 tokens, F8-clean.
+- [ ] T668 (AB-20, F8) [OPTIONAL] Implement `scripts/train_qbrain.py` Q-update loop through the real `sdk/game_loop`, ε anneal, seeded, all params config/CLI, ≤5 min wall.
+- [ ] T669 (AB-22) [OPTIONAL] Emit per-window capture-rate learning-curve series JSON from training.
+- [ ] T670 (AB-21) [OPTIONAL] Train and commit `analysis/qbrain_policy.json` (seeded, bit-reproducible artifact + meta).
+- [ ] T671 (AB-20, R8, R9) [OPTIONAL] Verify qbrain + train_qbrain ≤150: ruff 0 + line-check + coverage 100%.
+
+### P6 · Apex Brain — statistics: Wilson CI + Elo (never cut)
+- [ ] T672 (AB-23) Write `test_benchlib.py` red: Wilson interval matches published reference values incl `n=60`, `p̂∈{0,1}` edges.
+- [ ] T673 (AB-24) Add red tests: Elo hand-computed 3-game sequence; ladder determinism from seed.
+- [ ] T674 (AB-25) Add red test: `--fast` lab (N=8, brain subset) end-to-end well-formed and CI-runnable <60 s.
+- [ ] T675 (AB-23) Implement `scripts/benchlib.py` Wilson score interval renderer (`55.0 % [46.1, 63.6]`).
+- [ ] T676 (AB-24) Implement seeded round-robin Elo ladder over all cop×thief brains (base 1000, k=16).
+- [ ] T677 (AB-25) Implement report-ready markdown render (matrix+CIs+Elo) + optional `--json` blob.
+- [ ] T678 (AB-25) Edit `scripts/benchmark_lab.py`: new rows/modes, overflow shared into `benchlib`, stays ≤150.
+- [ ] T679 (AB-23, R8, R9) Verify benchlib + benchmark_lab ≤150: ruff 0 + line-check + coverage 100%.
+
+### P6 · Apex Brain — measure, notebook, report, champion decision
+- [ ] T680 (AB-15) [OPTIONAL] Run `benchmark_lab` with `bluff_weight ∈ {0, default}` vs truthful- and lying-config opponents; print paired Δ.
+- [ ] T681 (AB-22) [OPTIONAL] Notebook: plot QBrain learning curves from the curves JSON.
+- [ ] T682 (AB-22) [OPTIONAL] Notebook: engineering-vs-learning section (QBrain matrix row vs `PoliceBrain+decoder` vs `ApexCop`) with the honest conclusion.
+- [ ] T683 (AB-24) Notebook: render the Elo ladder table + Wilson-CI matrix.
+- [ ] T684 (AB-25) Refresh `RESEARCH-REPORT` §5 with the CI+Elo matrix (and bluff Δ if run); honesty rule applied.
+- [ ] T685 (AB-26) Decide champion config: swap `police_class`/`thief_class` ONLY on a measured full-matrix win; report negatives, ship nothing worse.
+- [ ] T686 (AT-1) Verify AT-1: ApexCop capture vs EvaderV2 ≥55% (matched model).
+- [ ] T687 (AT-2) Verify AT-2: ApexCop capture vs ThiefBrain ≥55% (matched model).
+- [ ] T688 (AT-3) Verify AT-3: ApexCop capture vs each archetype (NaiveEdge/Random/Still) ≥95%.
+- [ ] T689 (AT-4) Verify AT-4: paranoid-mode ApexCop vs the full thief column reported (no model cherry-picking).
+- [ ] T690 (AT-5) Verify AT-5: endgame proof fixtures green (forced win found; known escape → None).
+- [ ] T691 (AT-6) Verify AT-6: ApexCop worst-turn wall time ≤50 ms offline on the M2.
+- [ ] T692 (AT-7) [OPTIONAL] Verify AT-7: bluff-aware paired Δ measured & reported; default-on only if net-positive.
+- [ ] T693 (AT-8) [OPTIONAL] Verify AT-8: committed `qbrain_policy.json` + learning curves present in the executed notebook.
+- [ ] T694 (AT-9) Verify AT-9: Elo ladder + Wilson CIs published in report §5 + notebook.
+- [ ] T695 (AT-10) Verify AT-10: thief survival vs ApexCop reported honestly, whatever the number.
+- [ ] T696 (AT-11) Verify AT-11: baseline rows reproduced ±3 pts; existing brains byte-identical.
+- **Milestone P6:** `uv run python scripts/benchmark_lab.py` prints the extended matrix with Wilson 95% CIs and an Elo ladder where ApexCop ≥55% vs EvaderV2 AND ≥55% vs ThiefBrain and ≥95% vs every archetype, deterministically from seed; the endgame forced-capture proof test is green; champion config re-decided by AB-26.
+
+### P7 · Showtime — spectate stream (never cut)
+- [ ] T697 (SH-2, SH-4) Write spectate test red: `build_frame` emits every SH-2 key, `belief` is 7×7, `commit8` length 8.
+- [ ] T698 (SH-3, SH-19, F12) Write no-truth-leak test red: dual-listener loopback game; no frame ever contains the opponent's true position, nonce, or full payload.
+- [ ] T699 (SH-1) Add red test: exactly one frame per send + one per processed receive; malformed/duplicate wires emit nothing; a raising listener never breaks `run()`.
+- [ ] T700 (SH-4) Add red test: `JsonlListener` appends valid JSON lines; reader skips a torn final line (truncation-tolerant).
+- [ ] T701 (SH-4) Implement `sdk/spectate.py` `build_frame(rt, phase, wire_or_msg)` pure builder.
+- [ ] T702 (SH-4) Implement `JsonlListener.__call__` append + per-line flush.
+- [ ] T703 (SH-4, R8, R9) Verify spectate.py: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P7 · Showtime — runtime + CLI listener wiring (never cut)
+- [ ] T704 (SH-1) Write red test: `PeerRuntime` calls `listener(frame)` after `take_turn` and after each processed `handle`; listener exceptions swallowed.
+- [ ] T705 (SH-1) Implement `PeerRuntime.__init__` `listener` kwarg + both call sites.
+- [ ] T706 (SH-1, SH-5) Thread `listener` through `SimulationSdk.run_peer` → `run_series` → each `PeerRuntime`.
+- [ ] T707 (SH-5) Implement `cipherchase peer --spectate <path>` constructing a `JsonlListener` (default off).
+- [ ] T708 (SH-1, R8, R9) Verify runtime + CLI wiring: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P7 · Showtime — viz_server endpoints (never cut)
+- [ ] T709 (SH-6) Write red test (fake runtime): `/api/spectate` empty→live transition; skips a torn tail line; `Cache-Control: no-store`.
+- [ ] T710 (SH-7) Add red tests: `/api/match` happy path; bad URL → 400; second POST while alive → 409; spawned thread is daemon; all error bodies JSON.
+- [ ] T711 (SH-8) Add red test: server binds 127.0.0.1 only.
+- [ ] T712 (SH-6, F12) Implement `GET /api/spectate` tail reader (line-by-line, skip torn final).
+- [ ] T713 (SH-7, F14) Implement `POST /api/match`: validate role + URL shape, spawn `run_peer` daemon thread with a fresh `JsonlListener`, 409 single-match guard.
+- [ ] T714 (SH-7) Extract `scripts/viz_match.py` helper (match-thread + URL validation) so both stay ≤150.
+- [ ] T715 (SH-7, R8, R9) Verify viz_server + viz_match: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P7 · Showtime — LIVE mode + match room (never cut)
+- [ ] T716 (SH-20) Write node test red: `live.js` frame merge monotonicity + torn-tail skip.
+- [ ] T717 (SH-10, SH-20) Add node test red: `spectateToViz` maps ghost at belief argmax, never inventing an opponent coordinate.
+- [ ] T718 (SH-9) Implement `viz/js/live.js` poller (800 ms), monotone frame list, `onFrames`/`start`/`stop`.
+- [ ] T719 (SH-10) Implement `spectateToViz(frames)` → schema-v2 frames (own solid, opp ghost, no records → sealed-yet-unverified rail).
+- [ ] T720 (SH-11) Implement LIVE presentation: auto-follow head, pulsing LIVE chip, scrub-back pause/resume, ENDED on final `outcome`.
+- [ ] T721 (SH-12) Implement match-room DOM panel (URL + role + Start) → `POST /api/match` → switch to LIVE; dismissible error chip on 400/409/500/timeout.
+- [ ] T722 (SH-13) Implement offline degradation: probe `/api/match`, hide the panel when absent; arena behaves as today.
+- [ ] T723 (SH-9, R8, R9) Verify live.js: ruff 0/eslint + ≤150 line-check + node tests green.
+
+### P7 · Showtime — split-screen dual-belief (cut order #3)
+- [ ] T724 (SH-20) [OPTIONAL] Write node test red: split-view state/keyframe clamps.
+- [ ] T725 (SH-14) [OPTIONAL] Implement `viz/js/split.js` key `4` dual-viewport scissor render (one scene, double-rendered); no-op in LIVE.
+- [ ] T726 (SH-15) [OPTIONAL] Implement split HUD (both belief-error sparks); `1/2/3` exits split.
+- [ ] T727 (SH-14, R8, R9) [OPTIONAL] Verify split.js: ≤150 line-check + node tests green.
+
+### P7 · Showtime — guided tour + recorder (cut order #4)
+- [ ] T728 (SH-20) [OPTIONAL] Write node test red: tour keyframe interpolation clamps.
+- [ ] T729 (SH-16) [OPTIONAL] Implement `viz/js/tour.js` `T`-key ~25 s scripted camera + caption beats; `Esc` restores; reduced-motion → static cards.
+- [ ] T730 (SH-17) [OPTIONAL] Implement `viz/js/recorder.js` `captureStream(30)` + `MediaRecorder` webm, armed by tour/`R`, downloads `tour.webm`.
+- [ ] T731 (SH-17) [OPTIONAL] Document the manual GIF/ffmpeg step in README + PRD; commit `docs/media/tour.webm` + `tour.gif`.
+- [ ] T732 (SH-16, R8, R9) [OPTIONAL] Verify tour.js + recorder.js: ≤150 line-check + node tests green.
+
+### P7 · Showtime — reference-match fixture (cut order: with tour tier)
+- [ ] T733 (SH-18) [OPTIONAL] Implement env-gated `--spectate` hook in the interop launch (`CIPHERCHASE_SPECTATE_OUT`, manual run only).
+- [ ] T734 (SH-18) [OPTIONAL] Implement `scripts/make_reference_replay.py` converting captured JSONL → `viz/replay_reference_match.json`.
+- [ ] T735 (SH-18) [OPTIONAL] Capture and bundle `viz/replay_reference_match.json` fixture.
+- [ ] T736 (SH-18) [OPTIONAL] Add arena "vs Reference" fixture control loading it through `spectateToViz`.
+- [ ] T737 (SH-18, R8, R9) [OPTIONAL] Verify make_reference_replay: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P7 · Showtime — media + acceptance
+- [ ] T738 (SH-17, F12) [OPTIONAL] README media pass: embed hero GIF + masterclass stills + CI badge (idea #17).
+- [ ] T739 (SH-7, F14) Verify acceptance 1: a match started from the match room (two local peers) renders live to completion with the outcome banner.
+- [ ] T740 (SH-19, F12) Verify acceptance 2: the match's spectate JSONL contains zero opponent ground truth (test green + manual grep).
+- [ ] T741 (SH-14) [OPTIONAL] Verify acceptance 3: split-screen works on both replays; `1/2/3` exits; LIVE ignores it.
+- [ ] T742 (SH-16, F12) [OPTIONAL] Verify acceptance 4: tour plays end-to-end, `Esc` cancels, `tour.webm` downloads; media committed + embedded.
+- [ ] T743 (SH-18) [OPTIONAL] Verify acceptance 5: `replay_reference_match.json` bundled and loads via the "vs Reference" control.
+- [ ] T744 (SH-20) Verify acceptance 6: node tests extended (`live.js` merge/parse + `spectateToViz`); python covers listener frames + both endpoints.
+- [ ] T745 (SH-13) Verify acceptance 8: with the server absent (file:// or `/api/match` 404) the arena behaves exactly as today; existing suites pass, panel hidden.
+- **Milestone P7:** a localhost league match spectates live end-to-end from the match room; the tour records in ≤60 s; split-screen ships; all touched files (py+js) stay ≤150; node tests extended.
+
+### P8 · Ironclad — dependency + tamper sweep (never cut)
+- [ ] T746 (IC, A8) Add `hypothesis>=6.100` to `[dependency-groups].dev` only; update `uv.lock`; runtime `dependencies` + `real` extra unchanged.
+- [ ] T747 (IC-2) Write `tests/integrity/mutations.py` generator unit test red: exact per-record count `9 + D_i`, all labels unique, one-field-changed vs the pristine deep copy.
+- [ ] T748 (IC-2) Implement `mutations.py` deterministic `mutations_of(records)` generator (fixed per-record mutation order a–g).
+- [ ] T749 (IC-1) Add precondition test: pristine committed log passes `audit_records` (`passed=True`, `failed_steps==[]`).
+- [ ] T750 (IC-3, IC-4) Write tamper-sweep test red: `N ≥ 500`, `caught == total`, each mutation localised to its `record_index`.
+- [ ] T751 (IC-4) Implement `tests/integrity/test_tamper_sweep.py` full sweep with headline `{caught}/{total}` assert.
+- [ ] T752 (IC-5, F12) Add replay-viewer sample sweep (7·R) → mutated step `TAMPERED`, verdict `BAD`.
+- [ ] T753 (IC-6) Add README "1795 mutations, 1795 caught" line + guard that parses it and asserts both equal computed `N`.
+
+### P8 · Ironclad — property-based tests (cut order #2)
+- [ ] T754 (IC-12) [OPTIONAL] Implement `tests/properties/conftest.py` registering `ci` (max_examples=100, derandomize, deadline=None) and `dev` profiles.
+- [ ] T755 (IC-7) [OPTIONAL] Implement `test_prop_crypto.py`: ∀-payload seal/verify round-trip never raises; any single nonce/commit-char perturbation → `CryptoError`.
+- [ ] T756 (IC-8) [OPTIONAL] Implement `test_prop_canonical.py`: key-order independence + idempotent parse cycle + `sha256_hex` equality.
+- [ ] T757 (IC-9) [OPTIONAL] Implement `BeliefGrid` property: Σ=1 and non-negative after every op sequence, incl the re-uniformise-on-zero path.
+- [ ] T758 (IC-10) [OPTIONAL] Implement `Board` legality closure property: returned dirs step without raising, in-bounds, not in barriers; non-returned dirs raise `IllegalMoveError`.
+- [ ] T759 (IC-11) [OPTIONAL] Implement boundary fuzz: `TurnMessage.from_dict` raises only `(TypeError,ValueError)`; `turn_handler.process` never raises (both roles).
+- [ ] T760 (IC-7, R8, R9) [OPTIONAL] Verify property files: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P8 · Ironclad — golden wire transcripts (cut order #1, absorbs T518)
+- [ ] T761 (IC-14) [OPTIONAL] Write `test_golden_transcript.py` red against a hand-rolled 2-message fixture (fails on wire key-set drift).
+- [ ] T762 (IC-13) [OPTIONAL] Implement `scripts/make_golden_transcript.py`: FakeTransport loopback capture via `.sent` tap; self-check two runs byte-identical before writing.
+- [ ] T763 (IC-13) [OPTIONAL] Regenerate + commit real `tests/interop/golden/transcript.json`; delete the hand-rolled fixture.
+- [ ] T764 (IC-14) [OPTIONAL] Implement dual-parser replay: our `TurnMessage.from_dict` exact key-set + reference strict parser when `../reference-repo/src` present.
+- [ ] T765 (IC-13, R8, R9) [OPTIONAL] Verify golden files: ruff 0 + ≤150 line-check + coverage 100%.
+
+### P8 · Ironclad — absorbed truth guards (T430 · T463 · T465)
+- [ ] T766 (IC-15) Implement dead-config-keys guard (absorbs T430): flatten every config key path, check against a consumed-key allowlist, symmetric stale-allowlist check.
+- [ ] T767 (IC-16) Implement doc-truth CLI guard (absorbs T463): every documented `cipherchase …` fenced line parses via `cli._parser` or is marked `<!-- future -->`.
+- [ ] T768 (IC-17) Implement PLAN-inventory guard (absorbs T465): PLAN §3 module table ↔ `src/cipherchase/**/*.py` both directions.
+
+### P8 · Ironclad — CI + coverage
+- [ ] T769 (IC-12) Wire CI: `HYPOTHESIS_PROFILE=ci` in the workflow; sweep + property + golden + guard suites run every commit, no skip.
+- [ ] T770 (A6, A7, R8, R9) Verify coverage stays 100%, ruff 0, every new file ≤150 raw+logical, full-suite runtime increase ≤ +30 s.
+- [ ] T771 (A8) Verify `hypothesis` in dev group only, `uv.lock` updated, runtime `dependencies` + `real` extra unchanged.
+- **Milestone P8:** all new suites green in CI; coverage stays 100%; the tamper sweep reports ≥500 mutations with 0 escapes; the 3 truth guards and golden transcripts green.
+
+### Phenomenal coverage matrix
+Every requirement id maps to ≥1 task.
+
+| Requirement | Task ids |
+|---|---|
+| AB-1 | T629, T633, T637 |
+| AB-2 | T630, T632, T634 |
+| AB-3 | T623, T625, T628 |
+| AB-4 | T624, T626 |
+| AB-5 | T624, T627 |
+| AB-6 | T631, T633, T635 |
+| AB-7 | T636 |
+| AB-8 | T641, T642 |
+| AB-9 | T639, T643, T646 |
+| AB-10 | T640, T644 |
+| AB-11 | T638, T645 |
+| AB-12 | T648, T652 |
+| AB-13 | T647, T650, T651, T654 |
+| AB-14 | T649, T653 |
+| AB-15 | T680 |
+| AB-16 | T655, T658, T661 |
+| AB-17 | T656, T659 |
+| AB-18 | T657, T660 |
+| AB-19 | T662, T666 |
+| AB-20 | T663, T665, T668, T671 |
+| AB-21 | T664, T667, T670 |
+| AB-22 | T669, T681, T682 |
+| AB-23 | T672, T675, T679 |
+| AB-24 | T673, T676, T683 |
+| AB-25 | T674, T677, T678, T684 |
+| AB-26 | T685 |
+| AT-1 | T686 |
+| AT-2 | T687 |
+| AT-3 | T688 |
+| AT-4 | T689 |
+| AT-5 | T690 |
+| AT-6 | T636, T691 |
+| AT-7 | T692 |
+| AT-8 | T693 |
+| AT-9 | T694 |
+| AT-10 | T695 |
+| AT-11 | T696 |
+| SH-1 | T699, T704, T705, T706 |
+| SH-2 | T697 |
+| SH-3 | T698 |
+| SH-4 | T697, T700, T701, T702, T703 |
+| SH-5 | T706, T707 |
+| SH-6 | T709, T712 |
+| SH-7 | T710, T713, T714, T715, T739 |
+| SH-8 | T711 |
+| SH-9 | T718, T723 |
+| SH-10 | T717, T719 |
+| SH-11 | T720 |
+| SH-12 | T721 |
+| SH-13 | T722, T745 |
+| SH-14 | T725, T727, T741 |
+| SH-15 | T726 |
+| SH-16 | T729, T732, T742 |
+| SH-17 | T730, T731, T738 |
+| SH-18 | T733, T734, T735, T736, T737, T743 |
+| SH-19 | T698, T740 |
+| SH-20 | T716, T717, T724, T728, T744 |
+| IC-1 | T749 |
+| IC-2 | T747, T748 |
+| IC-3 | T750, T753 |
+| IC-4 | T750, T751 |
+| IC-5 | T752 |
+| IC-6 | T753 |
+| IC-7 | T755, T760 |
+| IC-8 | T756 |
+| IC-9 | T757 |
+| IC-10 | T758 |
+| IC-11 | T759 |
+| IC-12 | T754, T769 |
+| IC-13 | T762, T763, T765 |
+| IC-14 | T761, T764 |
+| IC-15 | T766 |
+| IC-16 | T767 |
+| IC-17 | T768 |
+| F6 | T648, T652, T660 |
+| F7 | T648 |
+| F8 | T660, T667, T668 |
+| F12 | T698, T712, T738, T740, T742, T752 |
+| F14 | T713, T739 |
