@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path("src")))
+from cipherchase.analysis.stats import wilson_interval  # noqa: E402
 from cipherchase.constants import Outcome  # noqa: E402
 from cipherchase.sdk.game_loop import run_game  # noqa: E402
 from cipherchase.shared.config import ConfigManager  # noqa: E402
@@ -32,7 +33,7 @@ THIEVES = {
 }
 
 
-def run_cell(cop_spec: str, thief_spec: str, games: int) -> tuple[float, float]:
+def run_cell(cop_spec: str, thief_spec: str, games: int) -> str:
     captures, turns_total = 0, 0
     for i in range(games):
         cfg = ConfigManager.load("config/police")
@@ -51,20 +52,21 @@ def run_cell(cop_spec: str, thief_spec: str, games: int) -> tuple[float, float]:
         if result.outcome is Outcome.CAPTURE:
             captures += 1
             turns_total += result.turns
+    lo, hi = wilson_interval(captures, games)
     rate = 100.0 * captures / games
-    return rate, (turns_total / captures) if captures else 0.0
+    turns = (turns_total / captures) if captures else 0.0
+    if not captures:
+        return f"0.0 [0-{hi * 100:.0f}]"
+    return f"{rate:.0f} [{lo * 100:.0f}-{hi * 100:.0f}] {turns:.1f}t"
 
 
 def main() -> int:
     games = 8 if "--fast" in sys.argv else 60
-    print(f"capture-rate % (mean turns) · N={games}/cell · randomized starts\n")
+    print(f"capture-rate % [95% Wilson CI] mean-turns · N={games}/cell · randomized starts\n")
     print("| cop \\ thief | " + " | ".join(THIEVES) + " |")
     print("|---" * (len(THIEVES) + 1) + "|")
     for cop_name, cop_spec in COPS.items():
-        row = [cop_name]
-        for thief_spec in THIEVES.values():
-            rate, turns = run_cell(cop_spec, thief_spec, games)
-            row.append(f"{rate:.1f} ({turns:.1f})" if rate else "0.0")
+        row = [cop_name] + [run_cell(cop_spec, ts, games) for ts in THIEVES.values()]
         print("| " + " | ".join(row) + " |")
     return 0
 
