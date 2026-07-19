@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 LIMIT = 150
-TARGETS = (Path("src/cipherchase"), Path("tests"), Path("scripts"))
+TARGETS = (Path("src/cipherchase"), Path("tests"), Path("scripts"), Path("analysis"))
 VIZ = (Path("viz/js"), Path("viz/test"))
 
 

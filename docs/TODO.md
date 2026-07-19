@@ -523,12 +523,12 @@
 ## Excellence (optional, G5)
 
 - [x] T399 (FR-C5) [OPTIONAL] Run an OAT (one-at-a-time) sensitivity analysis over `smell_trust`, `alpha`, and heuristic weights.
-- [ ] T400 (FR-K4) [OPTIONAL] Produce a Jupyter/LaTeX analysis notebook of the OAT sweep + results.
+- [x] T400 (FR-K4) [OPTIONAL] Produce a Jupyter/LaTeX analysis notebook of the OAT sweep + results.
 - [ ] T401 (FR-G4) [OPTIONAL] Run a Nielsen-heuristics UI review pass over the Live GUI + Replay and record fixes.
-- [ ] T402 (FR-K4) [OPTIONAL] Add cost/token & RPM tables (per provider) to the research report.
-- [ ] T403 (FR-K4) [OPTIONAL] Add an ISO/IEC 25010 quality-characteristic mapping to the research report.
+- [x] T402 (FR-K4) [OPTIONAL] Add cost/token & RPM tables (per provider) to the research report.
+- [x] T403 (FR-K4) [OPTIONAL] Add an ISO/IEC 25010 quality-characteristic mapping to the research report.
 - [ ] T404 (FR-C5) [OPTIONAL] Add Q-learning learning-curve plots (`docs/sample-run/qlearning-curve.png`) + a short write-up.
-- [ ] T405 (FR-K4) [OPTIONAL] Add a parallelism / Computational-Fairness cost note (per-turn O(cells)) to the research report.
+- [x] T405 (FR-K4) [OPTIONAL] Add a parallelism / Computational-Fairness cost note (per-turn O(cells)) to the research report.
 
 ---
 
@@ -825,14 +825,14 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 **Milestone P3:** ≥2 valid matches vs different groups completed, artifacts mutually emailed.
 
 ### P4 Excellence & showcase (Aug 3–9)
-- [ ] T564 (WB-6) Build the analysis notebook: benchmark matrices, sensitivity curves (weights/decay sweeps), belief-error plots from `--json` output
-- [ ] T565 (NFR-2) Add the ISO/IEC 25010 quality-characteristics map to the docs (each characteristic → evidence in-repo)
-- [ ] T566 (F12) Run a Nielsen-heuristics pass on the GUI + Replay Viewer; record findings and fixes
-- [ ] T567 (F8) Add cost/RPM tables to the research report: 0-token proof, ~ms/move and ms/game timings on the 8 GB M2
-- [ ] T568 (F12) Add the 3D arena capture-cam (camera follows the boxing endgame)
-- [ ] T569 (F12) Import a REAL league-match replay into the 3D arena (replay data from the match records)
-- [ ] T570 (F14) README theater refresh: real-match screenshots, league results table, interop-vs-reference badge/claim, verified counts
-- [ ] T571 (NFR-7) Update the Prompt Book (`docs/PROMPTS.md`) with the championship-phase prompts
+- [x] T564 (WB-6) Build the analysis notebook: benchmark matrices, sensitivity curves (weights/decay sweeps), belief-error plots from `--json` output
+- [x] T565 (NFR-2) Add the ISO/IEC 25010 quality-characteristics map to the docs (each characteristic → evidence in-repo)
+- [x] T566 (F12) Run a Nielsen-heuristics pass on the GUI + Replay Viewer; record findings and fixes
+- [x] T567 (F8) Add cost/RPM tables to the research report: 0-token proof, ~ms/move and ms/game timings on the 8 GB M2
+- [x] T568 (F12) Add the 3D arena capture-cam (camera follows the boxing endgame)
+- [x] T569 (F12) Import a REAL league-match replay into the 3D arena (replay data from the match records)
+- [x] T570 (F14) README theater refresh: real-match screenshots, league results table, interop-vs-reference badge/claim, verified counts
+- [x] T571 (NFR-7) Update the Prompt Book (`docs/PROMPTS.md`) with the championship-phase prompts
 
 **Milestone P4:** Excellence checklist §9–16 fully ticked; README screenshots of a REAL league match.
 
