@@ -21,8 +21,8 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Sync (dev only — no heavy/real extras; everything external is mocked)
-        run: uv sync --dev
+      - name: Sync (dev only, frozen lockfile — no heavy/real extras; externals mocked)
+        run: uv sync --dev --frozen
 
       - name: Ruff (zero failures — NFR-9)
         run: uv run ruff check .
@@ -35,3 +35,13 @@ jobs:
 
       - name: Tests + coverage ≥85% (NFR-7/10, fully mocked — no keys/servers)
         run: uv run pytest
+
+      - name: Offline self-match smoke — the grader path (0 tokens, no keys)
+        run: |
+          uv run cipherchase self-match --config config/police --out /tmp/smoke --at 2026-08-01T00:00:00Z
+          test "$(ls /tmp/smoke/*.json | wc -l)" -eq 4
+
+      - name: README test-count honesty guard (IH-28)
+        run: |
+          n="$(uv run pytest --collect-only -q 2>/dev/null | grep -oE '^[0-9]+ tests collected' | grep -oE '^[0-9]+')"
+          echo "collected: $n"; grep -q "$n tests" README.md

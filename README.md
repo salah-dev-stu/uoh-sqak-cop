@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 195 tests, 100% coverage, all externals mocked
+uv run pytest                                   # 225 tests, 100% coverage, all externals mocked
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 
@@ -105,7 +105,7 @@ with role-swapped config (`config/thief/`). *(cross-link added at publish.)*
 - `docs/PRD.md` — product requirements (FR/NFR IDs, F1–F14 + R1–R13 traceability)
 - `docs/PLAN.md` — **C4 model + UML + state machine + 11 ADRs** + the frozen interop contract (§8)
 - `docs/PRD_*.md` — the 7 per-mechanism PRDs (one per build stage)
-- `docs/TODO.md` — 405 TDD tasks + coverage matrix · `docs/PROMPTS.md` — prompt book
+- `docs/TODO.md` — 622 TDD tasks + coverage matrices · `docs/PROMPTS.md` — prompt book
 - `docs/deploy-tunnel.md` — ngrok/Localtonet runbook (F13) · `docs/RESEARCH-REPORT-Performance-Analysis.md`
 
 ## Engineering standards

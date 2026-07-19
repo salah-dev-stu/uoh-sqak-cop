@@ -34,6 +34,13 @@ def test_template_provider_is_deterministic_and_zero_token() -> None:
     assert provider.generate(CTX) == text  # deterministic
 
 
+def test_template_banks_differ_by_intent() -> None:
+    provider = TemplateProvider()
+    honest = provider.generate(TalkContext(role="thief", step=1, intent="truth"))
+    bluff = provider.generate(TalkContext(role="thief", step=1, intent="lie"))
+    assert honest != bluff  # HONEST vs BLUFF banks (F6)
+
+
 def test_build_provider_defaults_to_template() -> None:
     assert isinstance(build_provider({"provider": "template"}), TemplateProvider)
 

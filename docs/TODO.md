@@ -26,10 +26,10 @@
 - [x] T016 (NFR-11) Implement `exceptions.py` with `CipherChaseError` base + `IllegalMoveError`, `IllegalBarrierError`.
 - [x] T017 (FR-F1) Add `CryptoError` to `exceptions.py`.
 - [x] T018 (FR-G3, NFR-5) Add `GateLimitError` / `RateLimitExceeded` to `exceptions.py`.
-- [ ] T019 (FR-B3) Add `TransportError`, `TransportTimeout`, `QueueFullError` to `exceptions.py`.
-- [ ] T020 (FR-I1) Add `ConfigError` and `HandshakeError` to `exceptions.py`.
-- [ ] T021 (FR-D4) Add `ProviderUnavailable` to `exceptions.py`.
-- [ ] T022 (FR-H2) Add `IllegalTransition` to `exceptions.py`.
+- [x] T019 (FR-B3) Add `TransportError`, `TransportTimeout`, `QueueFullError` to `exceptions.py`.
+- [x] T020 (FR-I1) Add `ConfigError` and `HandshakeError` to `exceptions.py`.
+- [x] T021 (FR-D4) Add `ProviderUnavailable` to `exceptions.py`.
+- [x] T022 (FR-H2) Add `IllegalTransition` to `exceptions.py`.
 - [x] T023 (NFR-6) Write failing test `tests/shared/test_version.py` asserting `VERSION == "1.00"`.
 - [x] T024 (NFR-6) Write failing test asserting `check_compatible("1.00")` passes and `check_compatible("2.00")` raises.
 - [x] T025 (NFR-6, FR-I3) Implement `shared/version.py` with single-sourced `VERSION = "1.00"` and `check_compatible(other)` startup guard.
@@ -56,11 +56,11 @@
 - [x] T046 (NFR-12) Add a CI/secret-scan note + `config/*/.env` ignore entries to `.gitignore`.
 - [x] T047 (NFR-8) Reuse HW6 `scripts/check_file_lines.py` (raw + logical line counter) into `scripts/`.
 - [ ] T048 (NFR-8) Write failing test `tests/test_line_limits.py` invoking `check_file_lines.py` over `src/` + `tests/` and asserting exit 0.
-- [ ] T049 (NFR-3) Write failing test `tests/shared/test_gatekeeper.py` asserting `ApiGatekeeper.execute(callable, service=, action=)` returns the callable result and records a ledger event.
+- [x] T049 (NFR-3) Write failing test `tests/shared/test_gatekeeper.py` asserting `ApiGatekeeper.execute(callable, service=, action=)` returns the callable result and records a ledger event.
 - [ ] T050 (NFR-3) Reuse HW6 `ApiGatekeeper` typed methods (`google_send`, `run_subprocess`, `http_request`) into `shared/gatekeeper.py`.
-- [ ] T051 (NFR-3) Implement the `ApiGatekeeper.execute(callable, *, service, action)` façade (ADR-004) routing to the typed method + ledger record.
-- [ ] T052 (FR-G2, NFR-3) Reuse HW6 `GmailApiSender` (real `gmail.send` OAuth, injectable backend) into `infra/email_sender.py` skeleton.
-- [ ] T053 (FR-D4, NFR-3) Reuse HW6 `ClaudeCliProvider` (API-key-stripped subprocess) into `infra/llm_provider.py` skeleton.
+- [x] T051 (NFR-3) Implement the `ApiGatekeeper.execute(callable, *, service, action)` façade (ADR-004) routing to the typed method + ledger record.
+- [x] T052 (FR-G2, NFR-3) Reuse HW6 `GmailApiSender` (real `gmail.send` OAuth, injectable backend) into `infra/email_sender.py` skeleton.
+- [x] T053 (FR-D4, NFR-3) Reuse HW6 `ClaudeCliProvider` (API-key-stripped subprocess) into `infra/llm_provider.py` skeleton.
 - [x] T054 (NFR-14) Reuse HW6 `.github/workflows/ci.yml` targeting Python 3.13.
 - [x] T055 (NFR-14, NFR-9) Add a CI job step running `uv run ruff check` (must be 0).
 - [x] T056 (NFR-14, NFR-8) Add a CI job step running `check_file_lines.py` (≤150 raw+logical).
@@ -160,7 +160,7 @@
 - [ ] T126 (FR-B3, NFR-7) Write failing error test `test_malformed_message_not_enqueued`: bad dict → `{"ok": False}`, queue empty.
 - [x] T127 (FR-B3, NFR-5) Implement `Inboxes` container (4 bounded `queue.Queue`, `maxsize` from config) with blocking `put` (backpressure) + `drain`.
 - [x] T128 (FR-B1, NFR-11) Implement `build_peer_server(role, inboxes)` reading `host`/`port` from config, returning configured `FastMCP` (no `mcp.run` inside builder).
-- [x] T129 (FR-B2, FR-B3) Implement the 4 `@mcp.tool`s (`negotiate`/`receive_turn`/`submit_audit`/`receive_control`), each validate-shape → enqueue → ack `(message: dict) -> dict`.
+- [ ] T129 (FR-B2, FR-B3) Implement the 4 `@mcp.tool`s (`negotiate`/`receive_turn`/`submit_audit`/`receive_control`), each validate-shape → enqueue → ack `(message: dict) -> dict`.
 - [x] T130 (NFR-5) Write test `test_queue_overflow_is_fifo_not_drop`: push `maxsize+1`, assert backpressure + FIFO + zero loss.
 - [x] T131 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `infra/mcp_server.py` and its test.
 
@@ -168,7 +168,7 @@
 - [x] T132 (FR-B3, NFR-7) Write failing happy test `tests/infra/test_mcp_client.py`: `send_turn`/`exchange_agreement`/`exchange_audit` call the opponent URL; `poll_turn`/`drain_inboxes` read local queues.
 - [ ] T133 (NFR-3, NFR-7) Write failing test `test_every_outbound_call_routes_through_gatekeeper`: each `send_*`/`exchange_*` goes through `ApiGatekeeper.execute(service="mcp", action=<tool>)`.
 - [x] T134 (FR-B3, NFR-7) Write failing error test `test_rpc_timeout_maps_to_transport_timeout`: outbound past `rpc_timeout_s` raises `TransportTimeout`.
-- [x] T135 (FR-B3, NFR-11) Implement `McpTransport(opponent_url, inboxes)` with `exchange_agreement`, `send_turn`, `send_control`, `exchange_audit` (all gatekept, URL from config).
+- [ ] T135 (FR-B3, NFR-11) Implement `McpTransport(opponent_url, inboxes)` with `exchange_agreement`, `send_turn`, `send_control`, `exchange_audit` (all gatekept, URL from config).
 - [x] T136 (FR-B3) Implement inbound-read methods `poll_turn`, `poll_control`, `drain_inboxes` (non-network, non-blocking on `timeout=None`).
 - [ ] T137 (NFR-3) Wrap every outbound MCP call in `ApiGatekeeper.execute(..., service="mcp", action=<tool>)`.
 - [x] T138 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `infra/mcp_client.py` and its test.
@@ -210,7 +210,7 @@
 ### `domain/belief.py` — Bayesian belief map (FR-C2)
 - [x] T162 (FR-C2, NFR-7) Write failing happy test `tests/domain/test_belief.py`: uniform prior `1/49`; `observe_smell` shifts mass to high-τ cells and stays normalized (Σ=1±ε).
 - [x] T163 (FR-C2, NFR-7) Write failing happy test: `diffuse` conserves total mass on a bounded board WITH barriers (Σ before == Σ after).
-- [x] T164 (FR-C2, NFR-7) Write failing happy test: `most_likely` argmax with DETERMINISTIC seeded tie-break then `(row,col)` order.
+- [ ] T164 (FR-C2, NFR-7) Write failing happy test: `most_likely` argmax with DETERMINISTIC seeded tie-break then `(row,col)` order.
 - [x] T165 (FR-C2, NFR-7) Write failing error test: excluding all cells → uniform-live fallback (`fallback` path), never divide-by-zero.
 - [ ] T166 (FR-C2, NFR-11) Implement `BeliefGrid.__init__(size, smell_trust, alpha, rng)` (config-driven, validate ranges → `ConfigError`).
 - [x] T167 (FR-C2) Implement `observe_smell(smell_cells)` Bayesian likelihood blend `L=smell_trust·τ+(1−smell_trust)/N` + renormalize.
@@ -234,7 +234,7 @@
 - [ ] T181 (FR-C3, NFR-7) Write failing error/edge test: a self-trapping barrier candidate is rejected (cop stays connected to thief region).
 - [x] T182 (FR-C3, NFR-11) Implement greedy Manhattan movement scoring `−manhattan(c',t)+w_center·(−manhattan(c',center))+w_belief·mass_at(c')` (weights from config).
 - [x] T183 (FR-C3, NFR-2) Extract BFS `reach(from_cell, barriers, HORIZON)` + `splits_region` into `strategy/reach.py` (shared, avoids dup, keeps ≤150).
-- [x] T184 (FR-C3) Implement barrier heuristic: `gain(q)=|R0|−|Rq|` (+ `cut_bonus`), `score_barrier=gain−λ·manhattan(q,t)`, place only if `max(gain)≥min_gain` and not self-trapping.
+- [ ] T184 (FR-C3) Implement barrier heuristic: `gain(q)=|R0|−|Rq|` (+ `cut_bonus`), `score_barrier=gain−λ·manhattan(q,t)`, place only if `max(gain)≥min_gain` and not self-trapping.
 - [x] T185 (FR-C3) Implement `_decide_move` returning step + optional `barrier_cell` (capture-by-boxing emerges when `reach(t)→{t}`).
 - [ ] T186 (FR-A3) Write test: `max_barriers` exhausted → barrier disabled, still returns a legal move (graceful degrade).
 - [x] T187 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `police_heuristic.py`, `reach.py`, and tests.
@@ -244,7 +244,7 @@
 - [x] T189 (FR-C3, NFR-7) Write failing happy test `tests/strategy/test_thief_brain.py`: chooses the legal move that INCREASES distance from `danger` when one exists.
 - [ ] T190 (FR-C3, NFR-7) Write failing happy test: prefers the higher-degree (more-exit) cell when distances tie.
 - [ ] T191 (FR-C3, NFR-7) Write failing error test: no legal move → `STAY` + `fallback=True`.
-- [x] T192 (FR-C3, NFR-11) Implement evasion scoring `w_dist·dist + w_exits·exits + w_scent·(−own_scent) − w_risk·risk` (weights from config), seeded tie-break.
+- [ ] T192 (FR-C3, NFR-11) Implement evasion scoring `w_dist·dist + w_exits·exits + w_scent·(−own_scent) − w_risk·risk` (weights from config), seeded tie-break.
 - [x] T193 (FR-C3) Implement `_pick_move` (pure move, no barriers; thief maintains its own symmetric `BeliefGrid` over the cop).
 - [x] T194 (NFR-9, NFR-8) `ruff` 0 + line-check ≤150 on `thief_heuristic.py` and its test.
 - [x] T195 (NFR-10) `pytest --cov` on thief heuristic ≥85%.
@@ -412,7 +412,7 @@
 ### `report/schemas.py` + `report/artifacts.py` — 4 artifacts (FR-G1, F11)
 - [x] T313 (FR-G1, NFR-7) Write `tests/report/test_artifacts.py` schema test: `declaration_<id>.json` builder emits exactly its top-level keys.
 - [x] T314 (FR-G1, NFR-7) Write schema test: `config_<id>_g<NN>.json` carries the signed `game.json` body + matching `config_sha256` + zero-padded `sub_game`.
-- [x] T315 (FR-G1, NFR-7) Write schema test: `log_<id>_g<NN>.json` carries `records[{step,sender,payload,nonce,commit}]` + `summary` + `mutual_agreement`.
+- [ ] T315 (FR-G1, NFR-7) Write schema test: `log_<id>_g<NN>.json` carries `records[{step,sender,payload,nonce,commit}]` + `summary` + `mutual_agreement`.
 - [x] T316 (FR-G1, NFR-7) Write schema test: `result_<id>.json` carries `sub_games[{sub_game,outcome,scores}]` + `final_result` + `mutual_agreement`.
 - [x] T317 (FR-G1, F11, NFR-7) Write test: `game_uid` shared + `game_id` distinct across all four artifacts.
 - [x] T318 (FR-G1) Implement `schemas.py` (schema names + versions constants).
@@ -615,87 +615,87 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 ### P0 Integrity hardening (Jul 19–24) — PRD_integrity_hardening
 
 #### P0.a Integrity fixes (real bugs)
-- [ ] T406 (IH-1) Write failing regression test: every sealed record's `payload["state"]["barriers"]` equals the engine barrier set at that step; ≥1 cop record non-empty when a barrier was placed
-- [ ] T407 (IH-1) Add `OwnState.with_barriers`; both movers seal against decision-time barriers in `game_loop`; cop calls `with_barrier` on placement; engine local stays single truth
-- [ ] T408 (IH-2) Write failing domain+engine tests pinning the decay→deposit turn order (fresh deposit undecayed; observed peak = `min(1.0, center_intensity + residue)`)
-- [ ] T409 (IH-2) Reorder `run_game` to `decay_all()` then `deposit()`; document canonical turn order in `smell.py` docstring
+- [x] T406 (IH-1) Write failing regression test: every sealed record's `payload["state"]["barriers"]` equals the engine barrier set at that step; ≥1 cop record non-empty when a barrier was placed
+- [x] T407 (IH-1) Add `OwnState.with_barriers`; both movers seal against decision-time barriers in `game_loop`; cop calls `with_barrier` on placement; engine local stays single truth
+- [x] T408 (IH-2) Write failing domain+engine tests pinning the decay→deposit turn order (fresh deposit undecayed; observed peak = `min(1.0, center_intensity + residue)`)
+- [x] T409 (IH-2) Reorder `run_game` to `decay_all()` then `deposit()`; document canonical turn order in `smell.py` docstring
 - [ ] T410 (IH-3) Write failing tests: `max_moves < survival_threshold` config → `run_game` returns `TIE`; `ConfigManager.load` on such a dir → `ConfigError`
 - [ ] T411 (IH-3) Change loop outcome default to `Outcome.TIE`; add `max_moves >= survival_threshold` validation in `ConfigManager.load`
-- [ ] T412 (IH-4) Write failing test: `absorb` on hostile dict (malformed keys, out-of-board, negative/huge values) drops/clamps silently, never raises
-- [ ] T413 (IH-4, F7) Harden `SmellField.absorb`: `parse_cell_key` codec, skip malformed/out-of-board, clamp to `[0,1]`, apply `pheromones.absorb_gain`
+- [x] T412 (IH-4) Write failing test: `absorb` on hostile dict (malformed keys, out-of-board, negative/huge values) drops/clamps silently, never raises
+- [x] T413 (IH-4, F7) Harden `SmellField.absorb`: `parse_cell_key` codec, skip malformed/out-of-board, clamp to `[0,1]`, apply `pheromones.absorb_gain`
 
 #### P0.b Wire the truth — F6 / F11 / F5 real in the runnable path
-- [ ] T414 (IH-5, F6) Write failing tests: hints appear on `every_n_steps` cadence; `lie_probability` 1.0/0.0 drives committed `intent`; template mode spawns no subprocess (0 tokens)
-- [ ] T415 (IH-5, F6) Wire TrashTalk into `game_loop`: build provider+`TrashTalk` from `[trash_talk]`/`[llm]`, replace `decision` with real intent+hint before sealing, `SealBook.seal` gains non-hashed `extra={"hint": ...}`
+- [x] T414 (IH-5, F6) Write failing tests: hints appear on `every_n_steps` cadence; `lie_probability` 1.0/0.0 drives committed `intent`; template mode spawns no subprocess (0 tokens)
+- [x] T415 (IH-5, F6) Wire TrashTalk into `game_loop`: build provider+`TrashTalk` from `[trash_talk]`/`[llm]`, replace `decision` with real intent+hint before sealing, `SealBook.seal` gains non-hashed `extra={"hint": ...}`
 - [ ] T416 (IH-5, NFR-8) Pre-emptively split `sdk/loop_support.py` (talk/belief/frame helpers) so `game_loop.py` and helper both stay ≤150 raw+logical
-- [ ] T417 (IH-6) Write failing determinism test: same config ⇒ byte-identical `records` (template mode); different `[play].seed` ⇒ ≥1 differing intent draw
-- [ ] T418 (IH-6, NFR-11) Seed `rng = random.Random(cfg.private["play"]["seed"])`; thread into TrashTalk and brain params (P2 consumes); scope determinism claim to template mode
-- [ ] T419 (IH-7, F11) Write failing tests: fake backend + `enabled=true` ⇒ one gated send with 4 canonical JSON attachments + templated subject; `enabled=false` ⇒ never called; ledger shows `gmail/send`
-- [ ] T420 (IH-7, F11) Implement email step in `SimulationSdk.write_reports` honoring `[email].enabled`/`subject_template`; real backend only via `scripts/send_sample_report.py`
-- [ ] T421 (IH-8, F5) Write failing tests: emitted declaration artifact contains `signed_declaration` that `verify_declaration` passes, with sysinfo keys and `version == VERSION`; subprocess mocked, ledger records it
-- [ ] T422 (IH-8, F5) Embed the signed Step-0 body: `_assemble` calls `peer_declaration.build_declaration`; git commit via env var → gatekept `git rev-parse` → `"unknown"`; `artifacts.build_declaration` gains `signed_declaration` kwarg
-- [ ] T423 (IH-8, F5) Regenerate `docs/sample-run/` with the new declaration artifact shape (same commit)
+- [x] T417 (IH-6) Write failing determinism test: same config ⇒ byte-identical `records` (template mode); different `[play].seed` ⇒ ≥1 differing intent draw
+- [x] T418 (IH-6, NFR-11) Seed `rng = random.Random(cfg.private["play"]["seed"])`; thread into TrashTalk and brain params (P2 consumes); scope determinism claim to template mode
+- [x] T419 (IH-7, F11) Write failing tests: fake backend + `enabled=true` ⇒ one gated send with 4 canonical JSON attachments + templated subject; `enabled=false` ⇒ never called; ledger shows `gmail/send`
+- [x] T420 (IH-7, F11) Implement email step in `SimulationSdk.write_reports` honoring `[email].enabled`/`subject_template`; real backend only via `scripts/send_sample_report.py`
+- [x] T421 (IH-8, F5) Write failing tests: emitted declaration artifact contains `signed_declaration` that `verify_declaration` passes, with sysinfo keys and `version == VERSION`; subprocess mocked, ledger records it
+- [x] T422 (IH-8, F5) Embed the signed Step-0 body: `_assemble` calls `peer_declaration.build_declaration`; git commit via env var → gatekept `git rev-parse` → `"unknown"`; `artifacts.build_declaration` gains `signed_declaration` kwarg
+- [x] T423 (IH-8, F5) Regenerate `docs/sample-run/` with the new declaration artifact shape (same commit)
 
 #### P0.c Gatekeeper for real (R3)
-- [ ] T424 (IH-9, NFR-3) Write failing tests: `ClaudeCliProvider` without gate → `TypeError`; spy-gate self-match shows every external call through `execute()`
-- [ ] T425 (IH-9, NFR-3) Construct `ApiGatekeeper.from_config` once per match in `sdk.py`; thread into `run_game`/Gmail/git probe; drop the `gate=None` ungated branch in `ClaudeCliProvider`; `TemplateProvider` stays gate-free (documented)
+- [x] T424 (IH-9, NFR-3) Write failing tests: `ClaudeCliProvider` without gate → `TypeError`; spy-gate self-match shows every external call through `execute()`
+- [x] T425 (IH-9, NFR-3) Construct `ApiGatekeeper.from_config` once per match in `sdk.py`; thread into `run_game`/Gmail/git probe; drop the `gate=None` ungated branch in `ClaudeCliProvider`; `TemplateProvider` stays gate-free (documented)
 - [ ] T426 (IH-10, NFR-3) Write failing tests: each transport send appends an `mcp/<tool>` ledger event; exhausted bucket → `GateLimitError` after configured retries (backoff via injected sleep)
 - [ ] T427 (IH-10, NFR-3) Make `McpTransport` gate mandatory; `_send` = `gate.execute(..., service="mcp", action=tool)`; timeout from `network` config at construction sites
-- [ ] T428 (IH-11) Write failing test: log artifact contains `gatekeeper_ledger` whose entry count equals spy-counted external calls; offline template run still non-absent
-- [ ] T429 (IH-11) Flush `gate.ledger` into the log artifact via `report/artifacts.build_log`
+- [x] T428 (IH-11) Write failing test: log artifact contains `gatekeeper_ledger` whose entry count equals spy-counted external calls; offline template run still non-absent
+- [x] T429 (IH-11) Flush `gate.ledger` into the log artifact via `report/artifacts.build_log`
 
 #### P0.d Config truth (R4/R11) — every key read or removed
 - [ ] T430 (IH-12, NFR-11) Write the "no dead keys" test: walk `game.toml`/`game.json`/`rate_limits.json` against an explicit consumed-key allowlist; new unconsumed key fails CI
-- [ ] T431 (IH-12) Wire `[belief].alpha` into every `BeliefGrid` construction; remove the `0.85` constructor default; test `alpha=1.0` ⇒ `diffuse` identity
-- [ ] T432 (IH-12) Wire `pheromones.min_center_intensity` as `min_center` at both `SmellField` construction sites; remove the `1e-3` default
-- [ ] T433 (IH-12, IH-4) Wire `pheromones.absorb_gain` onto `SmellField` at construction (consumed by the hardened `absorb`)
-- [ ] T434 (IH-12) Wire `[llm].step_deadline_seconds` as provider `timeout` in `build_provider`; remove the `8.0` default; test with a slow fake
+- [x] T431 (IH-12) Wire `[belief].alpha` into every `BeliefGrid` construction; remove the `0.85` constructor default; test `alpha=1.0` ⇒ `diffuse` identity
+- [x] T432 (IH-12) Wire `pheromones.min_center_intensity` as `min_center` at both `SmellField` construction sites; remove the `1e-3` default
+- [x] T433 (IH-12, IH-4) Wire `pheromones.absorb_gain` onto `SmellField` at construction (consumed by the hardened `absorb`)
+- [x] T434 (IH-12) Wire `[llm].step_deadline_seconds` as provider `timeout` in `build_provider`; remove the `8.0` default; test with a slow fake
 - [ ] T435 (IH-12) Wire `[network].rpc_timeout_s` into `McpTransport` construction sites; remove the `30.0` default (retired/aliased by P1 key set)
-- [ ] T436 (IH-12) Wire `[gui].cell_px` into `gui/window.py` cell rendering
-- [ ] T437 (IH-12) Wire `[paths].logs_dir` as the CLI `--out` default (resolved after config load); kill the `"logs"` literal
-- [ ] T438 (IH-12) REMOVE `[paths].log_filename` from both `game.toml` — `report/emit.py` stays the single filename authority; note in PLAN §3
-- [ ] T439 (IH-12) Wire `[play].step_speed_seconds` into the GUI live loop (or remove with a doc note) per the GUI truth pass
-- [ ] T440 (IH-13, NFR-4, NFR-5) Write failing threading tests: `concurrent_requests=1` ⇒ two blocking calls never overlap (event flags); `queue_depth=1` ⇒ third simultaneous caller gets `GateLimitError("queue overflow")`
-- [ ] T441 (IH-13, NFR-4, NFR-5) Implement `BoundedSemaphore` + waiting-count queue guard in `shared/gatekeeper.py`; `from_config` reads both keys; existing suite stays green
+- [x] T436 (IH-12) Wire `[gui].cell_px` into `gui/window.py` cell rendering
+- [x] T437 (IH-12) Wire `[paths].logs_dir` as the CLI `--out` default (resolved after config load); kill the `"logs"` literal
+- [x] T438 (IH-12) REMOVE `[paths].log_filename` from both `game.toml` — `report/emit.py` stays the single filename authority; note in PLAN §3
+- [x] T439 (IH-12) Wire `[play].step_speed_seconds` into the GUI live loop (or remove with a doc note) per the GUI truth pass
+- [x] T440 (IH-13, NFR-4, NFR-5) Write failing threading tests: `concurrent_requests=1` ⇒ two blocking calls never overlap (event flags); `queue_depth=1` ⇒ third simultaneous caller gets `GateLimitError("queue overflow")`
+- [x] T441 (IH-13, NFR-4, NFR-5) Implement `BoundedSemaphore` + waiting-count queue guard in `shared/gatekeeper.py`; `from_config` reads both keys; existing suite stays green
 - [ ] T442 (IH-14) Write failing tests: config missing `w_dist` → `ConfigError("w_dist")`; `NaN`/`±inf`/non-numeric → `ConfigError`; valid config = golden-game identical decisions
 - [ ] T443 (IH-14, NFR-11) Implement `BrainBase.param(key)` (no default) + per-class `PARAM_KEYS` validation in `strategy/factory.load_brain`
-- [ ] T444 (IH-15) Write failing test: config `max_barriers=0` ⇒ brain never proposes and engine never places a barrier
-- [ ] T445 (IH-15, NFR-11) Thread `movement_and_barriers.max_barriers` into brain params; delete the `params.get("max_barriers", 14)` literal
+- [x] T444 (IH-15) Write failing test: config `max_barriers=0` ⇒ brain never proposes and engine never places a barrier
+- [x] T445 (IH-15, NFR-11) Thread `movement_and_barriers.max_barriers` into brain params; delete the `params.get("max_barriers", 14)` literal
 
 #### P0.e Duplication (R2)
-- [ ] T446 (IH-16) Write failing tests: `on_frame` count == `result.turns`; each frame's cop/thief/barriers agree with same-step sealed records; `on_frame=None` output unchanged
-- [ ] T447 (IH-16, NFR-2) Add the `on_frame` hook to `run_game`; collapse `scripts/make_replay_data.py` to config→`run_game(cfg, on_frame=frames.append)`→write; DELETE the cloned engine block
-- [ ] T448 (IH-16) Regenerate `docs/sample-run/replay3d.json` from the unified engine (same commit as the IH-2 ordering fix)
-- [ ] T449 (IH-17) Write failing tests: `cell_key`/`parse_cell_key` round-trip property over the board; malformed inputs raise `ValueError`
-- [ ] T450 (IH-17, NFR-2) Implement the codec in `domain/canonical.py`; switch all 4+ encode/decode sites; existing suites stay green
-- [ ] T451 (IH-18, NFR-2) Delete `PoliceBrain._w` / `ThiefBrain._weight` in favor of `BrainBase.param()`; verify no private copies remain
+- [x] T446 (IH-16) Write failing tests: `on_frame` count == `result.turns`; each frame's cop/thief/barriers agree with same-step sealed records; `on_frame=None` output unchanged
+- [x] T447 (IH-16, NFR-2) Add the `on_frame` hook to `run_game`; collapse `scripts/make_replay_data.py` to config→`run_game(cfg, on_frame=frames.append)`→write; DELETE the cloned engine block
+- [x] T448 (IH-16) Regenerate `docs/sample-run/replay3d.json` from the unified engine (same commit as the IH-2 ordering fix)
+- [x] T449 (IH-17) Write failing tests: `cell_key`/`parse_cell_key` round-trip property over the board; malformed inputs raise `ValueError`
+- [x] T450 (IH-17, NFR-2) Implement the codec in `domain/canonical.py`; switch all 4+ encode/decode sites; existing suites stay green
+- [x] T451 (IH-18, NFR-2) Delete `PoliceBrain._w` / `ThiefBrain._weight` in favor of `BrainBase.param()`; verify no private copies remain
 
 #### P0.f Version check live (R6)
-- [ ] T452 (IH-19, NFR-6) Write failing tests: config dir with `"version": "2.00"` → `ConfigManager.load` raises `IncompatibleVersionError`; CLI exits non-zero with the message
-- [ ] T453 (IH-19, NFR-6) Call `check_compatible` on shared+private versions inside `ConfigManager.load` (single wiring point for every entry path)
+- [x] T452 (IH-19, NFR-6) Write failing tests: config dir with `"version": "2.00"` → `ConfigManager.load` raises `IncompatibleVersionError`; CLI exits non-zero with the message
+- [x] T453 (IH-19, NFR-6) Call `check_compatible` on shared+private versions inside `ConfigManager.load` (single wiring point for every entry path)
 
 #### P0.g Doc-truth reconciliation — one task per false claim
-- [ ] T454 (IH-20) Fix README "195 tests" to the verified collected count (kept honest by the IH-28 guard)
-- [ ] T455 (IH-20) Scope the README determinism claim to `provider="template"` mode
+- [x] T454 (IH-20) Fix README "195 tests" to the verified collected count (kept honest by the IH-28 guard)
+- [x] T455 (IH-20) Scope the README determinism claim to `provider="template"` mode
 - [ ] T456 (IH-20) Verify README §2 gatekeeper claim is true post-IH-9/10; add §5 footnote that the wire flow aligns to reference choreography in P1 while audit semantics stand
-- [ ] T457 (IH-21) Ship `py.typed` marker + hatchling package-data line
-- [ ] T458 (IH-21) Amend PLAN §3 + TODO T231 wording: talk providers live in `infra/llm_provider.py`, not `strategy/talk_providers.py`
-- [ ] T459 (IH-21) Amend PLAN: `strategy/qlearning.py` marked "designed, not shipped" (README §4 wording kept)
-- [ ] T460 (IH-21) Annotate PLAN §3 rows `peer/runtime.py`, `run_peer`/`run_series`, `peer/controls.py`, `peer/control_link.py` as "(P1)" until P1 lands
-- [ ] T461 (IH-21) Amend PLAN §3 to the real 4-module GUI layout; fix `strategy/reach.py` claim to "BFS single-sourced in `domain/rules.py`"
-- [ ] T462 (IH-22) Put the truthful interim line in `docs/deploy-tunnel.md` now; rewrite to the real `cipherchase peer` command in the same commit as the P1 subcommand
+- [x] T457 (IH-21) Ship `py.typed` marker + hatchling package-data line
+- [x] T458 (IH-21) Amend PLAN §3 + TODO T231 wording: talk providers live in `infra/llm_provider.py`, not `strategy/talk_providers.py`
+- [x] T459 (IH-21) Amend PLAN: `strategy/qlearning.py` marked "designed, not shipped" (README §4 wording kept)
+- [x] T460 (IH-21) Annotate PLAN §3 rows `peer/runtime.py`, `run_peer`/`run_series`, `peer/controls.py`, `peer/control_link.py` as "(P1)" until P1 lands
+- [x] T461 (IH-21) Amend PLAN §3 to the real 4-module GUI layout; fix `strategy/reach.py` claim to "BFS single-sourced in `domain/rules.py`"
+- [x] T462 (IH-22) Put the truthful interim line in `docs/deploy-tunnel.md` now; rewrite to the real `cipherchase peer` command in the same commit as the P1 subcommand
 - [ ] T463 (IH-22) Add the doc-truth CLI test: every fenced `cipherchase …` invocation in README + deploy-tunnel parses via `_parser().parse_args` (or is marked future)
-- [ ] T464 (IH-23) Regenerate PLAN §3 module inventory to match `src/cipherchase/**` exactly (expectimax, brains seam, real gui/peer layouts, log_filename removal note)
+- [x] T464 (IH-23) Regenerate PLAN §3 module inventory to match `src/cipherchase/**` exactly (expectimax, brains seam, real gui/peer layouts, log_filename removal note)
 - [ ] T465 (IH-23) Add the docs-truth inventory test: every PLAN §3 module exists on disk (allowlist "(P1)" rows); no source module absent from the inventory
-- [ ] T466 (IH-24) Uncheck false `[x]` items T164, T184, T192 (→ P2), T309 (→ IH-13), T330 (→ IH-7) with corrected wording and pointers
-- [ ] T467 (IH-24) Re-scope/annotate T183 (BFS single-sourced), T225 (actual provider design), T234 (runtime wiring = IH-9), T236 (plain Bernoulli wording)
+- [x] T466 (IH-24) Uncheck false `[x]` items T164, T184, T192 (→ P2), T309 (→ IH-13), T330 (→ IH-7) with corrected wording and pointers
+- [x] T467 (IH-24) Re-scope/annotate T183 (BFS single-sourced), T225 (actual provider design), T234 (runtime wiring = IH-9), T236 (plain Bernoulli wording)
 - [ ] T468 (IH-25, NFR-8) Split `viz/index.html`: extract `viz/js/scene.js`, `viz/js/frames.js`, `viz/js/controls.js` (each ≤150, single purpose); `index.html` ≤150 markup+imports; manual browser smoke before/after
 - [ ] T469 (IH-25, NFR-8) Extend `scripts/check_file_lines.py` to cover `viz/*.html` + `viz/js/*.js` (vendor excluded); checker itself stays ≤150
 
 #### P0.h CI hardening
-- [ ] T470 (IH-26, NFR-13, NFR-14) Switch CI to `uv sync --dev --frozen`; ensure `uv.lock` is tracked
-- [ ] T471 (IH-27, NFR-14) Add the self-match smoke CI step: run `cipherchase self-match`, assert exactly 4 JSON artifacts (exercises version check, gate, hints, signed declaration, ledger)
-- [ ] T472 (IH-28, NFR-14) Add the tests-count honesty CI guard: `pytest --collect-only` count vs README's stated number; mismatch fails the build
+- [x] T470 (IH-26, NFR-13, NFR-14) Switch CI to `uv sync --dev --frozen`; ensure `uv.lock` is tracked
+- [x] T471 (IH-27, NFR-14) Add the self-match smoke CI step: run `cipherchase self-match`, assert exactly 4 JSON artifacts (exercises version check, gate, hints, signed declaration, ledger)
+- [x] T472 (IH-28, NFR-14) Add the tests-count honesty CI guard: `pytest --collect-only` count vs README's stated number; mismatch fails the build
 
 **Milestone P0:** Audit re-run finds 0 of the §2.3 items; docs contain no false claim.
 

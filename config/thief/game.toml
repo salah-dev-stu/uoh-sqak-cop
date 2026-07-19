@@ -19,26 +19,16 @@ w_center = 0.5
 w_belief = 1.0
 w_dist = 1.0
 w_exits = 0.3
-w_scent = 0.5
 w_risk = 1.0
 lambda_barrier = 0.2
 min_gain = 1
-horizon = 2
 
 [trash_talk]
 provider = "template"
 every_n_steps = 3
 lie_probability = 0.4
 
-[gui]
-cell_px = 64
-
-[paths]
-logs_dir = "logs"
-log_filename = "log_{game_id}_g{nn:02d}.json"
-
 [play]
-step_speed_seconds = 0.5
 seed = 12345
 
 [network]
@@ -49,15 +39,13 @@ rpc_timeout_s = 30
 queue_maxsize = 100
 
 [llm]
-provider = "template"
 model = "template"
 version = "n/a"
+executable = "claude"
 step_deadline_seconds = 8.0
-short_prompt_threshold_seconds = 2.0
 
 [email]
 recipient = "rmisegal+uoh26finalgame@gmail.com"
 sender = ""
-mode = "attachment"
 enabled = false
 subject_template = "CipherChase report {game_id}"

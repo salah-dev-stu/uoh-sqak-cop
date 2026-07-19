@@ -16,9 +16,17 @@ from typing import Any
 
 from cipherchase.exceptions import ConfigError, ProviderUnavailableError
 
-_PHRASES = {
-    "police": ["You can't hide forever.", "I'm closing in.", "Nowhere left to run."],
-    "thief": ["Catch me if you can!", "Too slow, officer.", "I'm already gone."],
+# Intent-keyed banks (F6): HONEST taunts vs BLUFF misdirection. The physical
+# board stays truthful either way — only the words may lie.
+_PHRASES: dict[str, dict[str, list[str]]] = {
+    "police": {
+        "truth": ["You can't hide forever.", "I'm closing in.", "Nowhere left to run."],
+        "lie": ["I've lost your trail completely.", "I'm searching the far corner.", "My barriers are spent."],
+    },
+    "thief": {
+        "truth": ["Catch me if you can!", "Too slow, officer.", "I'm already gone."],
+        "lie": ["I'm hiding right behind you.", "Heading north, promise.", "I'm cornered, come get me."],
+    },
 }
 
 
@@ -31,10 +39,11 @@ class TalkContext:
 
 
 class TemplateProvider:
-    """Pure-Python canned phrases — deterministic, zero tokens."""
+    """Pure-Python canned phrases — deterministic, zero tokens, intent-aware."""
 
     def generate(self, ctx: TalkContext) -> str:
-        phrases = _PHRASES.get(ctx.role, ["..."])
+        banks = _PHRASES.get(ctx.role, {"truth": ["..."], "lie": ["..."]})
+        phrases = banks.get(ctx.intent, banks["truth"])
         return phrases[ctx.step % len(phrases)]
 
 

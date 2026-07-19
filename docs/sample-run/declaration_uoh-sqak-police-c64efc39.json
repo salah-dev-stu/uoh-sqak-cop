@@ -14,5 +14,30 @@
   "links": {
     "cop": "https://github.com/uoh-sqak/uoh-sqak-cop",
     "thief": "https://github.com/uoh-sqak/uoh-sqak-thief"
+  },
+  "step0": {
+    "schema": "declaration/1.0",
+    "team": "uoh-sqak",
+    "players": [
+      "Salah Qadah:323039974",
+      "Andalus Kalash:211435797"
+    ],
+    "role": "police",
+    "git_commit": "352ee47cc922d49d9c76a12fe8b3f92952dea5e4",
+    "llm": {
+      "provider": "template",
+      "model": "template",
+      "version": "n/a"
+    },
+    "system": {
+      "os": "Darwin 25.2.0",
+      "cpu": "arm",
+      "cpu_count": 8,
+      "ram_gb": 8.6,
+      "gpu": "Apple Silicon",
+      "python": "3.13.12"
+    },
+    "version": "1.00",
+    "signature": "95cea98f748e65f89537ca722f29f36031b16d7200eeee74f50a9c202cce95ba"
   }
 }
