@@ -72,7 +72,10 @@ never processed inline. A DRY `BaseTransport` lets an in-memory `FakeTransport` 
 tests with no socket. Coordination is stateful via a **legal-transition state machine** + **deadline tracker**
 + **watchdog** (`peer/`), so a silent peer becomes a technical loss, never a hang. Every external call —
 MCP, LLM, Gmail, subprocess — is routed through one **`ApiGatekeeper.execute()`** (token-bucket + 429 retry +
-ledger).
+ledger). **Interop is proven, not claimed:** `CIPHERCHASE_INTEROP=1 uv run pytest tests/interop/ -q` plays a
+full two-process series against the **course reference implementation itself** — roles swapping, both sides'
+audits **verified** — and a fast tripwire (every commit) feeds our wire bytes to the reference's own strict
+parser, crypto verifier, and negotiation checker.
 
 ### 3. Strategy (the graded brain)
 Movement is **always algorithmic** (`strategy/`, behind a `BrainBase` seam swappable by config). The

@@ -17,6 +17,7 @@ from cipherchase.exceptions import ConfigError, IllegalMoveError
 from cipherchase.peer import summary
 from cipherchase.peer.runtime import PeerRuntime
 from cipherchase.peer.sealing import SealBook
+from cipherchase.peer.state_machine import State
 from cipherchase.peer.terms import identity_from_config, terms_from_config, validate_terms
 from cipherchase.sdk.sdk import SimulationSdk
 from cipherchase.shared.config import ConfigManager
@@ -59,6 +60,7 @@ def test_quit_control_ends_the_game_without_hanging() -> None:
 def test_illegal_brain_move_falls_back_to_hold() -> None:
     a, _b = make_pair()
     rt = PeerRuntime(role="police", cfg=_cfg(), transport=a, sub_game_number=1)
+    rt.sm.transition(State.WAITING)
     with patch.object(rt.board, "step", side_effect=IllegalMoveError("boom")):
         assert rt.take_turn(None) is None
     assert rt.book.records()[-1]["payload"]["move"] == Direction.STAY.value  # HOLD sealed
@@ -87,6 +89,7 @@ def test_loop_skips_garbage_then_processes_the_real_message() -> None:
 def test_audit_push_failure_is_suppressed_and_tamper_forfeits() -> None:
     a, _b = make_pair()
     rt = PeerRuntime(role="police", cfg=_cfg(), transport=a, sub_game_number=1)
+    rt.sm.transition(State.WAITING)
     rt.take_turn(None)
     book = SealBook()
     book.seal({"step": 1, "state": {"pos": [3, 3], "barriers": []}, "move": "N", "intent": "truth"})
@@ -138,6 +141,7 @@ def test_best_effort_control_send_and_drain() -> None:
 def test_far_barrier_suggestion_is_refused() -> None:
     a, _b = make_pair()
     rt = PeerRuntime(role="police", cfg=_cfg(), transport=a, sub_game_number=1)
+    rt.sm.transition(State.WAITING)
     with patch.object(rt.brain, "decide",
                       return_value=Decision(direction=Direction.STAY, barrier_cell=(6, 6))):
         rt.take_turn(None)

@@ -19,6 +19,7 @@ from cipherchase.infra.llm_provider import TalkContext, TemplateProvider, build_
 from cipherchase.peer import handshake, summary, turn_handler, turn_sender
 from cipherchase.peer.deadline import Deadline
 from cipherchase.peer.sealing import SealBook, sealed_spec_record
+from cipherchase.peer.state_machine import State, StateMachine
 from cipherchase.peer.watchdog import Watchdog
 from cipherchase.strategy.factory import load_brain
 from cipherchase.strategy.trash_talk import TrashTalk
@@ -60,6 +61,7 @@ class PeerRuntime:
         self.barriers: frozenset = frozenset()
         self.step_number, self.last_seen_step = 0, 0
         self.game_id, self.game_uid, self.peer_identity = "", "", {}
+        self.sm = StateMachine(State.HANDSHAKE)
         self.now = now or time.monotonic
 
     def talk_for(self, step: int) -> tuple[str, str]:
@@ -68,17 +70,28 @@ class PeerRuntime:
         return (intent if hint else "truth"), hint
 
     def take_turn(self, claim_response: dict | None) -> tuple[str, str] | None:
-        return turn_sender.take_turn(self, claim_response)
+        self.sm.transition(State.COMPUTING)
+        result = turn_sender.take_turn(self, claim_response)
+        self.sm.transition(State.COMMITTING)
+        self.sm.transition(State.WAITING)
+        return result
 
     def handle(self, wire: dict) -> turn_handler.Incoming:
         return turn_handler.process(self, wire)
 
     def run(self) -> dict[str, Any]:
+        try:
+            return self._run()
+        except Exception as exc:  # crash boundary (F9): a result, never a hung port
+            return summary.finish(self, ("error", "-"), note=repr(exc))
+
+    def _run(self) -> dict[str, Any]:
         net = self.cfg.network
         try:
             handshake.negotiate(self)
         except Exception as exc:
             return summary.finish(self, ("handshake_failed", "-"), note=str(exc))
+        self.sm.transition(State.WAITING)
         sealed_spec_record(self.book, self.cfg, self.sub_game_number)
         result = self.take_turn(None) if self.role == "thief" else None
         deadline = Deadline(net["turn_timeout_seconds"], self.now)

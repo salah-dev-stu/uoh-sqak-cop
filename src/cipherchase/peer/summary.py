@@ -18,7 +18,17 @@ from cipherchase.domain.protocol import AuditPayload
 NO_AUDIT_RESULTS = {"timeout", "stopped", "error", "quit", "opponent_quit", "handshake_failed"}
 
 
+def _fsm_step(rt: Any, target: Any) -> None:
+    """Advance the runtime FSM if legal — the terminal edge is tolerant (F9)."""
+    machine = getattr(rt, "sm", None)
+    if machine is not None and machine.can(target):
+        machine.transition(target)
+
+
 def finish(rt: Any, result: tuple[str, str], note: str = "") -> dict[str, Any]:
+    from cipherchase.peer.state_machine import State
+
+    _fsm_step(rt, State.TECHNICAL_LOSS if result[0] in NO_AUDIT_RESULTS else State.AUDIT)
     audit: dict[str, Any] = {"status": "skipped", "passed": None}
     final = result
     if result[0] not in NO_AUDIT_RESULTS:
@@ -36,11 +46,13 @@ def finish(rt: Any, result: tuple[str, str], note: str = "") -> dict[str, Any]:
                      "failed_steps": verdict["failed_steps"]}
             if not verdict["passed"]:  # iron rule: forger loses regardless of board
                 final = ("tamper_forfeit", rt.role)
+    _fsm_step(rt, State.REPORTING)
     return {
         "result": final[0], "winner": final[1], "steps": rt.step_number,
         "sub_game_number": rt.sub_game_number, "role": rt.role,
         "game_id": rt.game_id, "game_uid": rt.game_uid, "audit": audit,
         "records": rt.book.records(), "history": rt.history, "note": note,
+        "fsm": getattr(rt, "sm", None).state.name if getattr(rt, "sm", None) else "",
     }
 
 

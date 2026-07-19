@@ -10,6 +10,7 @@ from cipherchase.domain.crypto import CommitReveal
 from cipherchase.domain.protocol import TurnMessage
 from cipherchase.peer.runtime import PeerRuntime
 from cipherchase.peer.sealing import SealBook, sealed_spec_record
+from cipherchase.peer.state_machine import State
 from cipherchase.shared.config import ConfigManager
 
 CONFIG = Path(__file__).resolve().parents[2] / "config"
@@ -17,7 +18,9 @@ CONFIG = Path(__file__).resolve().parents[2] / "config"
 
 def _runtime(role: str, transport) -> PeerRuntime:
     cfg = ConfigManager.load(CONFIG / ("police" if role == "police" else "thief"))
-    return PeerRuntime(role=role, cfg=cfg, transport=transport, sub_game_number=1)
+    rt = PeerRuntime(role=role, cfg=cfg, transport=transport, sub_game_number=1)
+    rt.sm.transition(State.WAITING)  # tests drive turns directly, post-handshake
+    return rt
 
 
 def test_spec_record_is_sealed_step0() -> None:

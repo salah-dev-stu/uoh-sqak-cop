@@ -741,7 +741,7 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 - [x] T503 (LR-2.1) Rewrite `peer/handshake.py` `negotiate(rt)`: exchange signed agreement, verify, capture `peer_identity`, derive `game_id`/`game_uid`, start clock; `HandshakeError` on mismatch
 - [x] T504 (LR-3.1, F9) Write failing test `test_full_series_loopback`: two `PeerRuntime`s over FakeTransport play `num_games=2`; roles swap; both audits pass; game_uids equal
 - [x] T505 (LR-3.1, F1, F9) NEW `peer/runtime.py` `PeerRuntime`: negotiate → (thief) first turn → poll/process/respond loop → result → audit; owns state/belief/smell/book; watchdog beat; FSM phases; `run() -> summary`
-- [ ] T506 (LR-3.17, F9) Delete the commit→reveal `Orchestrator`; amend `StateMachine`: `HANDSHAKE→WAITING→COMPUTING→COMMITTING→WAITING`, remove `AWAITING_REVEAL`/`VERIFYING`, every active state →`TECHNICAL_LOSS`→`REPORTING`
+- [x] T506 (LR-3.17, F9) Delete the commit→reveal `Orchestrator`; amend `StateMachine`: `HANDSHAKE→WAITING→COMPUTING→COMMITTING→WAITING`, remove `AWAITING_REVEAL`/`VERIFYING`, every active state →`TECHNICAL_LOSS`→`REPORTING`
 - [x] T507 (LR-2.8, F9) Write failing tests `test_timeout_is_technical_win_and_skips_audit` + `test_deadline_resets_on_message`
 - [x] T508 (LR-2.8, F9) Implement timeout policy: silent opponent past `turn_timeout_seconds` ⇒ `("timeout", our_role)` technical win, artifacts emitted, audit skipped, exit 0 — never a hang
 - [ ] T509 (LR-2.7) Implement control-channel scope: receive-and-tolerate everything, send `status` on change, honor `quit`; no-op degradation without control methods
@@ -750,11 +750,11 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 - [ ] T512 (LR-3.15, F11) Extend `sdk/sdk.py` `run_peer(role, config_dir, *, transport, listener)`: validate terms → start server+transport once → `run_series` → 4 artifacts per sub-game → gatekept email; `run_self_match` untouched
 - [x] T513 (LR-3.16, F2) Add CLI subcommand `cipherchase peer --role {police,thief} --config <dir> [--out logs]` printing machine-parseable result JSON; no logic in the CLI
 - [x] T514 (LR-4) Write failing robustness tests: malformed inbound rejected at parse boundary (no deadline reset), duplicate turn idempotent via step guard, empty `smell_grid` tolerated, unknown `win_claim` type recorded, port-in-use → clean error
-- [ ] T515 (LR-4, F9) Implement the crash boundary: any unhandled loop exception → `("error", "-")`, artifacts still emitted, no hung server holding a port
+- [x] T515 (LR-4, F9) Implement the crash boundary: any unhandled loop exception → `("error", "-")`, artifacts still emitted, no hung server holding a port
 
 #### P1.e Interop proof, opponent kit, tunnel
-- [ ] T516 (LR-5, F14) Build interop fixture configs in `tmp_path`: value-aligned shared terms rendered into BOTH our schema and the reference v1.3 schema; distinct fixture ports; `/mcp` URLs; `num_games=2`; short timeouts; email off; `--stub-llm`
-- [ ] T517 (LR-5, F1, F2, F14) Write `tests/interop/test_vs_reference.py` (slow): our peer vs the ACTUAL reference peer as subprocesses; assert exit 0, full 2-sub-game series, both audits verified, roles swapped, equal `game_uid`, legal outcomes; both-role parametrized; start order swapped
+- [x] T516 (LR-5, F14) Build interop fixture configs in `tmp_path`: value-aligned shared terms rendered into BOTH our schema and the reference v1.3 schema; distinct fixture ports; `/mcp` URLs; `num_games=2`; short timeouts; email off; `--stub-llm`
+- [x] T517 (LR-5, F1, F2, F14) Write `tests/interop/test_vs_reference.py` (slow): our peer vs the ACTUAL reference peer as subprocesses; assert exit 0, full 2-sub-game series, both audits verified, roles swapped, equal `game_uid`, legal outcomes; both-role parametrized; start order swapped
 - [ ] T518 (LR-5) Capture golden transcripts from one blessed run; add fast replay tests: exact `TurnMessage` key set, negotiate shape, `payload` param, and the reference's strict `from_dict` parses every message we emit (every-commit tripwire)
 - [ ] T519 (LR-5, NFR-14) Add the CI `interop` job step (slow-marked; skipped when `uv`/reference repo absent)
 - [x] T520 (LR-6, F14) Write `docs/INTEROP-CONTRACT.md` opponent kit: tool+param names incl. the `payload` quirk, negotiate payload + terms table + example, frozen commit formula + golden vector, `TurnMessage` keys + claim semantics, audit exchange + iron rule, mermaid sequence diagram, timeout table + role swap, tunnel checklist

@@ -14,6 +14,7 @@ import pytest
 from fakes.fake_transport import make_pair
 
 from cipherchase.peer.runtime import PeerRuntime
+from cipherchase.peer.state_machine import State
 from cipherchase.shared.config import ConfigManager
 
 REFERENCE_SRC = Path(__file__).resolve().parents[3] / "reference-repo" / "src"
@@ -33,6 +34,7 @@ def _emit_our_messages() -> list[tuple[str, str, dict]]:
     cfg = ConfigManager.load(CONFIG / "thief")
     a, _b = make_pair()
     rt = PeerRuntime(role="thief", cfg=cfg, transport=a, sub_game_number=1)
+    rt.sm.transition(State.WAITING)
     rt.take_turn(None)
     rt.take_turn({"claim": [0, 0], "caught": False})
     rt.handle({"step": 3, "sender": "police", "capture_claim": list(rt.me.position)})
@@ -52,6 +54,7 @@ def test_reference_crypto_verifies_our_sealed_records() -> None:
     cfg = ConfigManager.load(CONFIG / "police")
     a, _b = make_pair()
     rt = PeerRuntime(role="police", cfg=cfg, transport=a, sub_game_number=1)
+    rt.sm.transition(State.WAITING)
     rt.take_turn(None)
     for record in rt.book.records():
         # the reference auditor re-hashes our records verbatim — byte-identical formula

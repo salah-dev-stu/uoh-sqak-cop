@@ -1,8 +1,9 @@
-"""Legal-transition state machine (FR-H2, F9).
+"""Legal-transition state machine (FR-H2, F9) — sealed-turn choreography.
 
-Only declared transitions are allowed; anything else raises. Every active state
-may fall to ``TECHNICAL_LOSS`` (silent peer / deadline / error), which still
-reports. ``REPORTING`` is terminal.
+One send per turn (PRD_league_runtime §1.1): COMPUTING→COMMITTING→WAITING; the
+old AWAITING_REVEAL/VERIFYING states died with the per-turn reveal. Every
+active state may fall to TECHNICAL_LOSS (silent peer / error), which still
+reports. REPORTING is terminal.
 """
 
 from __future__ import annotations
@@ -17,8 +18,6 @@ class State(Enum):
     WAITING = auto()
     COMPUTING = auto()
     COMMITTING = auto()
-    AWAITING_REVEAL = auto()
-    VERIFYING = auto()
     AUDIT = auto()
     REPORTING = auto()
     TECHNICAL_LOSS = auto()
@@ -27,11 +26,9 @@ class State(Enum):
 _LOSS = State.TECHNICAL_LOSS
 _LEGAL: dict[State, set[State]] = {
     State.HANDSHAKE: {State.WAITING, _LOSS},
-    State.WAITING: {State.COMPUTING, _LOSS},
+    State.WAITING: {State.COMPUTING, State.AUDIT, _LOSS},
     State.COMPUTING: {State.COMMITTING, _LOSS},
-    State.COMMITTING: {State.AWAITING_REVEAL, _LOSS},
-    State.AWAITING_REVEAL: {State.VERIFYING, _LOSS},
-    State.VERIFYING: {State.WAITING, State.AUDIT, _LOSS},
+    State.COMMITTING: {State.WAITING, _LOSS},
     State.AUDIT: {State.REPORTING, _LOSS},
     State.TECHNICAL_LOSS: {State.REPORTING},
     State.REPORTING: set(),

@@ -26,7 +26,8 @@ class ScentDecoder:
         self.radius = int(pheromones["grid_size"]) // 2
         self.emit = float(pheromones["center_intensity"])
         self.decay = float(pheromones["decay"])
-        self.falloff = float(pheromones["falloff"])
+        self.falloff = float(pheromones.get("falloff", 0.7))
+        self.min_center = float(pheromones.get("min_center_intensity", 0.0))
         self.fit_tolerance = fit_tolerance
         self.grid = BeliefGrid(size, smell_trust, alpha)
         self._prev: dict[str, float] = {}
@@ -45,6 +46,8 @@ class ScentDecoder:
             if cell is None:
                 continue
             residue = (1.0 - self.decay) * self._prev.get(key, 0.0)
+            if residue < self.min_center:  # fields cull faint cells at decay time
+                residue = 0.0
             predicted = min(1.0, residue + self._deposit_at(center, cell))
             error += abs(current.get(key, 0.0) - predicted)
         return error
