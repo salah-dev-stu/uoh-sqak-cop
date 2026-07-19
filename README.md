@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 252 tests, 100% coverage, all externals mocked
+uv run pytest                                   # 265 tests, 100% coverage, all externals mocked
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 
@@ -75,12 +75,16 @@ MCP, LLM, Gmail, subprocess — is routed through one **`ApiGatekeeper.execute()
 ledger).
 
 ### 3. Strategy (the graded brain)
-Movement is **always algorithmic** (`strategy/`, behind a `BrainBase` seam swappable by config). The **Cop**
-greedily minimises Manhattan distance to the belief peak and places barriers by a **reachability min-cut**
-heuristic (the barrier that most shrinks the thief's reachable set). The **Thief** climbs the distance/exit
-gradient away from the believed cop. Both are deterministic and cheap — aligned with **Computational
-Fairness** (a clever algorithm on an 8 GB laptop, zero tokens, beats brute force). The `game_id`/`game_uid`,
-`config_sha256`, and commit hash all share **one canonical-JSON** implementation for byte-identical interop.
+Movement is **always algorithmic** (`strategy/`, behind a `BrainBase` seam swappable by config). The
+breakthrough is the **ScentDecoder** (`domain/scent_decode.py`): a matched filter over the opponent's
+broadcast scent field — predict `τ_t = min(1,(1−ρ)τ_{t−1}+D_c)` for every candidate centre, take the best L1
+fit — which localises the opponent **exactly** from legal information, even when the trail saturates. It took
+the cop from **0% capture vs every belief-using thief to 26.7% vs strong evaders and 85–100% vs realistic
+archetypes** (measured, `scripts/benchmark_lab.py`). The **Cop** then pursues the belief peak and walls by
+**reachability min-cut**; the default **Thief** (`EvaderBrain`) adds a reachable-set term (never enter a
+shrinking pocket) and seeded tie-randomization against predictor cops. Cheap and clever — **Computational
+Fairness** on an 8 GB laptop at zero tokens. One canonical-JSON implementation backs the commit hash,
+`config_sha256`, and mutual signature for byte-identical interop.
 
 ### 4. Reinforcement learning
 The heuristic baseline is the shipped brain. **Q-learning and depth-limited expectimax** are designed as

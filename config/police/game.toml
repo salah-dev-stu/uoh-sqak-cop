@@ -14,7 +14,7 @@ alpha = 0.85
 
 [strategy]
 police_class = "cipherchase.strategy.police_heuristic:PoliceBrain"
-thief_class = "cipherchase.strategy.thief_heuristic:ThiefBrain"
+thief_class = "cipherchase.strategy.thief_evader_v2:EvaderBrain"
 w_center = 0.5
 w_belief = 1.0
 w_dist = 1.0

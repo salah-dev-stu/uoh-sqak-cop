@@ -11,9 +11,9 @@ import random
 import time
 from typing import Any
 
-from cipherchase.domain.belief import BeliefGrid
 from cipherchase.domain.board import Board
 from cipherchase.domain.own_state import OwnState
+from cipherchase.domain.scent_decode import ScentDecoder
 from cipherchase.domain.smell import SmellField
 from cipherchase.infra.llm_provider import TalkContext, TemplateProvider, build_provider
 from cipherchase.peer import handshake, summary, turn_handler, turn_sender
@@ -41,7 +41,8 @@ class PeerRuntime:
         start = ba["cop_start"] if role == "police" else ba["thief_start"]
         self.me = OwnState(role, tuple(start))
         bel = cfg.private["belief"]
-        self.belief = BeliefGrid(self.board.size, bel["smell_trust"], bel["alpha"])
+        self.decoder = ScentDecoder(self.board.size, bel["smell_trust"], bel["alpha"], ph)
+        self.belief = self.decoder.grid
         self.my_smell = SmellField(
             self.board.size, ph["grid_size"], ph["center_intensity"], ph["decay"],
             ph["falloff"], min_center=ph["min_center_intensity"],

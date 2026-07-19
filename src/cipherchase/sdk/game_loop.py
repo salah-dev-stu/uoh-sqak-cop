@@ -3,8 +3,9 @@
 Every knob comes from config; every move is sealed with the mover's REAL
 decision-time barrier view (IH-1); bluff hints + committed intent fire from a
 seeded rng (IH-5/IH-11); ``on_frame`` streams per-turn frames to instrumentation
-(replay data, benchmarks) so no second engine exists (IH-19). The thief's view
-of the cop is still privileged pending the P2 delta-belief realism rule.
+(replay data, benchmarks) so no second engine exists (IH-19). BOTH sides now
+see only legal information: each agent's belief comes from decoding the
+opponent's broadcast scent field (WB §8 realism rule — matches the live runtime).
 """
 
 from __future__ import annotations
@@ -16,11 +17,10 @@ from typing import Any
 
 from cipherchase.constants import Cell, Outcome
 from cipherchase.domain import rules
-from cipherchase.domain.belief import BeliefGrid
 from cipherchase.domain.board import Board
-from cipherchase.domain.cells import cell_key
 from cipherchase.domain.own_state import OwnState
 from cipherchase.domain.rules import can_place_barrier
+from cipherchase.domain.scent_decode import ScentDecoder
 from cipherchase.domain.scoring import Scoring
 from cipherchase.domain.smell import SmellField
 from cipherchase.infra.llm_provider import TalkContext, TemplateProvider, build_provider
@@ -55,7 +55,7 @@ def _talk_for(talk: TrashTalk, role: str, step: int) -> tuple[str, str]:
 
 
 def _frame(step: int, cop: OwnState, thief: OwnState, barriers: frozenset[Cell],
-           smell: SmellField, belief: BeliefGrid, hint: str, intent: str) -> dict[str, Any]:
+           smell: SmellField, belief: Any, hint: str, intent: str) -> dict[str, Any]:
     return {
         "turn": step, "cop": list(cop.position), "thief": list(thief.position),
         "barriers": sorted([list(b) for b in barriers]), "scent": smell.snapshot(),
@@ -78,6 +78,12 @@ def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> Gam
         board.size, ph["grid_size"], ph["center_intensity"], ph["decay"], ph["falloff"],
         min_center=ph["min_center_intensity"], absorb_gain=ph["absorb_gain"],
     )
+    cop_smell = SmellField(
+        board.size, ph["grid_size"], ph["center_intensity"], ph["decay"], ph["falloff"],
+        min_center=ph["min_center_intensity"], absorb_gain=ph["absorb_gain"],
+    )
+    cop_decoder = ScentDecoder(board.size, bel["smell_trust"], bel["alpha"], ph)
+    thief_decoder = ScentDecoder(board.size, bel["smell_trust"], bel["alpha"], ph)
     cop_book, thief_book = SealBook(), SealBook()
     barriers: frozenset[Cell] = frozenset()
     outcome: Outcome | None = None
@@ -86,8 +92,7 @@ def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> Gam
         turns = step
         smell.decay_all()
         smell.deposit(thief.position)
-        cop_belief = BeliefGrid(board.size, bel["smell_trust"], bel["alpha"])
-        cop_belief.observe_smell(smell.snapshot())
+        cop_belief = cop_decoder.update(smell.snapshot())
         intent, hint = _talk_for(talk, "police", step)
         if on_frame:
             on_frame(_frame(step, cop, thief, barriers, smell, cop_belief, hint, intent))
@@ -103,8 +108,9 @@ def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> Gam
         if _terminal(board, cop, thief, barriers, step, mb) is Outcome.CAPTURE:
             outcome = Outcome.CAPTURE
             break
-        thief_belief = BeliefGrid(board.size, bel["smell_trust"], bel["alpha"])
-        thief_belief.observe_smell({cell_key(cop.position): ph["center_intensity"]})
+        cop_smell.decay_all()
+        cop_smell.deposit(cop.position)
+        thief_belief = thief_decoder.update(cop_smell.snapshot())  # legal info only
         t_intent, t_hint = _talk_for(talk, "thief", step)
         t_decision = thief_brain.decide(thief, thief_belief, barriers)
         t_decision.intent, t_decision.hint = t_intent, t_hint

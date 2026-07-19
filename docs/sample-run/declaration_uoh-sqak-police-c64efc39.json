@@ -23,7 +23,7 @@
       "Andalus Kalash:211435797"
     ],
     "role": "police",
-    "git_commit": "352ee47cc922d49d9c76a12fe8b3f92952dea5e4",
+    "git_commit": "f3d9de9a73f5c7b269b60f2c194c971b003c60a3",
     "llm": {
       "provider": "template",
       "model": "template",
@@ -38,6 +38,6 @@
       "python": "3.13.12"
     },
     "version": "1.00",
-    "signature": "95cea98f748e65f89537ca722f29f36031b16d7200eeee74f50a9c202cce95ba"
+    "signature": "720db8e5de7873e387a3ec4c7ef8e3463d8da8b63927538f04ae75d6532aca37"
   }
 }

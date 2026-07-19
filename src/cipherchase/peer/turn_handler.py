@@ -34,9 +34,7 @@ def process(rt: Any, wire: dict[str, Any]) -> Incoming:
     rt.last_seen_step = step
     if msg.barrier_placed:
         rt.barriers = rt.barriers | {tuple(msg.barrier_placed)}
-    rt.belief.diffuse()
-    if msg.smell_grid:
-        rt.belief.observe_smell(msg.smell_grid)
+    rt.belief = rt.decoder.update(msg.smell_grid or {})  # matched-filter localisation (WB §3)
     rt.history.append({"step": step, "from": msg.sender, "hint": msg.hint})
     claim_response = None
     if msg.capture_claim is not None and rt.role == "thief":

@@ -74,14 +74,14 @@ def test_belief_alpha_and_max_barriers_come_from_config() -> None:
     cfg.private["belief"]["alpha"] = 0.42
     cfg.shared["movement_and_barriers"]["max_barriers"] = 2
     seen: list[float] = []
-    from cipherchase.domain.belief import BeliefGrid as Real
+    from cipherchase.domain.scent_decode import ScentDecoder as Real
 
-    def spy(size, smell_trust=4.0, alpha=0.85):
+    def spy(size, smell_trust, alpha, ph):
         seen.append(alpha)
-        return Real(size, smell_trust, alpha)
+        return Real(size, smell_trust, alpha, ph)
 
     frames: list[dict] = []
-    with patch("cipherchase.sdk.game_loop.BeliefGrid", side_effect=spy):
+    with patch("cipherchase.sdk.game_loop.ScentDecoder", side_effect=spy):
         run_game(cfg, on_frame=frames.append)
     assert all(a == 0.42 for a in seen) and seen
     assert len(frames[-1]["barriers"]) <= 2  # brain honors the shared cap

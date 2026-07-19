@@ -766,35 +766,35 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 ### P2 Winning brain (Jul 23–Aug 2) — PRD_winning_brain
 
 #### P2.a Delta-belief decoder + persistent belief
-- [ ] T523 (WB-3, F7) Write failing `test_scent_decode`: kernel round-trip (argmax Δ = new cell for all moves incl. STAY), first turn returns raw snapshot, `gap=2` uses `(1−ρ)²` baseline, saturation plateau ⇒ `None` (case A), incoherent distant ties ⇒ `None` (case B), empty snapshot no-op, `gap ≤ 0` re-baselines
-- [ ] T524 (WB-3, F7) Implement `domain/scent_decode.py` `ScentDecoder(decay, delta_floor, tie_ratio)` per §3.2 — pure domain, config-driven knobs
-- [ ] T525 (WB-3.4) Write failing persistent-belief tests: ONE `BeliefGrid` per side per game (same object across turns), observe→exclude→diffuse each turn, cold start uniform
-- [ ] T526 (WB-3.4) Hold persistent grids + decoders in the `game_loop`/peer brain wrappers; on ambiguous decode fall back to the persistent belief argmax
+- [x] T523 (WB-3, F7) Write failing `test_scent_decode`: kernel round-trip (argmax Δ = new cell for all moves incl. STAY), first turn returns raw snapshot, `gap=2` uses `(1−ρ)²` baseline, saturation plateau ⇒ `None` (case A), incoherent distant ties ⇒ `None` (case B), empty snapshot no-op, `gap ≤ 0` re-baselines
+- [x] T524 (WB-3, F7) Implement `domain/scent_decode.py` `ScentDecoder(decay, delta_floor, tie_ratio)` per §3.2 — pure domain, config-driven knobs
+- [x] T525 (WB-3.4) Write failing persistent-belief tests: ONE `BeliefGrid` per side per game (same object across turns), observe→exclude→diffuse each turn, cold start uniform
+- [x] T526 (WB-3.4) Hold persistent grids + decoders in the `game_loop`/peer brain wrappers; on ambiguous decode fall back to the persistent belief argmax
 
 #### P2.b HerderCop
-- [ ] T527 (WB-4.1) Write failing herder geometry tests: chase point `g` is anti-corner-ward of `t` for each of the four corners; out-of-bounds ghost clamps to `t`
-- [ ] T528 (WB-4.2) Write failing phase tests: BOXING flips exactly at the `box_wall_k`/`box_dist` boundary; boxing chase point = the thief's max-reach escape cell
-- [ ] T529 (WB-4.3) Write failing barrier tests: hold-fire when `dist > fire_dist` (param sweep), corner-pocket placements ⊆ the min-cut set, self-trap candidates rejected, barrier ≠ this turn's move target
-- [ ] T530 (WB-4) Implement `strategy/police_herder.py` `HerderCop(PoliceBrain)`: herding score (`herd_tether`, `w_belief`, seeded near-tie RNG) + boxing-mode blockade; all constants from `game.toml [strategy]`
-- [ ] T531 (WB-4.3) Implement barrier discipline: hold-fire gate, escape-side scoring (`w_gain/w_esc/w_near/w_cut`), corner min-cut via reach difference (table-free), connectivity no-self-trap check, `min_gain` floor
-- [ ] T532 (WB-4) Write the scripted 10-turn end-to-end test: herder captures a scripted edge-hugger BY BOXING, never co-location (assert capture kind); `max_barriers` exhausted mid-boxing degrades to mouth-blockade movement
+- [x] T527 (WB-4.1) Write failing herder geometry tests: chase point `g` is anti-corner-ward of `t` for each of the four corners; out-of-bounds ghost clamps to `t`
+- [x] T528 (WB-4.2) Write failing phase tests: BOXING flips exactly at the `box_wall_k`/`box_dist` boundary; boxing chase point = the thief's max-reach escape cell
+- [x] T529 (WB-4.3) Write failing barrier tests: hold-fire when `dist > fire_dist` (param sweep), corner-pocket placements ⊆ the min-cut set, self-trap candidates rejected, barrier ≠ this turn's move target
+- [x] T530 (WB-4) Implement `strategy/police_herder.py` `HerderCop(PoliceBrain)`: herding score (`herd_tether`, `w_belief`, seeded near-tie RNG) + boxing-mode blockade; all constants from `game.toml [strategy]`
+- [x] T531 (WB-4.3) Implement barrier discipline: hold-fire gate, escape-side scoring (`w_gain/w_esc/w_near/w_cut`), corner min-cut via reach difference (table-free), connectivity no-self-trap check, `min_gain` floor
+- [x] T532 (WB-4) Write the scripted 10-turn end-to-end test: herder captures a scripted edge-hugger BY BOXING, never co-location (assert capture kind); `max_barriers` exhausted mid-boxing degrades to mouth-blockade movement
 
 #### P2.c EvaderBrain v2
-- [ ] T533 (WB-5) Write failing evader tests: corner-avoidance (larger `reach_H` wins at equal distance/exits), same seed ⇒ identical game / different seeds ⇒ ≥2 distinct sequences over 10 near-tie turns, survival-clock veto of `reach_floor` violations with only-legal-move fallback (`fallback=True`)
-- [ ] T534 (WB-5) Implement `strategy/thief_evader_v2.py` `EvaderBrain(ThiefBrain)`: `w_reach` horizon-BFS corner avoidance, seeded tie-randomization (`seed*1009+step`), survival-clock deep-safety (`clock_threshold`, `clock_boost`, `reach_floor`)
-- [ ] T535 (WB-5, IH-24) Re-check the P0-unchecked items now earned: T164 seeded tie-break, T184 cut-bonus + self-trap guard, T192 `w_scent` consumed (or key removed with note)
+- [x] T533 (WB-5) Write failing evader tests: corner-avoidance (larger `reach_H` wins at equal distance/exits), same seed ⇒ identical game / different seeds ⇒ ≥2 distinct sequences over 10 near-tie turns, survival-clock veto of `reach_floor` violations with only-legal-move fallback (`fallback=True`)
+- [x] T534 (WB-5) Implement `strategy/thief_evader_v2.py` `EvaderBrain(ThiefBrain)`: `w_reach` horizon-BFS corner avoidance, seeded tie-randomization (`seed*1009+step`), survival-clock deep-safety (`clock_threshold`, `clock_boost`, `reach_floor`)
+- [x] T535 (WB-5, IH-24) Re-check the P0-unchecked items now earned: T164 seeded tie-break, T184 cut-bonus + self-trap guard, T192 `w_scent` consumed (or key removed with note)
 
 #### P2.d Archetypes + benchmark lab
-- [ ] T536 (WB-6) Write failing archetype tests: `NaiveEdgeThief`/`RandomThief`/`StillThief` load via `factory.load_brain` (seam proof); `RandomThief` seeded-deterministic
-- [ ] T537 (WB-6) Implement `strategy/archetypes.py` (~60 lines): the three archetypes as first-class `BrainBase` subclasses, selectable via `thief_class` config
-- [ ] T538 (WB-6) Write failing `test_benchmark_lab`: `--fast` matrix runs, markdown table well-formed, start pairs respect min-separation 4 with seeds `1000+s`
-- [ ] T539 (WB-6, NFR-2, NFR-11) Implement `scripts/benchmark_lab.py` (+`scripts/benchlib.py` if ≤150 demands): matrix runner over cops×thieves through the REAL `sdk/game_loop` seam; metrics = capture-rate, mean turns, capture-kind split (coloc/barrier/boxed), belief error, barriers placed; stdout markdown + `--json`; `--fast` N=20, full N=120; all params from config/flags
-- [ ] T540 (WB-6, NFR-14) Add the CI step running `benchmark_lab.py --fast` (< 60 s on the Py-3.13 workflow)
+- [x] T536 (WB-6) Write failing archetype tests: `NaiveEdgeThief`/`RandomThief`/`StillThief` load via `factory.load_brain` (seam proof); `RandomThief` seeded-deterministic
+- [x] T537 (WB-6) Implement `strategy/archetypes.py` (~60 lines): the three archetypes as first-class `BrainBase` subclasses, selectable via `thief_class` config
+- [x] T538 (WB-6) Write failing `test_benchmark_lab`: `--fast` matrix runs, markdown table well-formed, start pairs respect min-separation 4 with seeds `1000+s`
+- [x] T539 (WB-6, NFR-2, NFR-11) Implement `scripts/benchmark_lab.py` (+`scripts/benchlib.py` if ≤150 demands): matrix runner over cops×thieves through the REAL `sdk/game_loop` seam; metrics = capture-rate, mean turns, capture-kind split (coloc/barrier/boxed), belief error, barriers placed; stdout markdown + `--json`; `--fast` N=20, full N=120; all params from config/flags
+- [x] T540 (WB-6, NFR-14) Add the CI step running `benchmark_lab.py --fast` (< 60 s on the Py-3.13 workflow)
 
 #### P2.e Dec-POMDP realism + config
-- [ ] T541 (WB-8, F7) Write failing `test_game_loop_realism`: thief's belief input NEVER contains the cop's current cell (spy on `observe_smell`); delayed cell equals the `t−1` position; persistent grids are the same object across turns
-- [ ] T542 (WB-8, F7) Implement the information rule in `run_game`: both sides build belief only from legal scent snapshot (decoded), hints, one-turn-DELAYED synthetic deposit of `center_intensity`, and own exclusions — never the current true cell; leagues and benchmarks run the same rule
-- [ ] T543 (WB-9.2, NFR-11) Add all championship `[strategy]` keys to both `config/police/game.toml` and `config/thief/game.toml`; select `HerderCop`/`EvaderBrain` via the existing `police_class`/`thief_class` seam; absent `[play].seed` ⇒ typed `ConfigError`
+- [x] T541 (WB-8, F7) Write failing `test_game_loop_realism`: thief's belief input NEVER contains the cop's current cell (spy on `observe_smell`); delayed cell equals the `t−1` position; persistent grids are the same object across turns
+- [x] T542 (WB-8, F7) Implement the information rule in `run_game`: both sides build belief only from legal scent snapshot (decoded), hints, one-turn-DELAYED synthetic deposit of `center_intensity`, and own exclusions — never the current true cell; leagues and benchmarks run the same rule
+- [x] T543 (WB-9.2, NFR-11) Add all championship `[strategy]` keys to both `config/police/game.toml` and `config/thief/game.toml`; select `HerderCop`/`EvaderBrain` via the existing `police_class`/`thief_class` seam; absent `[play].seed` ⇒ typed `ConfigError`
 
 #### P2.f Acceptance-target verification (benchmark_lab full mode)
 - [ ] T544 (WB-A1) Verify A1: HerderCop capture ≥90% vs NaiveEdge (N=120, realistic delta-belief info)
@@ -802,10 +802,10 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 - [ ] T546 (WB-A3) Verify A3: HerderCop capture ≥90% vs Still
 - [ ] T547 (WB-A4) Verify A4: HerderCop capture ≥30% vs ThiefBrain-class evaders
 - [ ] T548 (WB-A5) Verify A5: EvaderBrain survival ≥95% vs HerderCop-class pursuers (realistic info both sides)
-- [ ] T549 (WB-A6) Verify A6: mean belief error with decoder + persistent grid ≤1.0 cell (baseline 3.46)
-- [ ] T550 (WB-A7) Verify A7: per-move decision time < 5 ms on the M2 (worst brain incl. BFS)
-- [ ] T551 (WB-A8, F8) Verify A8: 0 tokens on any move path — extend the F8 no-LLM guard test to cover the new brains
-- [ ] T552 (WB-A9) Verify A9: baseline matrix reproduced within ±3 pts; baselines byte-identical (git diff empty on `police_heuristic.py`, `thief_heuristic.py`, `police_expectimax.py`, `belief.py`, `brains.py`, `factory.py`)
+- [x] T549 (WB-A6) Verify A6: mean belief error with decoder + persistent grid ≤1.0 cell (baseline 3.46)
+- [x] T550 (WB-A7) Verify A7: per-move decision time < 5 ms on the M2 (worst brain incl. BFS)
+- [x] T551 (WB-A8, F8) Verify A8: 0 tokens on any move path — extend the F8 no-LLM guard test to cover the new brains
+- [x] T552 (WB-A9) Verify A9: baseline matrix reproduced within ±3 pts; baselines byte-identical (git diff empty on `police_heuristic.py`, `thief_heuristic.py`, `police_expectimax.py`, `belief.py`, `brains.py`, `factory.py`)
 - [ ] T553 (WB-6) Paste the full-mode win-rate matrix + belief-error numbers verbatim into `docs/RESEARCH-REPORT-Performance-Analysis.md`
 
 **Milestone P2:** ≥90% capture vs {Naive, Random, Still}, ≥30% vs strong evader, ≥95% thief survival, benchmarks reproducible via one command.
