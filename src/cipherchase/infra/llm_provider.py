@@ -14,7 +14,7 @@ import subprocess
 from dataclasses import dataclass
 from typing import Any
 
-from cipherchase.exceptions import ProviderUnavailableError
+from cipherchase.exceptions import ConfigError, ProviderUnavailableError
 
 _PHRASES = {
     "police": ["You can't hide forever.", "I'm closing in.", "Nowhere left to run."],
@@ -39,15 +39,14 @@ class TemplateProvider:
 
 
 class ClaudeCliProvider:
-    def __init__(self, binary: str = "claude", timeout: float = 8.0, gate: Any = None) -> None:
+    def __init__(self, binary: str = "claude", timeout: float = 8.0, *, gate: Any) -> None:
         self.binary = binary
         self.timeout = timeout
         self.gate = gate
 
     def generate(self, ctx: TalkContext) -> str:
-        if self.gate is not None:  # every external call through one gatekeeper (NFR-3)
-            return self.gate.execute(lambda: self._run(ctx), service="llm", action="generate")
-        return self._run(ctx)
+        # every external call through the ONE gatekeeper — mandatory (R3)
+        return self.gate.execute(lambda: self._run(ctx), service="llm", action="generate")
 
     def _run(self, ctx: TalkContext) -> str:
         prompt = f"In one short taunt, {ctx.role} reacts (move {ctx.own_move})."
@@ -72,5 +71,11 @@ def build_provider(config: dict[str, Any], gate: Any = None) -> Any:
     if name == "template":
         return TemplateProvider()
     if name == "claude_cli":
-        return ClaudeCliProvider(binary=config.get("executable", "claude"), gate=gate)
+        if gate is None:
+            raise ConfigError("claude_cli provider requires the gatekeeper (R3)")
+        return ClaudeCliProvider(
+            binary=config.get("executable", "claude"),
+            timeout=float(config.get("step_deadline_seconds", 8.0)),
+            gate=gate,
+        )
     raise ProviderUnavailableError(f"provider {name!r} is not available")

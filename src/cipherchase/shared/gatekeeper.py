@@ -1,13 +1,14 @@
 """The single API gatekeeper (NFR-3, F10).
 
-EVERY external call — MCP, LLM, Gmail, subprocess — goes through ``execute()``,
-which gates on the token bucket (DOS guard), backs off and retries rather than
-dropping (queue-not-drop, NFR-5), retries designated errors (e.g. HTTP 429),
-and records every call in a ledger. Wired, not decorative.
+EVERY external call — MCP, LLM, Gmail, subprocess — goes through ``execute()``:
+token-bucket gate (rate), concurrency semaphore, bounded-backlog DOS guard
+(queue-not-drop backpressure, NFR-5), retryable-error backoff (HTTP 429), and a
+ledger of every call. Wired, not decorative.
 """
 
 from __future__ import annotations
 
+import threading
 import time
 from collections.abc import Callable
 from typing import Any
@@ -24,11 +25,17 @@ class ApiGatekeeper:
         max_retries: int = 3,
         backoff: float = 5.0,
         sleep: Callable[[float], None] | None = None,
+        concurrent: int | None = None,
+        queue_depth: int | None = None,
     ) -> None:
         self.limiter = limiter
         self.max_retries = max_retries
         self.backoff = backoff
         self.sleep = sleep or time.sleep
+        self.concurrent = concurrent
+        self.queue_depth = queue_depth
+        self._sem = threading.BoundedSemaphore(concurrent) if concurrent else None
+        self._waiting = 0
         self.ledger: list[dict[str, str]] = []
 
     def execute(
@@ -39,16 +46,37 @@ class ApiGatekeeper:
         action: str,
         retryable: tuple[type[BaseException], ...] = (),
     ) -> Any:
+        if self.queue_depth is not None and self._waiting >= self.queue_depth:
+            self._record(service, action, "dos_rejected")
+            raise GateLimitError(f"{service}:{action} backlog over queue depth (DOS guard)")
+        self._waiting += 1
+        try:
+            return self._run(fn, service, action, retryable)
+        finally:
+            self._waiting -= 1
+
+    def _run(
+        self,
+        fn: Callable[[], Any],
+        service: str,
+        action: str,
+        retryable: tuple[type[BaseException], ...],
+    ) -> Any:
         attempts = 0
         while True:
             if not self.limiter.allow(service):
                 attempts = self._backoff_or_fail(attempts, service, action, "rate_limited")
                 continue
+            if self._sem is not None:
+                self._sem.acquire()
             try:
                 result = fn()
             except retryable:
                 attempts = self._backoff_or_fail(attempts, service, action, "error")
                 continue
+            finally:
+                if self._sem is not None:
+                    self._sem.release()
             self._record(service, action, "ok")
             return result
 
@@ -71,4 +99,6 @@ class ApiGatekeeper:
             max_retries=gate_cfg["max_retries"],
             backoff=gate_cfg["retry_backoff_sec"],
             sleep=sleep,
+            concurrent=gate_cfg["concurrent_requests"],
+            queue_depth=gate_cfg["queue_depth"],
         )

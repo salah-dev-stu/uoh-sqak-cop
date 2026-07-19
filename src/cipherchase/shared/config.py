@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from cipherchase.domain.negotiation import config_sha256
+from cipherchase.shared.version import check_compatible
 
 Json = dict[str, Any]
 
@@ -30,6 +31,7 @@ class ConfigManager:
         shared = json.loads((base / "game.json").read_text(encoding="utf-8"))
         private = tomllib.loads((base / "game.toml").read_text(encoding="utf-8"))
         rate_limits = json.loads((base / "rate_limits.json").read_text(encoding="utf-8"))
+        check_compatible(str(private.get("version", "")))  # startup guard (R6)
         return cls(shared, private, rate_limits)
 
     @property
