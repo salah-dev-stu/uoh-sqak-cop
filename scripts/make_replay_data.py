@@ -8,6 +8,7 @@ Run:  uv run python scripts/make_replay_data.py
 from __future__ import annotations
 
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -16,10 +17,23 @@ from cipherchase.sdk.game_loop import run_game  # noqa: E402
 from cipherchase.shared.config import ConfigManager  # noqa: E402
 
 
-def capture(config_dir: str = "config/police") -> dict:
+def capture(config_dir: str = "config/police", randomize: bool = False) -> dict:
+    """Deterministic by default (reproducible fixture); ``randomize`` gives the
+    live arena a different chase every time (fresh seed + legal starts ≥4 apart)."""
     from cipherchase.gui.replay_data import verify_records
 
     cfg = ConfigManager.load(config_dir)
+    if randomize:
+        rng = random.SystemRandom()
+        size = cfg.shared["board_and_agents"]["board_size"]
+        while True:
+            cop = (rng.randrange(size), rng.randrange(size))
+            thief = (rng.randrange(size), rng.randrange(size))
+            if abs(cop[0] - thief[0]) + abs(cop[1] - thief[1]) >= 4:
+                break
+        cfg.shared["board_and_agents"]["cop_start"] = list(cop)
+        cfg.shared["board_and_agents"]["thief_start"] = list(thief)
+        cfg.private["play"]["seed"] = rng.randrange(10**9)
     frames: list[dict] = []
     result = run_game(cfg, on_frame=frames.append)
     return {

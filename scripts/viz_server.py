@@ -28,7 +28,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802
         if self.path.startswith("/api/game"):
-            body = json.dumps(capture()).encode()
+            body = json.dumps(capture(randomize=True)).encode()
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Cache-Control", "no-store")
