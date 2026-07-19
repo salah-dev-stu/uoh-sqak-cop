@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 265 tests, 100% coverage, all externals mocked
+uv run pytest                                   # 322 tests, 100% coverage, all externals mocked
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 
@@ -65,6 +65,24 @@ uv run python scripts/viz_server.py     # → http://localhost:8777
 - Zero build step: vendored Three.js ES modules, every arena file ≤150 lines, pure logic covered by
   `node --test viz/test/` in CI. **"New match"** runs a fresh game through the real engine.
 
+#### Showtime — guided tour · split-screen · live league matches
+
+| Guided tour (`T`) + match room | Split-screen dual-belief (`4`) |
+|---|---|
+| ![Guided tour](docs/media/arena_tour.jpeg) | ![Split-screen dual belief](docs/media/arena_split.jpeg) |
+
+- **Guided tour** (`T`) — a scripted ~25 s camera flight with film-style captions (board → scent wake →
+  belief floor → sealed-chips rail → audit finale) that **records itself** to `tour.webm` via `MediaRecorder`.
+  `Esc` cancels; reduced-motion keeps the captions and drops the flight.
+- **Split-screen** (`4`) — both agents' minds at once: the cop's belief world (left) beside the thief's
+  (right), one scene double-rendered into two scissor viewports; `1/2/3` exits.
+- **Live match room (F14)** — start a **real league match** against a peer's `/mcp` URL from the panel and
+  watch it stream live in 3D. The arena consumes **own-knowledge frames only** (own position, own belief,
+  known barriers, last received hint, 8-hex commit head — *never* opponent truth, nonce, or sealed payload:
+  a test greps the whole stream to prove it). `PeerRuntime` emits frames through an optional listener;
+  `scripts/viz_server.py` (127.0.0.1-only) exposes `GET /api/spectate` + `POST /api/match`, one match at a
+  time. Started from the arena, no keys required.
+
 ---
 
 ## Academic report
@@ -90,21 +108,41 @@ audits **verified** — and a fast tripwire (every commit) feeds our wire bytes 
 parser, crypto verifier, and negotiation checker.
 
 ### 3. Strategy (the graded brain)
-Movement is **always algorithmic** (`strategy/`, behind a `BrainBase` seam swappable by config). The
-breakthrough is the **ScentDecoder** (`domain/scent_decode.py`): a matched filter over the opponent's
-broadcast scent field — predict `τ_t = min(1,(1−ρ)τ_{t−1}+D_c)` for every candidate centre, take the best L1
-fit — which localises the opponent **exactly** from legal information, even when the trail saturates. It took
-the cop from **0% capture vs every belief-using thief to 26.7% vs strong evaders and 85–100% vs realistic
-archetypes** (measured, `scripts/benchmark_lab.py`). The **Cop** then pursues the belief peak and walls by
-**reachability min-cut**; the default **Thief** (`EvaderBrain`) adds a reachable-set term (never enter a
-shrinking pocket) and seeded tie-randomization against predictor cops. Cheap and clever — **Computational
-Fairness** on an 8 GB laptop at zero tokens. One canonical-JSON implementation backs the commit hash,
-`config_sha256`, and mutual signature for byte-identical interop.
+Movement is **always algorithmic** (`strategy/`, behind a `BrainBase` seam swappable by config) — the LLM
+never decides a move. The brain wins in **two layers**.
 
-### 4. Reinforcement learning
-The heuristic baseline is the shipped brain. **Q-learning and depth-limited expectimax** are designed as
-drop-in `police_class`/`thief_class` swaps (PRD_strategy §5) — the natural next step to convert the cop's
-reliable *containment* into *capture* within the 35-move budget. Learning curves would appear here if enabled.
+**Layer 1 — localise.** The **ScentDecoder** (`domain/scent_decode.py`) is a matched filter over the
+opponent's broadcast scent field — predict `τ_t = min(1,(1−ρ)τ_{t−1}+D_c)` for every candidate centre, take
+the best L1 fit — which recovers the opponent's cell **exactly** from legal information, even when the trail
+saturates (0% → exact belief).
+
+**Layer 2 — exploit.** An oracle location is *not* a capture: a greedy pursuer of an equal-speed evader can
+**never** corner it (move-parity), which is why plain pursuit caps at ~27% against strategic thieves *even
+with near-perfect belief*. **`ApexCop`** (`strategy/apex_cop.py`) breaks that ceiling with an **exact depth-8
+alpha-beta endgame solver** (the thief plays *all* replies — a guarantee, not a prediction) that plays proven
+forced-capture lines when the thief is walled near an edge, falling back to a **best-response** step that
+minimises the thief's worst-case escape value over the reply set of a **league-robust ensemble opponent
+model** (`strategy/opponent_model.py`). Measured (`scripts/benchmark_lab.py`, N=60/cell, 95% Wilson CI):
+
+| cop \ thief | ThiefBrain | EvaderV2 | NaiveEdge | Random | Still |
+|---|---|---|---|---|---|
+| greedy `PoliceBrain` + decoder | 27 | 23 | **85** | 97 | 100 |
+| **`ApexCop` + decoder** (default) | **95** | **77** | 55 | 97 | 100 |
+
+The two *strategic* thieves go **27 → 95%** and **23 → 77%**; the one honest soft spot (NaiveEdge, a
+non-strategic edge-walker where greedy's incidental barriers happen to win) is reported, not hidden. Two
+further layers ride the same seam: a **Bayesian bluff-fusion** channel (`domain/hint_belief.py`, a Beta
+honesty posterior calibrated online against observed moves) and **strategic deception** (`strategy/deception.py`,
+a *rule* — never the LLM — decides when to lie). Cheap and clever — **Computational Fairness** on an 8 GB
+laptop at zero tokens. One canonical-JSON implementation backs the commit hash, `config_sha256`, and mutual
+signature for byte-identical interop.
+
+### 4. Search & learning
+The containment-to-capture gap is closed by **search**: `ApexCop` ships an exact alpha-beta endgame solver
+plus one-ply best-response over an opponent model (§3) — the lookahead that a greedy pursuer provably lacks.
+**Q-learning and depth-limited expectimax** remain drop-in `police_class`/`thief_class` swaps (PRD_strategy
+§5, `strategy/police_expectimax.py`) for comparison; the shipped default is the measured champion. Every claim
+is backed by the seeded, CI-bounded benchmark (§3), not asserted.
 
 ### 5. Fairness & integrity (why P2P works without a judge)
 `commit = SHA256(canonical_json({step,state,move,intent}) + "|" + nonce)` with a `secrets` nonce, verified in
@@ -136,13 +174,14 @@ Built bottom-up through **7 stages**, strict **TDD** (Red-Green-Refactor), **con
 ## Layout
 ```
 src/cipherchase/  cli · constants · exceptions
-  ├─ domain/    board rules scoring own_state · belief smell · crypto canonical · protocol negotiation game_ids · brains
-  ├─ strategy/  factory · police_heuristic · thief_heuristic · trash_talk         (the graded seam)
+  ├─ domain/    board rules scoring own_state · belief smell scent_decode hint_belief · crypto canonical · protocol negotiation game_ids · brains
+  ├─ strategy/  factory · police_heuristic apex_cop opponent_model endgame · thief_heuristic thief_evader_v2 archetypes · deception trash_talk   (the graded seam)
+  ├─ analysis/  stats (Wilson CI + Elo)
   ├─ peer/      orchestrator state_machine deadline watchdog · handshake sealing turn_sender turn_handler summary declaration
   ├─ infra/     mcp_server mcp_client transport_base inboxes · llm_provider · email_sender
   ├─ report/    schemas artifacts mutual_signature emit
   ├─ shared/    config gatekeeper rate_limiter sysinfo version
-  ├─ sdk/       sdk (single entry) · game_loop
+  ├─ sdk/       sdk (single entry) · game_loop · spectate live_match   (F14 live stream)
   └─ gui/       window (heatmap) · replay (verifier) · heatmap replay_data
 config/{police,thief}/  game.json (signed, byte-identical) · game.toml (private, role-swapped) · rate_limits.json
 ```
