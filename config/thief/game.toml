@@ -24,8 +24,8 @@ lambda_barrier = 0.2
 min_gain = 1
 # ApexCop (P6): best-response over an opponent model + exact endgame proof.
 # opponent_model: thief_v1 | evader_v2 | naive_edge | still | random | paranoid | ensemble
-# ("ensemble" = league-robust minimax over all plausible strategic replies).
-opponent_model = "thief_v1"
+# ("ensemble" = league-robust hedge over the deterministic archetypes).
+opponent_model = "ensemble"
 apex_lock_mass = 0.5
 apex_w_reach = 1.0
 apex_w_dist = 0.6

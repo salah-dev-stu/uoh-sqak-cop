@@ -12,6 +12,7 @@ import time
 from typing import Any
 
 from cipherchase.domain.board import Board
+from cipherchase.domain.hint_belief import HonestyTracker
 from cipherchase.domain.own_state import OwnState
 from cipherchase.domain.scent_decode import ScentDecoder
 from cipherchase.domain.smell import SmellField
@@ -44,6 +45,9 @@ class PeerRuntime:
         bel = cfg.private["belief"]
         self.decoder = ScentDecoder(self.board.size, bel["smell_trust"], bel["alpha"], ph)
         self.belief = self.decoder.grid
+        self.honesty = HonestyTracker()  # Bayesian trust in the opponent's words (F6)
+        self.bluff_weight = float(strat.get("bluff_weight", 0.0))
+        self.last_claim: Any = None
         self.my_smell = SmellField(
             self.board.size, ph["grid_size"], ph["center_intensity"], ph["decay"],
             ph["falloff"], min_center=ph["min_center_intensity"],

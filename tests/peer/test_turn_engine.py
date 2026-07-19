@@ -104,3 +104,27 @@ def test_duplicate_step_is_ignored_idempotently() -> None:
     msg = TurnMessage(step=1, sender="thief", smell_grid={"3,3": 0.9}).to_dict()
     assert rt.handle(msg).result is None
     assert rt.handle(msg).duplicate is True  # second arrival: no double-processing
+
+
+def test_bluff_channel_off_by_default_is_inert() -> None:
+    a, _b = make_pair()
+    rt = _runtime("police", a)  # ships with bluff_weight 0.0
+    assert rt.bluff_weight == 0.0
+    rt.handle(TurnMessage(step=1, sender="thief", smell_grid={"3,3": 0.9},
+                          hint="Heading north, promise.").to_dict())
+    assert rt.honesty.p_honest() == 0.5  # never calibrated → words ignored
+    assert rt.last_claim is None
+
+
+def test_bluff_channel_calibrates_honesty_and_nudges_belief() -> None:
+    a, _b = make_pair()
+    rt = _runtime("police", a)
+    rt.bluff_weight = 0.6  # enable the Bayesian hint-fusion layer (F6/F7)
+    rt.handle(TurnMessage(step=1, sender="thief", smell_grid={"3,3": 0.9},
+                          hint="I'm heading north.").to_dict())
+    assert rt.last_claim is not None  # a claim was extracted and remembered
+    control = rt.belief.as_matrix()
+    rt.handle(TurnMessage(step=2, sender="thief", smell_grid={"1,3": 0.9},
+                          hint="Still heading north.").to_dict())
+    assert rt.honesty.p_honest() > 0.5  # the peak really moved north → honest
+    assert rt.belief.as_matrix() != control  # fusion changed the belief

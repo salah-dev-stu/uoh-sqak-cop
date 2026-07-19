@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from cipherchase.domain.hint_belief import apply_hint, extract_claim, in_cone
 from cipherchase.domain.protocol import TurnMessage
 from cipherchase.peer.turn_sender import send_final
 
@@ -20,6 +21,18 @@ class Incoming:
     claim_response: dict[str, Any] | None = None
     duplicate: bool = False
     malformed: bool = False
+
+
+def _fuse_hint(rt: Any, hint: str | None, prev_peak: Any) -> None:
+    """Calibrate the opponent's honesty on its LAST claim, then nudge belief (F6/F7)."""
+    if rt.bluff_weight <= 0.0:
+        return
+    new_peak = rt.belief.most_likely()
+    if rt.last_claim is not None:  # did the peak actually move the way they said?
+        rt.honesty.record(in_cone(prev_peak, new_peak, rt.last_claim))
+    rt.last_claim = extract_claim(hint or "")
+    apply_hint(rt.belief, new_peak, rt.last_claim, rt.honesty.p_honest(),
+               bluff_weight=rt.bluff_weight, board_size=rt.board.size)
 
 
 def process(rt: Any, wire: dict[str, Any]) -> Incoming:
@@ -34,7 +47,9 @@ def process(rt: Any, wire: dict[str, Any]) -> Incoming:
     rt.last_seen_step = step
     if msg.barrier_placed:
         rt.barriers = rt.barriers | {tuple(msg.barrier_placed)}
+    prev_peak = rt.belief.most_likely()
     rt.belief = rt.decoder.update(msg.smell_grid or {})  # matched-filter localisation (WB §3)
+    _fuse_hint(rt, msg.hint, prev_peak)
     rt.history.append({"step": step, "from": msg.sender, "hint": msg.hint})
     claim_response = None
     if msg.capture_claim is not None and rt.role == "thief":

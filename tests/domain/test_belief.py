@@ -59,3 +59,26 @@ def test_excluding_every_cell_resets_to_uniform() -> None:
         grid.exclude(cell)
     assert grid.mass_at((0, 0)) == pytest.approx(1 / 9)
     assert _total(grid) == pytest.approx(1.0)
+
+
+def test_reweight_multiplies_then_renormalises() -> None:
+    grid = BeliefGrid(3)  # uniform 1/9
+    grid.reweight([(0, 0), (0, 1)], 4.0)  # boost two cells 4x
+    assert grid.mass_at((0, 0)) == pytest.approx(grid.mass_at((0, 1)))
+    assert grid.mass_at((0, 0)) > grid.mass_at((2, 2))
+    assert _total(grid) == pytest.approx(1.0)
+
+
+def test_reweight_by_one_is_a_no_op() -> None:
+    grid = BeliefGrid(3)
+    grid.observe_smell({"1,1": 0.5})
+    before = grid.as_matrix()
+    grid.reweight([(0, 0), (2, 2)], 1.0)
+    assert grid.as_matrix() == before
+
+
+def test_reweight_ignores_out_of_range_cells() -> None:
+    grid = BeliefGrid(3)
+    grid.reweight([(9, 9), (0, 0)], 3.0)  # (9,9) not on the board → skipped, no crash
+    assert grid.mass_at((0, 0)) > grid.mass_at((2, 2))
+    assert _total(grid) == pytest.approx(1.0)

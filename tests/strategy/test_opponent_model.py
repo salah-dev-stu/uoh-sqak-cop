@@ -61,14 +61,14 @@ def test_paranoid_superset_of_every_model() -> None:
         assert OpponentModel(name, B, {}).predict((3, 3), (0, 0), EMPTY) <= legal
 
 
-def test_ensemble_unions_every_plausible_strategic_reply() -> None:
-    # Robust minimax: the ensemble must contain each named model's prediction,
-    # yet stay a subset of paranoid (only *strategic* replies, not all legal ones).
+def test_ensemble_hedges_the_deterministic_archetypes() -> None:
+    # League-robust minimax: the ensemble contains every deterministic archetype
+    # it hedges, yet stays a subset of paranoid (a tight hedge, not all legal cells).
     ens = OpponentModel("ensemble", B, {})
     paranoid = OpponentModel("paranoid", B, {})
     thief, cop = (0, 3), (4, 3)
     union = ens.predict(thief, cop, EMPTY)
-    for name in ("thief_v1", "evader_v2", "naive_edge"):
+    for name in ("thief_v1", "naive_edge", "still"):
         assert OpponentModel(name, B, {}).predict(thief, cop, EMPTY) <= union
     assert union <= paranoid.predict(thief, cop, EMPTY)
 

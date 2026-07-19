@@ -24,7 +24,7 @@ _MODELS = {
     "evader_v2": f"{_PKG}.thief_evader_v2:EvaderBrain",
 }
 _RULELESS = {"paranoid", "random", "still"}
-_ENSEMBLE = ("thief_v1", "evader_v2", "naive_edge", "still")
+_ENSEMBLE = ("thief_v1", "naive_edge", "still")
 
 
 class _FixedBelief:

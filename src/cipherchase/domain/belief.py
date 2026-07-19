@@ -29,6 +29,13 @@ class BeliefGrid:
             self._p[cell] *= 1.0 + self.smell_trust * tau
         self._normalize()
 
+    def reweight(self, cells: list[Cell], factor: float) -> None:
+        """Multiply a set of cells by ``factor`` and renormalise (generic nudge)."""
+        for cell in cells:
+            if cell in self._p:
+                self._p[cell] *= factor
+        self._normalize()
+
     def exclude(self, cell: Cell) -> None:
         self._p[cell] = 0.0
         self._normalize()
