@@ -38,20 +38,32 @@ uv run cipherchase replay --log docs/sample-run/log_uoh-sqak-police-c64efc39_g01
 A committed **sample run** (4 signed JSON artifacts + the visuals above) lives in `docs/sample-run/` as
 offline proof — the grader needs no API key, no credentials, and no opponent.
 
-## Live 3D arena
+## The Masterclass 3D Arena
 
 ![CipherChase 3D arena](docs/sample-run/arena_3d.png)
 
-Watch a match unfold in **interactive 3D** — orbit the board, scrub the timeline, and hit **"New match"** to
-run a brand-new game through the real engine and animate it live:
+Watch a match unfold in **interactive 3D** — and watch the *cryptography* referee it. The right-hand
+**evidence rail** collects every move's sealed commit hash as the game plays; at the end an **audit wave**
+re-verifies them chip by chip:
+
+| Honest game — the wave runs green | A forged log — real crypto catches it |
+|---|---|
+| ![Verified OK](docs/sample-run/arena_verified.png) | ![Tampered](docs/sample-run/arena_tampered.png) |
 
 ```bash
 uv run python scripts/viz_server.py     # → http://localhost:8777
 ```
 
-The **cyan cop** (light-beam) hunts the **magenta thief**; the floor is the cop's **live belief heatmap**
-(bright = "probably here"); **amber walls** are barriers it raises to box the thief in. Self-contained
-Three.js (vendored under `viz/`, no build step) — every barrier, belief cell, and move is real engine output.
+- **Three views** (keys 1/2/3): *Cop view* (only what the cop knows — the thief is a ghost at the belief
+  peak), *Thief view*, *Truth view* (both agents + a belief-error ribbon).
+- **Honest/Tampered toggle** — the tampered replay is machine-forged (`scripts/make_tampered_replay.py`) and
+  re-verified by the SAME `CommitReveal` the peers use: the forged chip flips red, the rail shatters,
+  **"TAMPERED — match void 0/0"**.
+- Follow-cam with orbit override, particle scent wake, wall-slam barriers, capture/survival finales, event
+  markers + distance/belief-error sparkline, click any chip for its real payload/nonce/commit, `S` for a
+  screenshot, quality toggle, reduced-motion respected.
+- Zero build step: vendored Three.js ES modules, every arena file ≤150 lines, pure logic covered by
+  `node --test viz/test/` in CI. **"New match"** runs a fresh game through the real engine.
 
 ---
 

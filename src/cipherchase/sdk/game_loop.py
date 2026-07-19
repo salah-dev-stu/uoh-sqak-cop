@@ -55,11 +55,14 @@ def _talk_for(talk: TrashTalk, role: str, step: int) -> tuple[str, str]:
 
 
 def _frame(step: int, cop: OwnState, thief: OwnState, barriers: frozenset[Cell],
-           smell: SmellField, belief: Any, hint: str, intent: str) -> dict[str, Any]:
+           smell: SmellField, belief: Any, thief_belief: Any, hint: str,
+           intent: str) -> dict[str, Any]:
     return {
         "turn": step, "cop": list(cop.position), "thief": list(thief.position),
         "barriers": sorted([list(b) for b in barriers]), "scent": smell.snapshot(),
-        "belief": belief.as_matrix(), "hint": hint, "intent": intent,
+        "belief": belief.as_matrix(),
+        "thief_belief": thief_belief.as_matrix() if thief_belief else None,
+        "hint": hint, "intent": intent,
     }
 
 
@@ -86,6 +89,7 @@ def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> Gam
     thief_decoder = ScentDecoder(board.size, bel["smell_trust"], bel["alpha"], ph)
     cop_book, thief_book = SealBook(), SealBook()
     barriers: frozenset[Cell] = frozenset()
+    prev_thief_belief: Any = None
     outcome: Outcome | None = None
     turns = 0
     for step in range(1, mb["max_moves"] + 1):
@@ -95,7 +99,8 @@ def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> Gam
         cop_belief = cop_decoder.update(smell.snapshot())
         intent, hint = _talk_for(talk, "police", step)
         if on_frame:
-            on_frame(_frame(step, cop, thief, barriers, smell, cop_belief, hint, intent))
+            on_frame(_frame(step, cop, thief, barriers, smell, cop_belief,
+                            prev_thief_belief, hint, intent))
         decision = cop_brain.decide(cop, cop_belief, barriers)
         decision.intent, decision.hint = intent, hint
         cop_book.seal(move_payload(step, cop, decision))
@@ -111,6 +116,7 @@ def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> Gam
         cop_smell.decay_all()
         cop_smell.deposit(cop.position)
         thief_belief = thief_decoder.update(cop_smell.snapshot())  # legal info only
+        prev_thief_belief = thief_belief
         t_intent, t_hint = _talk_for(talk, "thief", step)
         t_decision = thief_brain.decide(thief, thief_belief, barriers)
         t_decision.intent, t_decision.hint = t_intent, t_hint

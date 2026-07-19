@@ -3,263 +3,66 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>CipherChase — Live 3D Arena</title>
-<style>
-  :root{
-    --bg:#06070d; --panel:rgba(13,16,24,.72); --edge:rgba(120,160,255,.14);
-    --ink:#e8eefc; --dim:#8fa2c4; --cop:#25e0ff; --thief:#ff3b6b; --scent:#39ffa0;
-    --barrier:#ffab2e; --accent:#25e0ff;
-    --mono:ui-monospace,"SF Mono",Menlo,monospace;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
-    font-family:var(--mono);overflow:hidden}
-  canvas{display:block}
-  #hud-top{position:fixed;top:22px;left:24px;z-index:5;pointer-events:none}
-  #hud-top h1{margin:0;font-size:15px;letter-spacing:.42em;font-weight:700;
-    text-transform:uppercase}
-  #hud-top .sub{margin-top:6px;font-size:11px;letter-spacing:.18em;color:var(--dim);
-    text-transform:uppercase}
-  #chips{position:fixed;top:22px;right:24px;z-index:5;display:flex;gap:8px;
-    flex-wrap:wrap;justify-content:flex-end;max-width:46vw}
-  .chip{background:var(--panel);border:1px solid var(--edge);border-radius:999px;
-    padding:6px 12px;font-size:11px;letter-spacing:.12em;backdrop-filter:blur(10px);
-    display:flex;gap:7px;align-items:center}
-  .dot{width:8px;height:8px;border-radius:50%}
-  .chip b{font-variant-numeric:tabular-nums;color:var(--ink)}
-  #bar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:5;
-    display:flex;gap:14px;align-items:center;background:var(--panel);
-    border:1px solid var(--edge);border-radius:16px;padding:12px 16px;
-    backdrop-filter:blur(14px);box-shadow:0 12px 40px rgba(0,0,0,.5);
-    width:min(760px,92vw)}
-  button{font-family:var(--mono);color:var(--ink);background:rgba(120,160,255,.08);
-    border:1px solid var(--edge);border-radius:10px;padding:8px 12px;cursor:pointer;
-    font-size:12px;letter-spacing:.08em;transition:.15s}
-  button:hover{background:rgba(120,160,255,.18);border-color:var(--accent)}
-  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  #play{min-width:52px;color:#06070d;background:var(--accent);border-color:var(--accent);
-    font-weight:700}
-  #scrub{flex:1;accent-color:var(--accent);height:4px}
-  .seg{display:flex;gap:4px}
-  .seg button.on{background:var(--accent);color:#06070d;border-color:var(--accent)}
-  #turn{font-size:12px;letter-spacing:.1em;color:var(--dim);min-width:74px;
-    text-align:center;font-variant-numeric:tabular-nums}
-  #verdict{position:fixed;left:50%;top:34%;transform:translate(-50%,-50%);z-index:6;
-    font-size:34px;letter-spacing:.24em;font-weight:700;text-transform:uppercase;
-    opacity:0;transition:opacity .6s;text-shadow:0 0 30px currentColor;pointer-events:none}
-  #hint{position:fixed;left:24px;bottom:22px;z-index:4;font-size:10px;
-    letter-spacing:.14em;color:var(--dim);text-transform:uppercase;opacity:.7}
-</style>
+<title>CipherChase — Masterclass 3D Arena</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div id="hud-top">
   <h1>CipherChase</h1>
-  <div class="sub">Live 3D Arena · zero-trust pursuit</div>
+  <div class="sub">Zero-trust pursuit · commit–reveal audited</div>
 </div>
-<div id="chips">
-  <span class="chip"><span class="dot" style="background:var(--cop)"></span>Cop</span>
-  <span class="chip"><span class="dot" style="background:var(--thief)"></span>Thief</span>
+<canvas id="spark" width="220" height="56"
+  title="cyan: cop–thief gap · magenta: belief error"
+  aria-label="sparkline of cop-thief distance and belief error"></canvas>
+<div id="chips" aria-live="polite">
+  <span class="chip"><span class="dot dot-cop"></span>Cop</span>
+  <span class="chip"><span class="dot dot-thief"></span>Thief</span>
   <span class="chip">gap <b id="gap">–</b></span>
   <span class="chip">barriers <b id="nbar">0</b></span>
+  <span class="chip">score <b id="score">0 : 0</b></span>
 </div>
-<div id="verdict"></div>
-<div id="hint">drag to orbit · scroll to zoom</div>
-<div id="bar">
-  <button id="play">Pause</button>
+<aside id="rail" aria-label="commit-reveal evidence rail" tabindex="0"></aside>
+<div id="banner" role="status" aria-live="assertive"></div>
+<div id="popover" hidden></div>
+<div id="ring" hidden aria-hidden="true"></div>
+<div id="scoreboard" hidden>
+  <h2 id="sb-title"></h2>
+  <div id="sb-score"></div>
+  <div class="sb-note">N new match · space replay</div>
+</div>
+<div id="hint-ticker" aria-live="polite">
+  <span id="badge" hidden></span><span id="hint-text">···</span>
+</div>
+<div id="keys">drag orbit · space play · ←/→ step · 1/2/3 view · N new · S shot · Q quality</div>
+<div id="bar" role="toolbar" aria-label="replay transport">
+  <button id="play" aria-label="play or pause">Pause</button>
   <span id="turn">turn 0/0</span>
-  <input id="scrub" type="range" min="0" max="0" value="0" step="0.01" />
-  <div class="seg" id="speeds">
+  <div id="scrubwrap">
+    <div id="marks" aria-hidden="true"></div>
+    <input id="scrub" type="range" min="0" max="0" value="0" step="0.01"
+      aria-label="scrub through turns" />
+  </div>
+  <div class="seg" id="speeds" aria-label="playback speed">
     <button data-s="0.5">0.5×</button>
     <button data-s="1" class="on">1×</button>
     <button data-s="2">2×</button>
   </div>
+  <div class="seg" id="viewseg" aria-label="view mode">
+    <button data-v="1" title="Cop view — what the cop knows">1</button>
+    <button data-v="2" title="Thief view — what the thief knows">2</button>
+    <button data-v="3" class="on" title="Truth view — omniscient replay">3</button>
+  </div>
+  <button id="fixture" aria-pressed="false"
+    title="toggle honest / tampered replay fixture">Honest</button>
+  <button id="quality" aria-label="quality: high or low">HQ</button>
   <button id="new">New match</button>
 </div>
-
 <script type="importmap">
 { "imports": {
   "three": "./vendor/three.module.js",
   "three/addons/": "./vendor/addons/"
 } }
 </script>
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let N = 7, game = null, tiles = [], scentPool = [], barrierMap = new Map();
-let turn = 0, playing = true, speed = 1, seenBarriers = new Set();
-
-const renderer = new THREE.WebGLRenderer({ antialias:true });
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth, innerHeight);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-document.body.appendChild(renderer.domElement);
-
-const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x06070d, 0.045);
-const camera = new THREE.PerspectiveCamera(46, innerWidth/innerHeight, 0.1, 100);
-camera.position.set(6.5, 7.5, 9.5);
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; controls.dampingFactor = 0.08;
-controls.target.set(0, 0.2, 0); controls.maxPolarAngle = Math.PI*0.49;
-controls.autoRotate = !reduce; controls.autoRotateSpeed = 0.32;
-
-scene.add(new THREE.AmbientLight(0x334466, 0.6));
-const key = new THREE.DirectionalLight(0x89b4ff, 0.5); key.position.set(5,10,4); scene.add(key);
-
-const composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.55, 0.7, 0.42);
-composer.addPass(bloom);
-
-const cell = (r,c)=> new THREE.Vector3(c-(N-1)/2, 0, r-(N-1)/2);
-function ramp(t){
-  t=Math.max(0,Math.min(1,t));
-  const a=[0x24,0x22,0x54],b=[0xff,0x7a,0x1a],w=[0xff,0xcf,0x8a];
-  let p,q,f; if(t<0.5){p=a;q=b;f=t/0.5;}else{p=b;q=w;f=(t-0.5)/0.5;}
-  return new THREE.Color((p[0]+(q[0]-p[0])*f)/255,(p[1]+(q[1]-p[1])*f)/255,(p[2]+(q[2]-p[2])*f)/255);
-}
-
-function buildBoard(){
-  tiles.forEach(t=>scene.remove(t)); tiles=[];
-  scentPool.forEach(s=>scene.remove(s)); scentPool=[];
-  barrierMap.forEach(b=>scene.remove(b)); barrierMap.clear(); seenBarriers.clear();
-  const geo = new THREE.PlaneGeometry(0.92,0.92);
-  for(let r=0;r<N;r++) for(let c=0;c<N;c++){
-    const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-      color:0x0a0e18, emissive:0x101830, emissiveIntensity:0.3, roughness:0.6 }));
-    m.rotation.x = -Math.PI/2; m.position.copy(cell(r,c)); m.position.y=0;
-    m.userData={r,c}; scene.add(m); tiles.push(m);
-  }
-  const grid = new THREE.GridHelper(N, N, 0x2a3f66, 0x18263f);
-  grid.position.y=0.01; scene.add(grid);
-}
-
-const sGeo = new THREE.CircleGeometry(0.42,20);
-function scentDisc(){
-  const m=new THREE.Mesh(sGeo,new THREE.MeshBasicMaterial({color:0x39ffa0,
-    transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
-  m.rotation.x=-Math.PI/2; m.position.y=0.03; scene.add(m); scentPool.push(m); return m;
-}
-
-function token(color){
-  const g=new THREE.Group();
-  const body=new THREE.Mesh(new THREE.IcosahedronGeometry(0.38,0),
-    new THREE.MeshStandardMaterial({color,emissive:color,emissiveIntensity:1.6,
-      metalness:0.3,roughness:0.2}));
-  body.position.y=0.6; g.add(body);
-  const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,3.4,10),
-    new THREE.MeshBasicMaterial({color,transparent:true,opacity:0.32,
-      blending:THREE.AdditiveBlending,depthWrite:false}));
-  beam.position.y=1.7; g.add(beam);
-  const ring=new THREE.Mesh(new THREE.RingGeometry(0.42,0.5,28),
-    new THREE.MeshBasicMaterial({color,transparent:true,opacity:0.6,
-      side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));
-  ring.rotation.x=-Math.PI/2; ring.position.y=0.04; g.add(ring);
-  const light=new THREE.PointLight(color,6,4); light.position.y=0.7; g.add(light);
-  g.userData.body=body; scene.add(g); return g;
-}
-const cop = token(0x25e0ff), thief = token(0xff3b6b);
-
-function frameAt(i){ return game.frames[Math.max(0,Math.min(game.frames.length-1,i))]; }
-
-function applyDiscrete(i){
-  const f = frameAt(i), peak = Math.max(...f.belief.flat(), 1e-6);
-  for(const t of tiles){
-    const v = f.belief[t.userData.r][t.userData.c]/peak;
-    if(v < 0.14){ t.material.emissive.setHex(0x0a0e1a); t.material.emissiveIntensity = 0.35; }
-    else { t.material.emissive.copy(ramp(v)); t.material.emissiveIntensity = 0.16 + v*0.55; }
-  }
-  const keys = Object.keys(f.scent);
-  scentPool.forEach(s=>s.material.opacity=0);
-  keys.forEach((k,idx)=>{
-    const s = scentPool[idx] || scentDisc();
-    const [r,c]=k.split(',').map(Number);
-    s.position.x=c-(N-1)/2; s.position.z=r-(N-1)/2;
-    s.userData.base = Math.min(0.6, f.scent[k]);
-  });
-  for(const [r,c] of f.barriers){
-    const id=r+','+c;
-    if(!barrierMap.has(id)){
-      const b=new THREE.Mesh(new THREE.BoxGeometry(0.8,0.85,0.8),
-        new THREE.MeshStandardMaterial({color:0x6b4a12,emissive:0xffab2e,
-          emissiveIntensity:0.45,roughness:0.5,metalness:0.2}));
-      b.position.copy(cell(r,c)); b.position.y=0.45; b.scale.y=0.01;
-      scene.add(b); barrierMap.set(id,b);
-    }
-  }
-  document.getElementById('nbar').textContent = f.barriers.length;
-}
-
-let lastDiscrete = -1;
-function update(dt){
-  if(!game) return;
-  if(playing && !dragging){
-    turn += dt*speed*0.85;
-    if(turn > game.frames.length-1){ turn = game.frames.length-1; playing=false;
-      document.getElementById('play').textContent='Replay'; showVerdict(); }
-  }
-  const i = Math.floor(turn), f = Math.min(1, turn-i);
-  if(i !== lastDiscrete){ applyDiscrete(i); lastDiscrete=i; }
-  const a=frameAt(i), b=frameAt(i+1);
-  cop.position.lerpVectors(cell(a.cop[0],a.cop[1]), cell(b.cop[0],b.cop[1]), f);
-  thief.position.lerpVectors(cell(a.thief[0],a.thief[1]), cell(b.thief[0],b.thief[1]), f);
-  const bob = reduce?0:Math.sin(performance.now()*0.004);
-  cop.userData.body.position.y = 0.55+bob*0.05;
-  thief.userData.body.position.y = 0.55-bob*0.05;
-  scentPool.forEach(s=>{ if(s.userData.base) s.material.opacity =
-    s.userData.base*(0.6+0.4*Math.sin(performance.now()*0.005)); });
-  barrierMap.forEach(b=>{ b.scale.y += (1-b.scale.y)*0.12; b.position.y=0.45*b.scale.y; });
-  const dx=a.cop[0]-a.thief[0], dy=a.cop[1]-a.thief[1];
-  document.getElementById('gap').textContent = Math.abs(dx)+Math.abs(dy);
-  document.getElementById('turn').textContent = `turn ${i+1}/${game.frames.length}`;
-  const sc=document.getElementById('scrub'); if(!dragging) sc.value=turn;
-}
-
-function showVerdict(){
-  const v=document.getElementById('verdict');
-  const cap = game.outcome==='capture';
-  v.textContent = cap?'Capture':'Thief escapes';
-  v.style.color = cap?'#25e0ff':'#ff3b6b'; v.style.opacity=1;
-  setTimeout(()=>v.style.opacity=0, 2600);
-}
-
-async function loadGame(){
-  let data;
-  try{ data = await (await fetch('/api/game?ts='+Date.now())).json(); }
-  catch(e){ data = await (await fetch('replay3d.json')).json(); }
-  game=data; N=data.size; turn=0; lastDiscrete=-1; playing=true;
-  document.getElementById('play').textContent='Pause';
-  document.getElementById('verdict').style.opacity=0;
-  buildBoard();
-  const sc=document.getElementById('scrub'); sc.max=game.frames.length-1;
-}
-
-// transport
-const playBtn=document.getElementById('play');
-playBtn.onclick=()=>{ if(turn>=game.frames.length-1) turn=0;
-  playing=!playing; playBtn.textContent=playing?'Pause':'Play'; };
-let dragging=false; const scrub=document.getElementById('scrub');
-scrub.addEventListener('input',()=>{ dragging=true; playing=false;
-  playBtn.textContent='Play'; turn=parseFloat(scrub.value); });
-scrub.addEventListener('change',()=>dragging=false);
-document.querySelectorAll('#speeds button').forEach(b=>b.onclick=()=>{
-  speed=parseFloat(b.dataset.s);
-  document.querySelectorAll('#speeds button').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on'); });
-document.getElementById('new').onclick=loadGame;
-addEventListener('resize',()=>{ camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);
-  composer.setSize(innerWidth,innerHeight); });
-
-const clock=new THREE.Clock();
-function tick(){ requestAnimationFrame(tick);
-  update(clock.getDelta()); controls.update(); composer.render(); }
-await loadGame(); tick();
-</script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -17,13 +17,18 @@ from cipherchase.shared.config import ConfigManager  # noqa: E402
 
 
 def capture(config_dir: str = "config/police") -> dict:
+    from cipherchase.gui.replay_data import verify_records
+
     cfg = ConfigManager.load(config_dir)
     frames: list[dict] = []
     result = run_game(cfg, on_frame=frames.append)
     return {
+        "viz_schema": 2,
         "size": cfg.shared["board_and_agents"]["board_size"],
         "outcome": result.outcome.value,
         "frames": frames,
+        "records": result.records,
+        "verdicts": verify_records(result.records),
     }
 
 

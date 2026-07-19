@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail if any package/test/script .py file exceeds 150 lines (NFR-8 / R8).
+"""Fail if any source file (.py, arena .js/.mjs, index.html) exceeds 150 lines (R8).
 
 The user enforces BOTH counts (HW5 lesson), so this checks each file twice:
   * raw     = total physical lines (``wc -l``)
@@ -15,6 +15,7 @@ from pathlib import Path
 
 LIMIT = 150
 TARGETS = (Path("src/cipherchase"), Path("tests"), Path("scripts"))
+VIZ = (Path("viz/js"), Path("viz/test"))
 
 
 def counts(path: Path) -> tuple[int, int]:
@@ -31,11 +32,16 @@ def counts(path: Path) -> tuple[int, int]:
 
 def main() -> int:
     violations: list[str] = []
+    checked: list[Path] = []
     for target in TARGETS:
-        for path in sorted(target.rglob("*.py")):
-            raw, logical = counts(path)
-            if raw > LIMIT or logical > LIMIT:
-                violations.append(f"  {path}: raw={raw} logical={logical}")
+        checked.extend(sorted(target.rglob("*.py")))
+    for target in VIZ:
+        checked.extend(sorted(target.rglob("*.js")) + sorted(target.rglob("*.mjs")))
+    checked.append(Path("viz/index.html"))
+    for path in checked:
+        raw, logical = counts(path)
+        if raw > LIMIT or logical > LIMIT:
+            violations.append(f"  {path}: raw={raw} logical={logical}")
     if violations:
         print(f"FAIL: {len(violations)} file(s) exceed {LIMIT} lines (raw or logical):")
         print("\n".join(violations))

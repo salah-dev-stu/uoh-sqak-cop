@@ -906,59 +906,59 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 ## Masterclass 3D Visualization — P4 track (from PRD_masterclass_viz)
 
 ### Data & architecture (MV-F)
-- [ ] T581 (MV-F2, IH-19) Define the versioned `viz_schema` (frames + events) emitted by the `run_game` instrumentation hook — single source, no duplicated engine.
-- [ ] T582 (MV-F2) Extend the frame capture to include events (barrier, claim, capture, audit) + per-turn commit hashes from the SealBook.
-- [ ] T583 (MV-F1) Split `viz/index.html` into a ≤50-line shell + `style.css` + ES modules `main/scene/board/agents/data`.
-- [ ] T584 (MV-F1) Extract `scent.js`, `barriers.js`, `beliefs.js`, `camera.js`, `hud.js`, `timeline.js` (each ≤150 lines).
-- [ ] T585 (MV-F1) Extract `crypto_rail.js`, `finales.js`, `tour.js` (each ≤150 lines).
-- [ ] T586 (MV-F1, NFR-8) Extend `scripts/check_file_lines.py` to also enforce ≤150 on `viz/*.js` + the HTML shell.
-- [ ] T587 (MV-F4) Add `node --test` sanity checks for pure logic (data parsing, timeline reduction, glyph states, camera targets).
-- [ ] T588 (MV-F4, NFR-14) Add a CI step running the node tests (node present on runners; skip-if-absent guard).
-- [ ] T589 (MV-F3) Verify zero-build offline load from disk (import map + vendored three) after the split.
-- [ ] T590 (MV-F2) Regenerate `viz/replay3d.json` in the new schema via the hook; delete `scripts/make_replay_data.py`'s cloned engine (per IH-19).
+- [x] T581 (MV-F2, IH-19) Define the versioned `viz_schema` (frames + events) emitted by the `run_game` instrumentation hook — single source, no duplicated engine.
+- [x] T582 (MV-F2) Extend the frame capture to include events (barrier, claim, capture, audit) + per-turn commit hashes from the SealBook.
+- [x] T583 (MV-F1) Split `viz/index.html` into a ≤50-line shell + `style.css` + ES modules `main/scene/board/agents/data`.
+- [x] T584 (MV-F1) Extract `scent.js`, `barriers.js`, `beliefs.js`, `camera.js`, `hud.js`, `timeline.js` (each ≤150 lines).
+- [x] T585 (MV-F1) Extract `crypto_rail.js`, `finales.js`, `tour.js` (each ≤150 lines).
+- [x] T586 (MV-F1, NFR-8) Extend `scripts/check_file_lines.py` to also enforce ≤150 on `viz/*.js` + the HTML shell.
+- [x] T587 (MV-F4) Add `node --test` sanity checks for pure logic (data parsing, timeline reduction, glyph states, camera targets).
+- [x] T588 (MV-F4, NFR-14) Add a CI step running the node tests (node present on runners; skip-if-absent guard).
+- [x] T589 (MV-F3) Verify zero-build offline load from disk (import map + vendored three) after the split.
+- [x] T590 (MV-F2) Regenerate `viz/replay3d.json` in the new schema via the hook; delete `scripts/make_replay_data.py`'s cloned engine (per IH-19).
 
 ### Cinematic camera & finales (MV-A)
-- [ ] T591 (MV-A1) Implement follow-cam: damped framing of both agents + action centroid; auto-zoom on closing gap.
-- [ ] T592 (MV-A1) User-orbit override with idle-resume (grace timer).
-- [ ] T593 (MV-A2) Capture finale: 0.25× slow-mo dolly-in, wall-slam sequence, cop beam flare, freeze-frame scoreboard.
-- [ ] T594 (MV-A3) Survival finale: clock ring completion, thief fireworks, scoreboard.
-- [ ] T595 (MV-A4) Turn micro-pulses (agent hop easing, landing tile ping).
-- [ ] T596 (MV-A4) Honor `prefers-reduced-motion` across ALL new motion (static fallbacks).
+- [x] T591 (MV-A1) Implement follow-cam: damped framing of both agents + action centroid; auto-zoom on closing gap.
+- [x] T592 (MV-A1) User-orbit override with idle-resume (grace timer).
+- [x] T593 (MV-A2) Capture finale: 0.25× slow-mo dolly-in, wall-slam sequence, cop beam flare, freeze-frame scoreboard.
+- [x] T594 (MV-A3) Survival finale: clock ring completion, thief fireworks, scoreboard.
+- [x] T595 (MV-A4) Turn micro-pulses (agent hop easing, landing tile ping).
+- [x] T596 (MV-A4) Honor `prefers-reduced-motion` across ALL new motion (static fallbacks).
 
 ### Living matter (MV-D)
-- [ ] T597 (MV-D1) Scent particle wake: emit at thief cell, drift/fade following real decay ρ from config.
-- [ ] T598 (MV-D2) Barrier slam: squash-stretch drop + ground ripple + dust puff.
+- [x] T597 (MV-D1) Scent particle wake: emit at thief cell, drift/fade following real decay ρ from config.
+- [x] T598 (MV-D2) Barrier slam: squash-stretch drop + ground ripple + dust puff.
 - [ ] T599 (MV-D3) Floor polish: fresnel grid shader, vignette, belief-peak tile ping.
-- [ ] T600 (MV-D1, MV-G1) Instance particles + tiles (InstancedMesh) to hold 60 fps.
+- [x] T600 (MV-D1, MV-G1) Instance particles + tiles (InstancedMesh) to hold 60 fps.
 
 ### The crypto story (MV-B — differentiator, never cut)
-- [ ] T601 (MV-B1) Commit rail: sealed glyph (8-char hash chip) slides onto a side rail on every move.
-- [ ] T602 (MV-B2) Audit wave: end-of-game glyph-by-glyph unlock animation → all green → "Verified OK" banner.
-- [ ] T603 (MV-B3) Build `viz/replay3d_tampered.json` fixture (one forged step) via a script — never hand-edited.
-- [ ] T604 (MV-B3) Tamper path: forged glyph flips red, rail shatters onward, "TAMPERED — match void 0/0" banner; honest/tampered toggle.
-- [ ] T605 (MV-B4) Glyph inspector popover: real payload/nonce/commit from the log on click.
-- [ ] T606 (MV-B2) Wire glyph verification to the same verdict logic as `gui/replay_data.py` output embedded in the schema (no JS re-hash divergence).
+- [x] T601 (MV-B1) Commit rail: sealed glyph (8-char hash chip) slides onto a side rail on every move.
+- [x] T602 (MV-B2) Audit wave: end-of-game glyph-by-glyph unlock animation → all green → "Verified OK" banner.
+- [x] T603 (MV-B3) Build `viz/replay3d_tampered.json` fixture (one forged step) via a script — never hand-edited.
+- [x] T604 (MV-B3) Tamper path: forged glyph flips red, rail shatters onward, "TAMPERED — match void 0/0" banner; honest/tampered toggle.
+- [x] T605 (MV-B4) Glyph inspector popover: real payload/nonce/commit from the log on click.
+- [x] T606 (MV-B2) Wire glyph verification to the same verdict logic as `gui/replay_data.py` output embedded in the schema (no JS re-hash divergence).
 
 ### Dual-belief truth (MV-C)
-- [ ] T607 (MV-C1) View switcher: Cop view / Thief view / Truth view (replay-only) with camera + layer presets.
-- [ ] T608 (MV-C1) Thief-view data: thief's belief of the cop in the schema (from the realism rule, WB §8).
+- [x] T607 (MV-C1) View switcher: Cop view / Thief view / Truth view (replay-only) with camera + layer presets.
+- [x] T608 (MV-C1) Thief-view data: thief's belief of the cop in the schema (from the realism rule, WB §8).
 - [ ] T609 (MV-C2) Split-screen "what each agent knows" dual-viewport mode, one shared timeline.
-- [ ] T610 (MV-C3) Belief-error ribbon in Truth view (peak→true line) + before/after replays demoing the P2 brain gain.
+- [x] T610 (MV-C3) Belief-error ribbon in Truth view (peak→true line) + before/after replays demoing the P2 brain gain.
 
 ### Information layer (MV-E)
-- [ ] T611 (MV-E1) Event markers on the scrub bar (barrier/claim/capture/audit) with hover labels.
-- [ ] T612 (MV-E2) Canvas sparklines: cop–thief distance + belief error, tabular-nums.
-- [ ] T613 (MV-E3) Score + hint chips with truth/lie intent badge (Truth view only).
+- [x] T611 (MV-E1) Event markers on the scrub bar (barrier/claim/capture/audit) with hover labels.
+- [x] T612 (MV-E2) Canvas sparklines: cop–thief distance + belief error, tabular-nums.
+- [x] T613 (MV-E3) Score + hint chips with truth/lie intent badge (Truth view only).
 
 ### Performance & polish (MV-G)
-- [ ] T614 (MV-G1) DPR cap, bloom budget, Low/High quality toggle; measure 60 fps on the M2.
-- [ ] T615 (MV-G2) Keyboard map (space, ←/→, 1/2/3, T, N) + focus-visible + ARIA labels.
+- [x] T614 (MV-G1) DPR cap, bloom budget, Low/High quality toggle; measure 60 fps on the M2.
+- [x] T615 (MV-G2) Keyboard map (space, ←/→, 1/2/3, T, N) + focus-visible + ARIA labels.
 - [ ] T616 (MV-G3) [OPTIONAL] WebAudio ambient + capture stinger, OFF by default.
 
 ### Capture & media (MV-H)
-- [ ] T617 (MV-H1) In-app PNG screenshot key (canvas grab, poster-framed).
+- [x] T617 (MV-H1) In-app PNG screenshot key (canvas grab, poster-framed).
 - [ ] T618 (MV-H2) [OPTIONAL] WebM recorder for a ≤60 s guided-tour clip.
-- [ ] T619 (MV-H3) README/media refresh: masterclass stills (capture finale, audit wave, split-screen) replacing current hero shots.
+- [x] T619 (MV-H3) README/media refresh: masterclass stills (capture finale, audit wave, split-screen) replacing current hero shots.
 
 ### Live & tour
 - [ ] T620 (MV, P1) Live-spectate mode: poll the P1 runtime's frame stream; generator fallback preserved.
