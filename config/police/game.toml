@@ -35,6 +35,11 @@ apex_endgame_depth = 8
 apex_endgame_nodes = 50000
 apex_endgame_wall = 2
 apex_endgame_gap = 4
+# Strategic bluffing (F8): "strategic" = rule picks intent (cop bluffs when close,
+# thief when cornered); "random" = bluff at lie_probability. Sealed & audited either way.
+deception = "random"
+bluff_gap_threshold = 3
+bluff_weight = 0.0  # Bayesian hint-fusion pull (F6); 0 disables, ~0.15 to enable
 
 [trash_talk]
 provider = "template"

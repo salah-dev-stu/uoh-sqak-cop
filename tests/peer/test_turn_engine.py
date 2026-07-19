@@ -128,3 +128,15 @@ def test_bluff_channel_calibrates_honesty_and_nudges_belief() -> None:
                           hint="Still heading north.").to_dict())
     assert rt.honesty.p_honest() > 0.5  # the peak really moved north → honest
     assert rt.belief.as_matrix() != control  # fusion changed the belief
+
+
+def test_strategic_deception_lies_by_rule_not_dice() -> None:
+    a, _b = make_pair()
+    rt = _runtime("police", a)
+    rt.deception_mode = "strategic"  # opt-in rule-based bluffing (F8)
+    rt.me = rt.me.moved_to((3, 3))
+    rt.belief.reweight([(3, 5)], 1e6)  # believe the thief is 2 cells away → close
+    assert rt._intent() == "lie"  # cop bluffs when it has closed the gap
+    rt.belief.reweight([(3, 5)], 0.0)
+    rt.belief.reweight([(6, 6)], 1e6)  # now believe it is far
+    assert rt._intent() == "truth"  # nothing to gain from lying when distant

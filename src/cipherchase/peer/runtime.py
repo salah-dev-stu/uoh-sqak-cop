@@ -22,6 +22,7 @@ from cipherchase.peer.deadline import Deadline
 from cipherchase.peer.sealing import SealBook, sealed_spec_record
 from cipherchase.peer.state_machine import State, StateMachine
 from cipherchase.peer.watchdog import Watchdog
+from cipherchase.strategy.deception import should_bluff
 from cipherchase.strategy.factory import load_brain
 from cipherchase.strategy.trash_talk import TrashTalk
 
@@ -48,6 +49,8 @@ class PeerRuntime:
         self.honesty = HonestyTracker()  # Bayesian trust in the opponent's words (F6)
         self.bluff_weight = float(strat.get("bluff_weight", 0.0))
         self.last_claim: Any = None
+        self.deception_mode = strat.get("deception", "random")  # "strategic" → rule-based (F8)
+        self.gap_threshold = int(strat.get("bluff_gap_threshold", 3))
         self.my_smell = SmellField(
             self.board.size, ph["grid_size"], ph["center_intensity"], ph["decay"],
             ph["falloff"], min_center=ph["min_center_intensity"],
@@ -68,8 +71,16 @@ class PeerRuntime:
         self.sm = StateMachine(State.HANDSHAKE)
         self.now = now or time.monotonic
 
+    def _intent(self) -> str:
+        if self.deception_mode != "strategic":
+            return self.talk.choose_intent()  # random bluff at lie_probability
+        cop, thief = ((self.me.position, self.belief.most_likely()) if self.role == "police"
+                      else (self.belief.most_likely(), self.me.position))
+        return "lie" if should_bluff(self.role, cop, thief, self.barriers, self.board,
+                                     gap_threshold=self.gap_threshold) else "truth"
+
     def talk_for(self, step: int) -> tuple[str, str]:
-        intent = self.talk.choose_intent()
+        intent = self._intent()
         hint = self.talk.maybe_generate(TalkContext(role=self.role, step=step, intent=intent))
         return (intent if hint else "truth"), hint
 

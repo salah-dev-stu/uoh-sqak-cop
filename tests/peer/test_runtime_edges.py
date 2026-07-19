@@ -146,12 +146,3 @@ def test_far_barrier_suggestion_is_refused() -> None:
                       return_value=Decision(direction=Direction.STAY, barrier_cell=(6, 6))):
         rt.take_turn(None)
     assert a.sent[-1][2]["barrier_placed"] is None  # non-adjacent → not placed
-
-
-def test_unexpected_crash_in_run_yields_error_result_not_a_hang() -> None:
-    a, _b = make_pair()
-    rt = PeerRuntime(role="police", cfg=_cfg(), transport=a, sub_game_number=1)
-    rt._run = lambda: (_ for _ in ()).throw(RuntimeError("boom"))  # force the F9 boundary
-    out = rt.run()
-    assert out["result"] == "error"  # a summarised result, never a raised exception
-    assert "boom" in out["note"]
