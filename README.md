@@ -140,9 +140,18 @@ signature for byte-identical interop.
 ### 4. Search & learning
 The containment-to-capture gap is closed by **search**: `ApexCop` ships an exact alpha-beta endgame solver
 plus one-ply best-response over an opponent model (§3) — the lookahead that a greedy pursuer provably lacks.
-**Q-learning and depth-limited expectimax** remain drop-in `police_class`/`thief_class` swaps (PRD_strategy
-§5, `strategy/police_expectimax.py`) for comparison; the shipped default is the measured champion. Every claim
-is backed by the seeded, CI-bounded benchmark (§3), not asserted.
+
+A **tabular Q-learning** cop (`strategy/qbrain.py`, 49 relative states × 5 moves, `scripts/train_qbrain.py`)
+is the learning seam, swappable via `police_class` + `qbrain_policy_path`. Its curve is the artifact:
+
+![QBrain learning curve](analysis/qbrain_learning.png)
+
+Trained vs the capturable archetypes it climbs from ~62% to **~99%** capture and then plays them perfectly —
+but against a *strategic* equal-speed evader with no barriers the capture rate is a flat **0%** by move-parity,
+no matter how long it trains. That is the thesis in one image: **learning masters what is learnable, and
+`ApexCop`'s search (barriers + endgame proof) is what breaks the parity wall** the Q-cop cannot. Depth-limited
+expectimax (`strategy/police_expectimax.py`) is a further comparison seam. Every claim is backed by the seeded,
+CI-bounded benchmark (§3), not asserted.
 
 ### 5. Fairness & integrity (why P2P works without a judge)
 `commit = SHA256(canonical_json({step,state,move,intent}) + "|" + nonce)` with a `secrets` nonce, verified in
