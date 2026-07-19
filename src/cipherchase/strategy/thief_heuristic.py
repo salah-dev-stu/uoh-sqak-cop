@@ -16,17 +16,15 @@ from cipherchase.domain.own_state import OwnState
 class ThiefBrain(BrainBase):
     role = "thief"
 
-    def _weight(self, key: str, default: float) -> float:
-        return float(self.params.get(key, default))
 
     def _score(self, target: Cell, cop: Cell, barriers: frozenset[Cell]) -> float:
         dist = self.board.distance(target, cop)
         exits = len(self.board.neighbors(target, barriers))
         risk = 1.0 if dist <= 1 else 0.0
         return (
-            self._weight("w_dist", 1.0) * dist
-            + self._weight("w_exits", 0.3) * exits
-            - self._weight("w_risk", 1.0) * risk
+            self.param("w_dist", 1.0) * dist
+            + self.param("w_exits", 0.3) * exits
+            - self.param("w_risk", 1.0) * risk
         )
 
     def _pick_move(

@@ -37,6 +37,10 @@ class BrainBase:
         self.params = params or {}
         self.rng = rng
 
+    def param(self, key: str, default: float) -> float:
+        """Config-first numeric parameter lookup (single helper, R2)."""
+        return float(self.params.get(key, default))
+
     def decide(self, state: OwnState, belief: BeliefGrid, barriers: frozenset[Cell]) -> Decision:
         return self._decide_move(state, belief, barriers)
 

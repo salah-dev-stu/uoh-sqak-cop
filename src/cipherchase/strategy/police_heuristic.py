@@ -17,15 +17,13 @@ from cipherchase.domain.rules import can_place_barrier, reachable_cells
 class PoliceBrain(BrainBase):
     role = "police"
 
-    def _w(self, key: str, default: float) -> float:
-        return float(self.params.get(key, default))
 
     def _move_score(self, target: Cell, thief: Cell, belief: BeliefGrid) -> float:
         center = (self.board.size // 2, self.board.size // 2)
         return (
-            -self._w("w_dist", 1.0) * self.board.distance(target, thief)
-            - self._w("w_center", 0.5) * self.board.distance(target, center)
-            + self._w("w_belief", 1.0) * belief.mass_at(target)
+            -self.param("w_dist", 1.0) * self.board.distance(target, thief)
+            - self.param("w_center", 0.5) * self.board.distance(target, center)
+            + self.param("w_belief", 1.0) * belief.mass_at(target)
         )
 
     def _pick_move(
@@ -53,7 +51,7 @@ class PoliceBrain(BrainBase):
         best = float("-inf")
         for q in sorted(self._candidates(state.position, barriers)):
             gain = reach0 - len(reachable_cells(self.board, thief, barriers | {q}))
-            score = gain - self._w("lambda_barrier", 0.2) * self.board.distance(q, thief)
-            if gain >= self._w("min_gain", 1.0) and score > best:
+            score = gain - self.param("lambda_barrier", 0.2) * self.board.distance(q, thief)
+            if gain >= self.param("min_gain", 1.0) and score > best:
                 best_q, best = q, score
         return best_q

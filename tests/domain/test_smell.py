@@ -54,6 +54,19 @@ def test_absorb_merges_an_external_field() -> None:
     assert f.intensity_at((2, 2)) == pytest.approx(0.5)
 
 
+def test_absorb_drops_malformed_and_out_of_bounds_never_crashes() -> None:
+    f = _field()
+    f.absorb({"x,y": 0.5, "1,1": "bad", "9,9": 0.5, "-1,0": 0.5, "2,2": 0.4})  # type: ignore[dict-item]
+    assert f.intensity_at((2, 2)) == pytest.approx(0.4)
+    assert f.intensity_at((9, 9)) == 0.0
+
+
+def test_absorb_gain_scales_incoming_intensity() -> None:
+    f = SmellField(7, 5, 0.9, 0.1, 0.7, absorb_gain=0.5)
+    f.absorb({"1,1": 0.8})
+    assert f.intensity_at((1, 1)) == pytest.approx(0.4)
+
+
 def test_intensity_never_negative_and_decays_to_zero() -> None:
     f = _field()
     f.deposit((3, 3))

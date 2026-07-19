@@ -9,6 +9,7 @@ orthogonal neighbours to model the opponent moving. All ops renormalise.
 from __future__ import annotations
 
 from cipherchase.constants import DELTAS, Cell, Direction
+from cipherchase.domain.cells import cell_key
 
 
 class BeliefGrid:
@@ -24,7 +25,7 @@ class BeliefGrid:
 
     def observe_smell(self, smell_grid: dict[str, float]) -> None:
         for cell in self._p:
-            tau = smell_grid.get(f"{cell[0]},{cell[1]}", 0.0)
+            tau = smell_grid.get(cell_key(cell), 0.0)
             self._p[cell] *= 1.0 + self.smell_trust * tau
         self._normalize()
 
