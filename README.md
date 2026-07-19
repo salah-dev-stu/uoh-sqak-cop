@@ -146,7 +146,9 @@ is backed by the seeded, CI-bounded benchmark (§3), not asserted.
 
 ### 5. Fairness & integrity (why P2P works without a judge)
 `commit = SHA256(canonical_json({step,state,move,intent}) + "|" + nonce)` with a `secrets` nonce, verified in
-constant time. Each move is **committed** (move hidden) → **revealed** → and every nonce is disclosed only at
+constant time. This isn't asserted, it's *swept*: an exhaustive tamper sweep (`tests/integrity/`) perturbs
+every single field of the committed 70-step log one at a time — **1795 mutations, 1795 caught**, each
+localised to its exact record, zero escapes. Each move is **committed** (move hidden) → **revealed** → and every nonce is disclosed only at
 the **end-of-game mutual audit**, which re-hashes both logs; any mismatch → `tamper_forfeit` 0/0. A **Step-0
 signed declaration** binds hardware + LLM model + the per-game GitHub commit. Reports carry a **symmetric
 mutual signature** (identical on both peers). The bluff hint may lie; the physical board may not — that
