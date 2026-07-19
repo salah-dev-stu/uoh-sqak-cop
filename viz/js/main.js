@@ -10,11 +10,11 @@ import { createRail } from './crypto_rail.js';
 import { createHud, bindTransport, pressView } from './hud.js';
 import { createViews } from './views.js';
 import { initCapture } from './capture.js';
+import { createShowtime } from './showtime.js';
 import * as D from './data.js';
 import * as T from './timeline.js';
 
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const $ = id => document.getElementById(id);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, $ = id => document.getElementById(id);
 const sc = createScene();
 const board = createBoard(sc.scene);
 const agents = createAgents(sc.scene, reduce);
@@ -31,6 +31,7 @@ const shoot = initCapture(sc);
 const S = { game: null, turn: 0, playing: true, speed: 1, honest: true,
   last: -1, ended: false, dist: [], err: [] };
 let dragging = false;
+const showtime = createShowtime({ sc, rig, setTurn, reduce, captionEl: $('tour-cap'), frameCount: () => S.game?.frames.length ?? 0 });
 
 async function fetchGame(fresh){
   if (!S.honest) return (await fetch('replay3d_tampered.json')).json();
@@ -103,8 +104,9 @@ function update(dt){
   const i = T.frameIndex(S.turn), f = T.frameFrac(S.turn);
   if (i !== S.last){ applyDiscrete(i, i === S.last + 1); S.last = i; }
   agents.update({ a: frameAt(i), b: frameAt(i + 1), f, N: S.game.size, dt });
-  scent.update(dt); walls.update(dt); finales.update(dt);
-  if (!finales.active()) rig.update(dt, agents.copPos(), agents.thiefPos(), S.dist[i]);
+  scent.update(dt); walls.update(dt); finales.update(dt); showtime.update(dt);
+  if (!finales.active() && !showtime.active())
+    rig.update(dt, agents.copPos(), agents.thiefPos(), S.dist[i]);
   if (!dragging) $('scrub').value = S.turn;
 }
 

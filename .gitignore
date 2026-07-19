@@ -35,3 +35,4 @@ logs/
 viz/node_modules/
 viz/package-lock.json
 .blender-toolkit/
+.playwright-mcp/
