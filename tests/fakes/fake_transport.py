@@ -1,7 +1,7 @@
 """In-memory FakeTransport — loopback delivery without any live server/HTTP.
 
-``_send`` routes into the *peer's* inboxes exactly as the peer's FastMCP tools
-would, so peer logic can be tested deterministically (grader path, ADR-010).
+Mirrors the real transport surface (incl. the ``payload`` audit arg key and the
+agreements channel) by routing straight into the peer's inboxes (ADR-010).
 """
 
 from __future__ import annotations
@@ -10,12 +10,12 @@ from cipherchase.infra.inboxes import Inboxes
 from cipherchase.infra.mcp_server import dispatch
 from cipherchase.infra.transport_base import BaseTransport, Message
 
-# Reverse of SEND_TOOL: opponent tool name -> the inbox channel it feeds.
+# opponent tool name -> the inbox channel it feeds (reference-compatible)
 _TOOL_CHANNEL = {
     "receive_turn": "turn",
     "receive_control": "control",
     "submit_audit": "audit",
-    "negotiate": "control",
+    "negotiate": "agreement",
 }
 
 
@@ -23,8 +23,10 @@ class FakeTransport(BaseTransport):
     def __init__(self, inboxes: Inboxes, peer_inboxes: Inboxes) -> None:
         super().__init__(inboxes)
         self.peer_inboxes = peer_inboxes
+        self.sent: list[tuple[str, str, Message]] = []  # (tool, arg_key, message) taps
 
-    def _send(self, tool: str, message: Message) -> Message:
+    def _send(self, tool: str, arg_key: str, message: Message) -> Message:
+        self.sent.append((tool, arg_key, message))
         return dispatch(self.peer_inboxes, _TOOL_CHANNEL[tool], message)
 
 

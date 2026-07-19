@@ -6,10 +6,34 @@ reveals the whole book (nonces included) at game end for the mutual audit.
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from typing import Any
 
 from cipherchase.domain.crypto import CommitReveal
 from cipherchase.domain.protocol import AuditPayload
+from cipherchase.shared.sysinfo import system_info
+from cipherchase.shared.version import VERSION
+
+
+def now_iso() -> str:
+    return datetime.now(UTC).isoformat()
+
+
+def trim_words(text: str, max_words: int) -> str:
+    return " ".join(text.split()[:max_words])
+
+
+def sealed_spec_record(book: SealBook, cfg: Any, sub_game_number: int) -> None:
+    """Step-0 sealed declaration record (F5, PRD_league_runtime §2.2)."""
+    book.seal({
+        "step": 0,
+        "type": "system_spec",
+        "spec": system_info(),
+        "model": cfg.private.get("llm", {}).get("model", "template"),
+        "code_version": VERSION,
+        "group_name": cfg.private["game"]["group_name"],
+        "sub_game_number": sub_game_number,
+    })
 
 
 def move_payload(step: int, state: Any, decision: Any) -> dict[str, Any]:

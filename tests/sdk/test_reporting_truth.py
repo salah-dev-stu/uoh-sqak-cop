@@ -40,7 +40,7 @@ def test_declaration_artifact_embeds_a_verifiable_step0() -> None:
 def test_git_probe_degrades_to_unknown_when_gated_out() -> None:
     from unittest.mock import MagicMock
 
-    from cipherchase.sdk.sdk import _git_commit
+    from cipherchase.sdk.step0 import git_commit as _git_commit
 
     gate = MagicMock()
     gate.execute.side_effect = RuntimeError("no git here")

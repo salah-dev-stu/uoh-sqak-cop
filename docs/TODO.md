@@ -702,54 +702,54 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 ### P1 League runtime (Jul 21–29) — PRD_league_runtime (reference choreography)
 
 #### P1.a Wire contract groundwork
-- [ ] T473 (LR-2.0, F1) Write failing test `test_submit_audit_uses_payload_param`: spy asserts the outbound arg dict key is `payload`, not `message`
-- [ ] T474 (LR-2.0, F1) Rename `submit_audit` tool parameter to `payload` on our server AND send `{"payload": ...}` from our client (both directions fixed)
-- [ ] T475 (LR-2.0, F1, NFR-11) Config: `opponent_url` gains the `/mcp` suffix in both dirs; add `[network]` keys `turn_timeout_seconds`, `poll_interval_seconds`, `connect_timeout_seconds`, `retry_interval_seconds`, `audit_send_timeout_seconds` (all read — no dead keys); retire/alias `rpc_timeout_s`
+- [x] T473 (LR-2.0, F1) Write failing test `test_submit_audit_uses_payload_param`: spy asserts the outbound arg dict key is `payload`, not `message`
+- [x] T474 (LR-2.0, F1) Rename `submit_audit` tool parameter to `payload` on our server AND send `{"payload": ...}` from our client (both directions fixed)
+- [x] T475 (LR-2.0, F1, NFR-11) Config: `opponent_url` gains the `/mcp` suffix in both dirs; add `[network]` keys `turn_timeout_seconds`, `poll_interval_seconds`, `connect_timeout_seconds`, `retry_interval_seconds`, `audit_send_timeout_seconds` (all read — no dead keys); retire/alias `rpc_timeout_s`
 - [ ] T476 (LR-2.1) Align terms values/formats with the reference: `hint_max_words` 15, agreed `min_center_intensity`, `axis_origin_corner` `"top-left"` (hyphen); translate layer emits exact reference key names
-- [ ] T477 (LR-2.4) Write failing test `test_turn_message_exact_wire_keys`: `to_dict()` == the 10 §2.4 keys, no `move`/`intent`/`nonce`; ISO-8601 timestamp; hint populated
-- [ ] T478 (LR-2.4) Write failing test `test_lenient_parse_foreign_extras`: 3 unknown keys parse fine; missing optionals default; malformed required keys rejected, never crash
-- [ ] T479 (LR-2.4) Amend `domain/protocol.py`: `TurnMessage` drops `move`/`intent` from the wire class; lenient filtering `from_dict`; `to_dict` emits exactly the reference key set
-- [ ] T480 (LR-2.1) Write failing tests `test_negotiation_signed_shape` (exactly `{terms, nonce, signature, identity}`, frozen-formula signature) + `test_negotiate_rejects_terms_mismatch` (identity differences do NOT reject)
-- [ ] T481 (LR-2.1) Rewrite `domain/negotiation.py`: `Negotiation(terms, identity)` with `signed()` / `verify_peer` (terms dict-equality + `CommitReveal` signature check)
-- [ ] T482 (LR-2.1) Write failing test `test_terms_exact_keyset_and_values`: `terms_from_config` yields exactly the §2.1 key set; golden dict compare
-- [ ] T483 (LR-2.1, F2) NEW `peer/terms.py`: `terms_from_config`, `validate_terms` (fail-fast before opening a port), `identity_from_config` incl. sysinfo `spec`
-- [ ] T484 (LR-2.1) Write failing test `test_derive_game_ids_matches_reference`: golden vector; both group-id orderings identical
-- [ ] T485 (LR-2.1) Rewrite `domain/game_ids.py`: `derive_game_ids(terms, group_a, group_b)` per the reference formula (sorted ids, uuid from sha256 prefix)
+- [x] T477 (LR-2.4) Write failing test `test_turn_message_exact_wire_keys`: `to_dict()` == the 10 §2.4 keys, no `move`/`intent`/`nonce`; ISO-8601 timestamp; hint populated
+- [x] T478 (LR-2.4) Write failing test `test_lenient_parse_foreign_extras`: 3 unknown keys parse fine; missing optionals default; malformed required keys rejected, never crash
+- [x] T479 (LR-2.4) Amend `domain/protocol.py`: `TurnMessage` drops `move`/`intent` from the wire class; lenient filtering `from_dict`; `to_dict` emits exactly the reference key set
+- [x] T480 (LR-2.1) Write failing tests `test_negotiation_signed_shape` (exactly `{terms, nonce, signature, identity}`, frozen-formula signature) + `test_negotiate_rejects_terms_mismatch` (identity differences do NOT reject)
+- [x] T481 (LR-2.1) Rewrite `domain/negotiation.py`: `Negotiation(terms, identity)` with `signed()` / `verify_peer` (terms dict-equality + `CommitReveal` signature check)
+- [x] T482 (LR-2.1) Write failing test `test_terms_exact_keyset_and_values`: `terms_from_config` yields exactly the §2.1 key set; golden dict compare
+- [x] T483 (LR-2.1, F2) NEW `peer/terms.py`: `terms_from_config`, `validate_terms` (fail-fast before opening a port), `identity_from_config` incl. sysinfo `spec`
+- [x] T484 (LR-2.1) Write failing test `test_derive_game_ids_matches_reference`: golden vector; both group-id orderings identical
+- [x] T485 (LR-2.1) Rewrite `domain/game_ids.py`: `derive_game_ids(terms, group_a, group_b)` per the reference formula (sorted ids, uuid from sha256 prefix)
 
 #### P1.b Transport, server, inboxes
-- [ ] T486 (LR-3.10, NFR-5) Write failing inbox tests: `agreements` queue, non-raising `try_get_*(timeout) -> dict | None`, `drain_all()`
-- [ ] T487 (LR-3.10, NFR-5) Extend `infra/inboxes.py` accordingly; bounded FIFO retained (queue-not-drop)
-- [ ] T488 (LR-3.11, F1) Write failing server tests: `negotiate` routes to the agreements inbox (not control); malformed tool dict returns `{"ok": false}` without enqueueing
-- [ ] T489 (LR-3.11, F1) Amend `infra/mcp_server.py`: routing fix, `payload` param, `start_peer_server(role, host, port)` with port-free probe, daemon thread, `show_banner=False`
-- [ ] T490 (LR-3.12, NFR-3) Write failing transport tests: retry-until-deadline `_call_with_retry`, `exchange_agreement`, best-effort `exchange_audit`, None-returning polls, all outbound gatekept `service="mcp"`
-- [ ] T491 (LR-3.12, NFR-3) Amend `infra/mcp_client.py` + `transport_base.py` to the new surface; `submit_audit` outbound key = `"payload"`; best-effort `send_control`; `drain_inboxes()`
-- [ ] T492 (LR-3.18) Extend `tests/fakes/fake_transport.py` to the full new transport surface as an in-memory queue pair
+- [x] T486 (LR-3.10, NFR-5) Write failing inbox tests: `agreements` queue, non-raising `try_get_*(timeout) -> dict | None`, `drain_all()`
+- [x] T487 (LR-3.10, NFR-5) Extend `infra/inboxes.py` accordingly; bounded FIFO retained (queue-not-drop)
+- [x] T488 (LR-3.11, F1) Write failing server tests: `negotiate` routes to the agreements inbox (not control); malformed tool dict returns `{"ok": false}` without enqueueing
+- [x] T489 (LR-3.11, F1) Amend `infra/mcp_server.py`: routing fix, `payload` param, `start_peer_server(role, host, port)` with port-free probe, daemon thread, `show_banner=False`
+- [x] T490 (LR-3.12, NFR-3) Write failing transport tests: retry-until-deadline `_call_with_retry`, `exchange_agreement`, best-effort `exchange_audit`, None-returning polls, all outbound gatekept `service="mcp"`
+- [x] T491 (LR-3.12, NFR-3) Amend `infra/mcp_client.py` + `transport_base.py` to the new surface; `submit_audit` outbound key = `"payload"`; best-effort `send_control`; `drain_inboxes()`
+- [x] T492 (LR-3.18) Extend `tests/fakes/fake_transport.py` to the full new transport surface as an in-memory queue pair
 
 #### P1.c Sealing, turns, claims
-- [ ] T493 (LR-2.2, F5) Write failing test: `sealed_spec_record` produces the step-0 `system_spec` record (spec/model/code_version/group_name/sub_game_number) sealed with the frozen formula
-- [ ] T494 (LR-3.8, F5, F6) Extend `peer/sealing.py`: `sealed_step_record` (our `commit_payload_spec` schema), `sealed_spec_record`, `build_turn_message` (§2.4 exact key set), `now_iso()`
-- [ ] T495 (LR-2.3) Write failing tests `test_thief_sends_first` / `test_police_waits_first` over FakeTransport
-- [ ] T496 (LR-2.4) Write failing test `test_capture_claim_only_on_police_move`: MOVE ⇒ claim = own new cell; BARRIER/HOLD ⇒ null
-- [ ] T497 (LR-2.4) Write failing test `test_claim_response_honest_and_next_message`: true-cell claim ⇒ `caught: true` + mandatory final "You got me." HOLD message; wrong cell ⇒ `caught: false` on next turn
-- [ ] T498 (LR-2.4) Write failing test `test_survival_win_claim_at_max_steps`: thief attaches `win_claim {"type":"survival"}` on that same message; police ends on receipt
-- [ ] T499 (LR-3.6, F6) Rewrite `peer/turn_sender.py`: `take_turn` (decide → apply with HOLD fallback → seal → deposit+decay → attach claims → send ONE `TurnMessage`) + `send_final`
-- [ ] T500 (LR-3.7) Rewrite `peer/turn_handler.py`: `TurnHandler.process(msg) -> IncomingOutcome` — barrier note, belief diffuse+observe, smell absorb, claim logic, history; lenient on foreign extras
+- [x] T493 (LR-2.2, F5) Write failing test: `sealed_spec_record` produces the step-0 `system_spec` record (spec/model/code_version/group_name/sub_game_number) sealed with the frozen formula
+- [x] T494 (LR-3.8, F5, F6) Extend `peer/sealing.py`: `sealed_step_record` (our `commit_payload_spec` schema), `sealed_spec_record`, `build_turn_message` (§2.4 exact key set), `now_iso()`
+- [x] T495 (LR-2.3) Write failing tests `test_thief_sends_first` / `test_police_waits_first` over FakeTransport
+- [x] T496 (LR-2.4) Write failing test `test_capture_claim_only_on_police_move`: MOVE ⇒ claim = own new cell; BARRIER/HOLD ⇒ null
+- [x] T497 (LR-2.4) Write failing test `test_claim_response_honest_and_next_message`: true-cell claim ⇒ `caught: true` + mandatory final "You got me." HOLD message; wrong cell ⇒ `caught: false` on next turn
+- [x] T498 (LR-2.4) Write failing test `test_survival_win_claim_at_max_steps`: thief attaches `win_claim {"type":"survival"}` on that same message; police ends on receipt
+- [x] T499 (LR-3.6, F6) Rewrite `peer/turn_sender.py`: `take_turn` (decide → apply with HOLD fallback → seal → deposit+decay → attach claims → send ONE `TurnMessage`) + `send_final`
+- [x] T500 (LR-3.7) Rewrite `peer/turn_handler.py`: `TurnHandler.process(msg) -> IncomingOutcome` — barrier note, belief diffuse+observe, smell absorb, claim logic, history; lenient on foreign extras
 
 #### P1.d Runtime, audit, series, CLI
-- [ ] T501 (LR-2.5) Write failing audit tests: best-effort push (raise suppressed, own inbox still read), empty inbox ⇒ audit `skipped`, flipped payload byte ⇒ `tamper_forfeit` and we win
-- [ ] T502 (LR-3.9) Extend `peer/summary.py` `finish(rt)`: audit exchange per §2.5 (hash-only verbatim re-hash of foreign records, timeout results skip audit) + summary dict feeding the 4 artifacts
-- [ ] T503 (LR-2.1) Rewrite `peer/handshake.py` `negotiate(rt)`: exchange signed agreement, verify, capture `peer_identity`, derive `game_id`/`game_uid`, start clock; `HandshakeError` on mismatch
-- [ ] T504 (LR-3.1, F9) Write failing test `test_full_series_loopback`: two `PeerRuntime`s over FakeTransport play `num_games=2`; roles swap; both audits pass; game_uids equal
-- [ ] T505 (LR-3.1, F1, F9) NEW `peer/runtime.py` `PeerRuntime`: negotiate → (thief) first turn → poll/process/respond loop → result → audit; owns state/belief/smell/book; watchdog beat; FSM phases; `run() -> summary`
+- [x] T501 (LR-2.5) Write failing audit tests: best-effort push (raise suppressed, own inbox still read), empty inbox ⇒ audit `skipped`, flipped payload byte ⇒ `tamper_forfeit` and we win
+- [x] T502 (LR-3.9) Extend `peer/summary.py` `finish(rt)`: audit exchange per §2.5 (hash-only verbatim re-hash of foreign records, timeout results skip audit) + summary dict feeding the 4 artifacts
+- [x] T503 (LR-2.1) Rewrite `peer/handshake.py` `negotiate(rt)`: exchange signed agreement, verify, capture `peer_identity`, derive `game_id`/`game_uid`, start clock; `HandshakeError` on mismatch
+- [x] T504 (LR-3.1, F9) Write failing test `test_full_series_loopback`: two `PeerRuntime`s over FakeTransport play `num_games=2`; roles swap; both audits pass; game_uids equal
+- [x] T505 (LR-3.1, F1, F9) NEW `peer/runtime.py` `PeerRuntime`: negotiate → (thief) first turn → poll/process/respond loop → result → audit; owns state/belief/smell/book; watchdog beat; FSM phases; `run() -> summary`
 - [ ] T506 (LR-3.17, F9) Delete the commit→reveal `Orchestrator`; amend `StateMachine`: `HANDSHAKE→WAITING→COMPUTING→COMMITTING→WAITING`, remove `AWAITING_REVEAL`/`VERIFYING`, every active state →`TECHNICAL_LOSS`→`REPORTING`
-- [ ] T507 (LR-2.8, F9) Write failing tests `test_timeout_is_technical_win_and_skips_audit` + `test_deadline_resets_on_message`
-- [ ] T508 (LR-2.8, F9) Implement timeout policy: silent opponent past `turn_timeout_seconds` ⇒ `("timeout", our_role)` technical win, artifacts emitted, audit skipped, exit 0 — never a hang
+- [x] T507 (LR-2.8, F9) Write failing tests `test_timeout_is_technical_win_and_skips_audit` + `test_deadline_resets_on_message`
+- [x] T508 (LR-2.8, F9) Implement timeout policy: silent opponent past `turn_timeout_seconds` ⇒ `("timeout", our_role)` technical win, artifacts emitted, audit skipped, exit 0 — never a hang
 - [ ] T509 (LR-2.7) Implement control-channel scope: receive-and-tolerate everything, send `status` on change, honor `quit`; no-op degradation without control methods
-- [ ] T510 (LR-2.6) Write failing series tests: `role_for` natural-on-odd role swap; restart drains all inboxes before fresh negotiation (`test_restart_drains_inboxes`)
-- [ ] T511 (LR-3.14) NEW `sdk/series.py`: `SeriesResult`, `role_for`, `run_series` — fresh `PeerRuntime` per sub-game, transport reused, restart loop with `MAX_RESTARTS`
+- [x] T510 (LR-2.6) Write failing series tests: `role_for` natural-on-odd role swap; restart drains all inboxes before fresh negotiation (`test_restart_drains_inboxes`)
+- [x] T511 (LR-3.14) NEW `sdk/series.py`: `SeriesResult`, `role_for`, `run_series` — fresh `PeerRuntime` per sub-game, transport reused, restart loop with `MAX_RESTARTS`
 - [ ] T512 (LR-3.15, F11) Extend `sdk/sdk.py` `run_peer(role, config_dir, *, transport, listener)`: validate terms → start server+transport once → `run_series` → 4 artifacts per sub-game → gatekept email; `run_self_match` untouched
-- [ ] T513 (LR-3.16, F2) Add CLI subcommand `cipherchase peer --role {police,thief} --config <dir> [--out logs]` printing machine-parseable result JSON; no logic in the CLI
-- [ ] T514 (LR-4) Write failing robustness tests: malformed inbound rejected at parse boundary (no deadline reset), duplicate turn idempotent via step guard, empty `smell_grid` tolerated, unknown `win_claim` type recorded, port-in-use → clean error
+- [x] T513 (LR-3.16, F2) Add CLI subcommand `cipherchase peer --role {police,thief} --config <dir> [--out logs]` printing machine-parseable result JSON; no logic in the CLI
+- [x] T514 (LR-4) Write failing robustness tests: malformed inbound rejected at parse boundary (no deadline reset), duplicate turn idempotent via step guard, empty `smell_grid` tolerated, unknown `win_claim` type recorded, port-in-use → clean error
 - [ ] T515 (LR-4, F9) Implement the crash boundary: any unhandled loop exception → `("error", "-")`, artifacts still emitted, no hung server holding a port
 
 #### P1.e Interop proof, opponent kit, tunnel
@@ -757,8 +757,8 @@ Every requirement, NFR, and gate below maps to at least one task ID.
 - [ ] T517 (LR-5, F1, F2, F14) Write `tests/interop/test_vs_reference.py` (slow): our peer vs the ACTUAL reference peer as subprocesses; assert exit 0, full 2-sub-game series, both audits verified, roles swapped, equal `game_uid`, legal outcomes; both-role parametrized; start order swapped
 - [ ] T518 (LR-5) Capture golden transcripts from one blessed run; add fast replay tests: exact `TurnMessage` key set, negotiate shape, `payload` param, and the reference's strict `from_dict` parses every message we emit (every-commit tripwire)
 - [ ] T519 (LR-5, NFR-14) Add the CI `interop` job step (slow-marked; skipped when `uv`/reference repo absent)
-- [ ] T520 (LR-6, F14) Write `docs/INTEROP-CONTRACT.md` opponent kit: tool+param names incl. the `payload` quirk, negotiate payload + terms table + example, frozen commit formula + golden vector, `TurnMessage` keys + claim semantics, audit exchange + iron rule, mermaid sequence diagram, timeout table + role swap, tunnel checklist
-- [ ] T521 (IH-22, LR-3.16) Rewrite `docs/deploy-tunnel.md` to the real `cipherchase peer` command in the same commit that lands the subcommand (doc-truth test passes)
+- [x] T520 (LR-6, F14) Write `docs/INTEROP-CONTRACT.md` opponent kit: tool+param names incl. the `payload` quirk, negotiate payload + terms table + example, frozen commit formula + golden vector, `TurnMessage` keys + claim semantics, audit exchange + iron rule, mermaid sequence diagram, timeout table + role swap, tunnel checklist
+- [x] T521 (IH-22, LR-3.16) Rewrite `docs/deploy-tunnel.md` to the real `cipherchase peer` command in the same commit that lands the subcommand (doc-truth test passes)
 - [ ] T522 (F13) Run the two-machine ngrok smoke: our peer vs our peer across a public tunnel; keep logs/screenshots as evidence
 
 **Milestone P1:** Our peer completes a full series vs the ACTUAL reference peer on localhost, audits Verified-OK both sides.

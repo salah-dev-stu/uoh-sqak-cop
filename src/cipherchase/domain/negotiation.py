@@ -1,30 +1,41 @@
-"""Negotiate + sign + verify the shared game.json (FR-I1, F14).
+"""Negotiation agreement — reference wire shape (PRD_league_runtime §2.1).
 
-Both peers must sign a byte-identical constitution; a signature mismatch
-refuses the match (constant-time comparison via ``secrets.compare_digest``).
+``signed()`` → ``{terms, nonce, signature, identity}`` where the signature is
+the frozen commit formula over the terms. ``verify_peer`` refuses on any terms
+inequality or signature mismatch (no game); identity is captured, not compared.
+``config_sha256`` stays the artifact/config lock used across reporting.
 """
 
 from __future__ import annotations
 
-import secrets
 from typing import Any
 
 from cipherchase.domain.canonical import canonical_json, sha256_hex
-from cipherchase.exceptions import HandshakeError
+from cipherchase.domain.crypto import CommitReveal
+from cipherchase.exceptions import CryptoError, HandshakeError
 
 
 def config_sha256(game_json: dict[str, Any]) -> str:
     return sha256_hex(canonical_json(game_json))
 
 
-def sign_agreement(game_json: dict[str, Any]) -> dict[str, Any]:
-    return {"config": game_json, "config_sha256": config_sha256(game_json)}
+class Negotiation:
+    def __init__(self, terms: dict[str, Any], identity: dict[str, Any]) -> None:
+        self.terms = terms
+        self.identity = identity
 
+    def signed(self) -> dict[str, Any]:
+        commit, nonce = CommitReveal.seal(self.terms)
+        return {"terms": self.terms, "nonce": nonce, "signature": commit,
+                "identity": self.identity}
 
-def verify_agreement(local: dict[str, Any], remote: dict[str, Any]) -> str:
-    """Return the shared config hash, or raise if the two configs differ."""
-    local_sha = config_sha256(local)
-    remote_sha = config_sha256(remote)
-    if not secrets.compare_digest(local_sha, remote_sha):
-        raise HandshakeError(f"config mismatch: {local_sha} != {remote_sha}")
-    return local_sha
+    def verify_peer(self, message: dict[str, Any]) -> dict[str, Any]:
+        """Return the peer's identity if terms match and the signature holds."""
+        peer_terms = message.get("terms")
+        if peer_terms != self.terms:
+            raise HandshakeError("terms mismatch — no game (agree game.json pre-match)")
+        try:
+            CommitReveal.verify(peer_terms, message.get("nonce", ""), message.get("signature", ""))
+        except CryptoError as exc:
+            raise HandshakeError(f"agreement signature invalid: {exc}") from exc
+        return message.get("identity", {})

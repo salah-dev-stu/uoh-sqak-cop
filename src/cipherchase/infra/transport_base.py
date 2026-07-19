@@ -1,7 +1,8 @@
-"""Transport interface shared by the real MCP client and the test fake (R2).
+"""Transport surface shared by the real MCP client and the test fake (R2).
 
-Polling always reads THIS peer's own inboxes; sending is delegated to the
-concrete ``_send`` (real HTTP tool call, or in-memory routing in tests).
+Polling reads THIS peer's own inboxes (non-raising on the hot loop); sending is
+delegated to ``_send``. ``submit_audit`` travels with arg key ``payload`` —
+the reference contract (PRD_league_runtime §2.0).
 """
 
 from __future__ import annotations
@@ -13,35 +14,43 @@ from cipherchase.infra.inboxes import Inboxes
 
 Message = dict[str, Any]
 
-# Interop tool names for each outbound message kind.
-SEND_TOOL = {"turn": "receive_turn", "control": "receive_control", "audit": "submit_audit"}
-
 
 class BaseTransport(ABC):
     def __init__(self, inboxes: Inboxes) -> None:
         self.inboxes = inboxes
 
     @abstractmethod
-    def _send(self, tool: str, message: Message) -> Message:
+    def _send(self, tool: str, arg_key: str, message: Message) -> Message:
         """Deliver ``message`` to the opponent's ``tool``; return its ack."""
 
+    # outbound ------------------------------------------------------------------
     def send_turn(self, message: Message) -> Message:
-        return self._send(SEND_TOOL["turn"], message)
+        return self._send("receive_turn", "message", message)
 
-    def send_control(self, message: Message) -> Message:
-        return self._send(SEND_TOOL["control"], message)
+    def send_control(self, message: Message) -> Message | None:
+        try:  # advisory channel — best-effort, never blocks the game
+            return self._send("receive_control", "message", message)
+        except Exception:
+            return None
 
     def send_audit(self, message: Message) -> Message:
-        return self._send(SEND_TOOL["audit"], message)
+        return self._send("submit_audit", "payload", message)
 
-    def negotiate(self, message: Message) -> Message:
-        return self._send("negotiate", message)
+    def exchange_agreement_push(self, signed: Message) -> Message:
+        return self._send("negotiate", "message", signed)
 
-    def poll_turn(self, timeout: float) -> Message:
-        return self.inboxes.get_turn(timeout)
+    # inbound (non-raising, hot loop) ------------------------------------------
+    def poll_turn_or_none(self, timeout: float) -> Message | None:
+        return self.inboxes.try_get_turn(timeout)
 
-    def poll_control(self, timeout: float) -> Message:
-        return self.inboxes.get_control(timeout)
+    def poll_control_or_none(self, timeout: float) -> Message | None:
+        return self.inboxes.try_get_control(timeout)
 
-    def poll_audit(self, timeout: float) -> Message:
-        return self.inboxes.get_audit(timeout)
+    def poll_audit_or_none(self, timeout: float) -> Message | None:
+        return self.inboxes.try_get_audit(timeout)
+
+    def poll_agreement_or_none(self, timeout: float) -> Message | None:
+        return self.inboxes.try_get_agreement(timeout)
+
+    def drain_inboxes(self) -> None:
+        self.inboxes.drain_all()

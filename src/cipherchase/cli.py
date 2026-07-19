@@ -15,8 +15,9 @@ from cipherchase.shared.config import ConfigManager
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="cipherchase")
-    parser.add_argument("command", choices=["self-match", "replay"])
+    parser.add_argument("command", choices=["self-match", "replay", "peer"])
     parser.add_argument("--config", default="config/police")
+    parser.add_argument("--role", choices=["police", "thief"], default="police")
     parser.add_argument("--out", default="logs")
     parser.add_argument("--log", default="")
     parser.add_argument("--at", default="")
@@ -30,8 +31,14 @@ def main(argv: list[str] | None = None) -> int:
 
         run_replay(args.log)
         return 0
-    stamp = args.at or datetime.now(UTC).isoformat()
     cfg = ConfigManager.load(args.config)
+    if args.command == "peer":  # pragma: no cover — live sockets (interop test drives it)
+        import json
+
+        outcome = SimulationSdk.run_peer(cfg, natural_role=args.role)
+        print(json.dumps({k: outcome[k] for k in ("game_id", "game_uid", "sub_games")}))
+        return 0
+    stamp = args.at or datetime.now(UTC).isoformat()
     for path in SimulationSdk.write_reports(cfg, args.out, generated_at=stamp):
         print(path)
     return 0

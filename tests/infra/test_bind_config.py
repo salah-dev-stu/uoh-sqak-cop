@@ -8,19 +8,32 @@ from cipherchase.infra.inboxes import Inboxes
 from cipherchase.infra.mcp_client import McpTransport
 from cipherchase.infra.mcp_server import serve_params
 from cipherchase.shared.config import ConfigManager
+from cipherchase.shared.gatekeeper import ApiGatekeeper
 
 CONFIG = Path(__file__).resolve().parents[2] / "config"
 
 
+class _AllowAll:
+    def allow(self, service: str) -> bool:
+        return True
+
+
 def test_serve_params_read_host_and_port_from_config() -> None:
     cfg = ConfigManager.load(CONFIG / "police")
-    assert serve_params(cfg) == {"transport": "http", "host": "127.0.0.1", "port": 8001}
+    assert serve_params(cfg) == {
+        "transport": "http", "host": "127.0.0.1", "port": 8001, "show_banner": False
+    }
 
 
-def test_client_targets_opponent_url_from_config() -> None:
+def test_client_from_config_reads_url_and_timeouts() -> None:
     cfg = ConfigManager.load(CONFIG / "thief")
-    transport = McpTransport(cfg.opponent_url, Inboxes(cfg.queue_maxsize), caller=lambda t, m: {})
-    assert transport.opponent_url == "http://127.0.0.1:8001"
+    gate = ApiGatekeeper(_AllowAll(), sleep=lambda _s: None)
+    transport = McpTransport.from_config(
+        cfg, Inboxes(cfg.queue_maxsize), gate=gate, caller=lambda *_a: {"ok": True}
+    )
+    assert transport.opponent_url == "http://127.0.0.1:8001/mcp"  # /mcp path — the contract
+    assert transport.connect_timeout == cfg.network["connect_timeout_seconds"]
+    assert transport.retry_interval == cfg.network["retry_interval_seconds"]
 
 
 def test_loopback_needs_no_socket_or_key() -> None:
@@ -28,4 +41,4 @@ def test_loopback_needs_no_socket_or_key() -> None:
 
     a, b = make_pair()
     a.send_turn({"step": 1, "sender": "police"})
-    assert b.poll_turn(timeout=0.1)["step"] == 1  # no network, no key, no live peer
+    assert b.poll_turn_or_none(timeout=0.1)["step"] == 1  # no network, no key, no live peer

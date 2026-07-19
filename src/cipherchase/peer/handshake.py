@@ -1,25 +1,29 @@
-"""Pre-game handshake — exchange + lock the signed game.json (FR-I1, F14).
+"""Per-sub-game negotiation handshake (PRD_league_runtime §2.1, F5/F14).
 
-Both peers sign their config and swap it via the ``negotiate`` tool; the match
-only proceeds if the two constitutions are byte-identical (verified hash).
+Push our signed ``{terms, nonce, signature, identity}`` (transport retries
+until the peer is up), read the peer's from our agreements inbox, verify terms
+equality + signature, capture identity, derive the shared game ids.
 """
 
 from __future__ import annotations
 
-from typing import Any, Protocol
+from typing import Any
 
-from cipherchase.domain.negotiation import sign_agreement, verify_agreement
+from cipherchase.domain.game_ids import derive_game_ids
+from cipherchase.domain.negotiation import Negotiation
 from cipherchase.exceptions import HandshakeError
+from cipherchase.peer.terms import identity_from_config, terms_from_config
 
 
-class Negotiator(Protocol):
-    def negotiate(self, message: dict[str, Any]) -> dict[str, Any]: ...
-
-
-def perform_handshake(transport: Negotiator, local_config: dict[str, Any]) -> str:
-    """Return the shared config hash once both peers agree, else raise."""
-    reply = transport.negotiate(sign_agreement(local_config))
-    remote = reply.get("config")
-    if remote is None:
-        raise HandshakeError("negotiate reply carried no config")
-    return verify_agreement(local_config, remote)
+def negotiate(rt: Any) -> dict[str, Any]:
+    neg = Negotiation(terms_from_config(rt.cfg), identity_from_config(rt.cfg))
+    rt.transport.exchange_agreement_push(neg.signed())
+    theirs = rt.transport.poll_agreement_or_none(rt.cfg.network["connect_timeout_seconds"])
+    if theirs is None:
+        raise HandshakeError("no agreement received from the peer before the deadline")
+    identity = neg.verify_peer(theirs)
+    rt.peer_identity = identity
+    mine = rt.cfg.private["game"]["group_id"]
+    peer_gid = str(identity.get("group_id", "peer"))
+    rt.game_id, rt.game_uid = derive_game_ids(neg.terms, mine, peer_gid)
+    return identity

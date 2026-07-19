@@ -25,7 +25,7 @@ def test_config_sha_matches_signed_shared() -> None:
 def test_role_and_network_helpers() -> None:
     cfg = ConfigManager.load(CONFIG / "thief")
     assert cfg.role == "thief"
-    assert cfg.opponent_url == "http://127.0.0.1:8001"
+    assert cfg.opponent_url == "http://127.0.0.1:8001/mcp"
     assert cfg.my_port == 8002
     assert cfg.queue_maxsize == 100
 

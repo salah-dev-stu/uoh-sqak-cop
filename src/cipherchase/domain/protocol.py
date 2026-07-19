@@ -1,8 +1,9 @@
-"""P2P wire contract (FR-B2). Three dataclasses share one serialise mixin (R2).
+"""P2P wire contract — reference-exact key sets (PRD_league_runtime §2.4).
 
-On the wire, scent is an intensity field (``"row,col" -> float``) — never the
-opponent's coordinates (F7). ``move``/``intent`` are the revealed values; the
-nonce is NOT here (it stays hidden until the end-of-game audit).
+One sealed ``TurnMessage`` per turn: the plaintext move/intent are NEVER on the
+wire — they live only inside the sealed commit payload, revealed at audit.
+``from_dict`` is lenient (filters unknown foreign keys, never crashes);
+``to_dict`` emits exactly the reference key set so strict parsers never crash.
 """
 
 from __future__ import annotations
@@ -28,11 +29,9 @@ class _WireMixin:
 class TurnMessage(_WireMixin):
     step: int
     sender: str
-    commit: str = ""
     hint: str = ""
-    intent: str = "truth"
-    move: str | None = None
     smell_grid: dict[str, float] = field(default_factory=dict)
+    commit: str = ""
     timestamp: str = ""
     barrier_placed: list[int] | None = None
     capture_claim: list[int] | None = None

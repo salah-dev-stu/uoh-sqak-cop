@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 225 tests, 100% coverage, all externals mocked
+uv run pytest                                   # 252 tests, 100% coverage, all externals mocked
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 

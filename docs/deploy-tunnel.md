@@ -24,7 +24,7 @@ configuring their router. TLS terminates at the tunnel edge.
 ## Runbook — ngrok (PRIMARY)
 ```bash
 # 1. Each peer serves on 0.0.0.0:<my_port> (league override of the 127.0.0.1 default)
-uv run cipherchase peer --role police --config config/police   # P1 command (PRD_league_runtime); until it lands: self-match + FakeTransport
+uv run cipherchase peer --role police --config config/police   # live league peer (P1, real command)
 # 2. Open the tunnel to that port
 ngrok http 8001                                           # -> https://<id>.ngrok-free.app
 # 3. Exchange the two public URLs with the opponent out-of-band (chat/email)

@@ -1,8 +1,9 @@
 """Thread-safe inbound message queues (FR-B3).
 
-Inbound MCP messages are enqueued here by the server tools and consumed by the
-turn loop — never processed inline. Queues are bounded: overflow raises
-``QueueFullError`` (backpressure) rather than silently dropping (NFR-5).
+Four channels: turns, controls, audits, agreements. Bounded — overflow raises
+``QueueFullError`` (backpressure, never drop, NFR-5). The runtime hot loop uses
+the non-raising ``try_get_*`` variants; ``drain_all`` clears stale messages
+between sub-games/restarts so an aborted turn can never be consumed as live.
 """
 
 from __future__ import annotations
@@ -16,41 +17,68 @@ Message = dict[str, Any]
 
 
 class Inboxes:
-    """Separate FIFO queues for turn, control, and audit messages."""
-
     def __init__(self, maxsize: int) -> None:
-        self._turns: queue.Queue[Message] = queue.Queue(maxsize)
-        self._controls: queue.Queue[Message] = queue.Queue(maxsize)
-        self._audits: queue.Queue[Message] = queue.Queue(maxsize)
+        self._boxes: dict[str, queue.Queue[Message]] = {
+            name: queue.Queue(maxsize) for name in ("turn", "control", "audit", "agreement")
+        }
 
-    @staticmethod
-    def _put(q: queue.Queue[Message], item: Message) -> None:
+    def _put(self, name: str, item: Message) -> None:
         try:
-            q.put_nowait(item)
+            self._boxes[name].put_nowait(item)
         except queue.Full:
-            raise QueueFullError("inbox at capacity") from None
+            raise QueueFullError(f"{name} inbox at capacity") from None
 
-    @staticmethod
-    def _get(q: queue.Queue[Message], timeout: float) -> Message:
+    def _get(self, name: str, timeout: float) -> Message:
         try:
-            return q.get(timeout=timeout)
+            return self._boxes[name].get(timeout=timeout)
         except queue.Empty:
-            raise TransportTimeoutError("no message before deadline") from None
+            raise TransportTimeoutError(f"no {name} message before deadline") from None
 
+    def _try_get(self, name: str, timeout: float) -> Message | None:
+        try:
+            return self._boxes[name].get(timeout=timeout)
+        except queue.Empty:
+            return None
+
+    def drain_all(self) -> None:
+        for box in self._boxes.values():
+            while True:
+                try:
+                    box.get_nowait()
+                except queue.Empty:
+                    break
+
+    # raising getters (legacy/tests) -------------------------------------------------
     def put_turn(self, msg: Message) -> None:
-        self._put(self._turns, msg)
+        self._put("turn", msg)
 
     def get_turn(self, timeout: float) -> Message:
-        return self._get(self._turns, timeout)
+        return self._get("turn", timeout)
 
     def put_control(self, msg: Message) -> None:
-        self._put(self._controls, msg)
+        self._put("control", msg)
 
     def get_control(self, timeout: float) -> Message:
-        return self._get(self._controls, timeout)
+        return self._get("control", timeout)
 
     def put_audit(self, msg: Message) -> None:
-        self._put(self._audits, msg)
+        self._put("audit", msg)
 
     def get_audit(self, timeout: float) -> Message:
-        return self._get(self._audits, timeout)
+        return self._get("audit", timeout)
+
+    def put_agreement(self, msg: Message) -> None:
+        self._put("agreement", msg)
+
+    # non-raising poll variants (runtime hot loop) -----------------------------------
+    def try_get_turn(self, timeout: float) -> Message | None:
+        return self._try_get("turn", timeout)
+
+    def try_get_control(self, timeout: float) -> Message | None:
+        return self._try_get("control", timeout)
+
+    def try_get_audit(self, timeout: float) -> Message | None:
+        return self._try_get("audit", timeout)
+
+    def try_get_agreement(self, timeout: float) -> Message | None:
+        return self._try_get("agreement", timeout)

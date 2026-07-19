@@ -34,8 +34,12 @@ seed = 12345
 [network]
 host = "127.0.0.1"
 my_port = 8001
-opponent_url = "http://127.0.0.1:8002"
-rpc_timeout_s = 30
+opponent_url = "http://127.0.0.1:8002/mcp"
+turn_timeout_seconds = 180
+poll_interval_seconds = 0.5
+connect_timeout_seconds = 60
+retry_interval_seconds = 1.0
+audit_send_timeout_seconds = 10
 queue_maxsize = 100
 
 [llm]
