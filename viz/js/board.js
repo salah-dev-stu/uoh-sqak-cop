@@ -18,7 +18,7 @@ export function ramp(t){
 export function createBoard(scene){
   let N = 7, mesh = null, grid = null;
   const geo = new THREE.PlaneGeometry(0.92, 0.92); geo.rotateX(-Math.PI / 2);
-  const base = new THREE.Color(0x0b101e), tmp = new THREE.Color();
+  const base = new THREE.Color(0x101827), tmp = new THREE.Color();
   const m4 = new THREE.Matrix4();
 
   function rebuild(n){
@@ -31,7 +31,7 @@ export function createBoard(scene){
       mesh.setMatrixAt(r * N + c, m4);
       mesh.setColorAt(r * N + c, base);
     }
-    grid = new THREE.GridHelper(N, N, 0x2a3f66, 0x18263f);
+    grid = new THREE.GridHelper(N, N, 0x33507e, 0x1c2c4a);
     grid.position.y = 0.012;
     scene.add(mesh, grid);
   }
@@ -41,7 +41,7 @@ export function createBoard(scene){
     for (let r = 0; r < N; r++) for (let c = 0; c < N; c++){
       const v = vals ? vals[r][c] / peak : 0;
       tmp.copy(base);
-      if (v >= 0.14) tmp.add(ramp(v).multiplyScalar(0.16 + v * 0.6));
+      if (v > 0.03) tmp.add(ramp(v).multiplyScalar(0.08 + v * 0.62)); // smooth, no cliff
       mesh.setColorAt(r * N + c, tmp);
     }
     mesh.instanceColor.needsUpdate = true;

@@ -16,13 +16,17 @@ export function createRig(camera, controls, reduce){
     const idle = performance.now() - userAt > IDLE_MS;
     controls.autoRotate = !reduce && idle && enabled;
     if (!enabled || !idle) return;
-    want.addVectors(copP, thiefP).multiplyScalar(0.5); want.y = 0.3;
+    // action centroid biased toward the board centre so the arena never crops
+    want.addVectors(copP, thiefP).multiplyScalar(0.5).multiplyScalar(0.55);
+    want.y = 0.3;
     controls.target.lerp(want, 1 - Math.exp(-dt * 1.8));
-    const wantDist = 9 + (gap ?? 8) * 0.55;             // zoom in as the gap closes
-    dir.subVectors(camera.position, controls.target);
-    const d = dir.length();
+    const wantDist = Math.max(11, 8.2 + (gap ?? 8) * 0.6); // zoom floor keeps the board framed
+    dir.subVectors(camera.position, controls.target).normalize();
+    dir.y += (Math.max(0.52, dir.y) - dir.y) * (1 - Math.exp(-dt * 0.9)); // keep elevation
+    dir.normalize();
+    const d = camera.position.distanceTo(controls.target);
     const nd = d + (wantDist - d) * (1 - Math.exp(-dt * 1.2));
-    camera.position.copy(controls.target).addScaledVector(dir.normalize(), nd);
+    camera.position.copy(controls.target).addScaledVector(dir, nd);
   }
 
   function setEnabled(v){ enabled = v; if (!v) controls.autoRotate = false; }

@@ -47,6 +47,10 @@ async function loadGame(fresh){
   catch (e){ if (!S.game) throw e; return; }             // keep current game on failure
   S.game = raw; S.turn = 0; S.last = -1; S.ended = false; S.playing = true;
   S.dist = D.distanceSeries(raw); S.err = D.beliefErrorSeries(raw);
+  S.hints = raw.frames.reduce((acc, f, i) => {
+    acc.push(f.hint ? { text: f.hint, intent: f.intent, turn: f.turn } : acc[i - 1] ?? null);
+    return acc;
+  }, []);
   board.rebuild(raw.size); scent.reset(); walls.reset(); finales.reset();
   rail.setGame(D.glyphModel(raw)); rail.reset();
   hud.setMarkers(D.deriveEvents(raw), raw.frames.length);
@@ -59,13 +63,15 @@ const frameAt = i => S.game.frames[T.clampTurn(i, S.game.frames.length)];
 function applyDiscrete(i, forward){
   const f = frameAt(i);
   views.apply(f, { board, agents, scent, N: S.game.size });
-  if (forward){ scent.spawnFrame(f.scent, S.game.size); agents.pulse(); }
-  else scent.reset();
+  if (forward){ agents.pulse(); } else { scent.reset(); }
+  scent.spawnFrame(f.scent, S.game.size);            // field visible even when scrubbed/paused
   walls.sync(f.barriers, S.game.size, forward);
   rail.reveal(f.turn);
-  hud.setHint(f.hint, f.intent, views.view === 3);
+  const h = S.hints[i];
+  hud.setHint(h && `“${h.text}” · t${h.turn}`, h?.intent, views.view === 3);
   hud.update({ gap: S.dist[i], barriers: f.barriers.length,
-    score: D.scoreEstimate(S.game, f.turn), turn: f.turn, nTurns: S.game.frames.length });
+    score: i >= S.game.frames.length - 1 ? D.scoreEstimate(S.game, f.turn) : null,
+    turn: f.turn, nTurns: S.game.frames.length });
   hud.drawSpark(S.dist, S.err, i);
 }
 

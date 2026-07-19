@@ -22,6 +22,10 @@ class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, directory="viz", **kwargs)
 
+    def end_headers(self) -> None:  # dev server: never let modules go stale
+        self.send_header("Cache-Control", "no-store")
+        super().end_headers()
+
     def do_GET(self) -> None:  # noqa: N802
         if self.path.startswith("/api/game"):
             body = json.dumps(capture()).encode()

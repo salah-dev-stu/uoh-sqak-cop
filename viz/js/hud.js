@@ -21,7 +21,7 @@ export function createHud(){
   function update({ gap, barriers, score, turn, nTurns }){
     $('gap').textContent = gap;
     $('nbar').textContent = barriers;
-    $('score').textContent = score.cop + ' : ' + score.thief;
+    $('score').textContent = score ? score.cop + ' : ' + score.thief : '– : –';
     $('turn').textContent = `turn ${turn}/${nTurns}`;
   }
 

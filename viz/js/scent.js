@@ -12,24 +12,25 @@ export function createScent(scene){
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  const mat = new THREE.PointsMaterial({ size: 0.16, vertexColors: true,
+  const mat = new THREE.PointsMaterial({ size: 0.22, vertexColors: true,
     transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
   const points = new THREE.Points(geo, mat);
   points.frustumCulled = false;
   scene.add(points);
   const green = new THREE.Color(COLORS.scent);
-  let head = 0;
+  let head = 0, lastMap = null, lastN = 7, shimmer = 0;
 
   function emit(r, c, N, v){
     const i = head; head = (head + 1) % MAX;
     pos[i * 3] = c - (N - 1) / 2 + (Math.random() - 0.5) * 0.6;
     pos[i * 3 + 1] = 0.05 + Math.random() * 0.1;
     pos[i * 3 + 2] = r - (N - 1) / 2 + (Math.random() - 0.5) * 0.6;
-    life[i] = 1; amp[i] = Math.min(0.9, v);
+    life[i] = 1; amp[i] = Math.min(1, v * 1.1 + 0.15);
   }
 
   // One call per discrete frame advance: emission rate follows field intensity.
   function spawnFrame(scentMap, N){
+    lastMap = scentMap; lastN = N; shimmer = 0;
     for (const k in scentMap){
       const v = scentMap[k];
       if (v <= 0.05) continue;
@@ -39,9 +40,11 @@ export function createScent(scene){
   }
 
   function update(dt){
+    shimmer += dt;                      // paused/scrubbed scenes keep a live wake
+    if (shimmer > 1.1 && lastMap){ shimmer = 0; spawnFrame(lastMap, lastN); }
     for (let i = 0; i < MAX; i++){
       if (life[i] <= 0){ col[i * 3] = col[i * 3 + 1] = col[i * 3 + 2] = 0; continue; }
-      life[i] -= dt * 0.55;
+      life[i] -= dt * 0.45;
       pos[i * 3 + 1] += dt * 0.35;
       const a = Math.max(0, life[i]) * amp[i];
       col[i * 3] = green.r * a; col[i * 3 + 1] = green.g * a; col[i * 3 + 2] = green.b * a;
@@ -50,7 +53,7 @@ export function createScent(scene){
     geo.attributes.color.needsUpdate = true;
   }
 
-  function reset(){ life.fill(0); col.fill(0); geo.attributes.color.needsUpdate = true; }
+  function reset(){ life.fill(0); col.fill(0); lastMap = null; geo.attributes.color.needsUpdate = true; }
   function setVisible(v){ points.visible = v; }
   reset();
   return { spawnFrame, update, reset, setVisible };
