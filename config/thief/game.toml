@@ -13,7 +13,7 @@ smell_trust = 4.0
 alpha = 0.85
 
 [strategy]
-police_class = "cipherchase.strategy.police_heuristic:PoliceBrain"
+police_class = "cipherchase.strategy.apex_cop:ApexCop"
 thief_class = "cipherchase.strategy.thief_evader_v2:EvaderBrain"
 w_center = 0.5
 w_belief = 1.0
@@ -22,6 +22,19 @@ w_exits = 0.3
 w_risk = 1.0
 lambda_barrier = 0.2
 min_gain = 1
+# ApexCop (P6): best-response over an opponent model + exact endgame proof.
+# opponent_model: thief_v1 | evader_v2 | naive_edge | still | random | paranoid | ensemble
+# ("ensemble" = league-robust minimax over all plausible strategic replies).
+opponent_model = "thief_v1"
+apex_lock_mass = 0.5
+apex_w_reach = 1.0
+apex_w_dist = 0.6
+apex_w_wall = 0.8
+apex_barrier_topk = 3
+apex_endgame_depth = 8
+apex_endgame_nodes = 50000
+apex_endgame_wall = 2
+apex_endgame_gap = 4
 
 [trash_talk]
 provider = "template"

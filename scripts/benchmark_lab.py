@@ -21,6 +21,7 @@ PKG = "cipherchase.strategy"
 COPS = {
     "PoliceBrain": f"{PKG}.police_heuristic:PoliceBrain",
     "HerderCop": f"{PKG}.police_herder:HerderCop",
+    "ApexCop": f"{PKG}.apex_cop:ApexCop",
 }
 THIEVES = {
     "ThiefBrain": f"{PKG}.thief_heuristic:ThiefBrain",
