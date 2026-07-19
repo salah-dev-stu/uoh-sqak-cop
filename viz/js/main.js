@@ -31,7 +31,7 @@ const shoot = initCapture(sc);
 const S = { game: null, turn: 0, playing: true, speed: 1, honest: true,
   last: -1, ended: false, dist: [], err: [] };
 let dragging = false;
-const showtime = createShowtime({ sc, rig, setTurn, reduce, captionEl: $('tour-cap'), frameCount: () => S.game?.frames.length ?? 0 });
+const showtime = createShowtime({ sc, rig, views, board, agents, scent, setTurn, reduce, captionEl: $('tour-cap'), frameCount: () => S.game?.frames.length ?? 0 });
 
 async function fetchGame(fresh){
   if (!S.honest) return (await fetch('replay3d_tampered.json')).json();
@@ -144,7 +144,7 @@ function tick(now){
   const dt = Math.min(0.05, (now - prev) / 1000); prev = now;
   update(dt);
   sc.controls.update();
-  sc.render();
+  if (!showtime.paintSplit(S.game ? frameAt(T.frameIndex(S.turn)) : null, S.game?.size)) sc.render();
 }
 await loadGame(true);
 requestAnimationFrame(tick);

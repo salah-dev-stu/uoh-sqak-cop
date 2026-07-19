@@ -3,3 +3,4 @@
 import './data.test.mjs';
 import './timeline.test.mjs';
 import './tour.test.mjs';
+import './split.test.mjs';
