@@ -15,7 +15,7 @@ from cipherchase.shared.config import ConfigManager
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="cipherchase")
-    parser.add_argument("command", choices=["self-match", "replay", "peer"])
+    parser.add_argument("command", choices=["self-match", "replay", "peer", "verify"])
     parser.add_argument("--config", default="config/police")
     parser.add_argument("--role", choices=["police", "thief"], default="police")
     parser.add_argument("--out", default="logs")
@@ -26,6 +26,12 @@ def _parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "verify":  # offline re-audit of any log — no keys, no network
+        from cipherchase.report.verify import render, verify_log
+
+        report = verify_log(args.log)
+        print(render(report))
+        return 0 if report["verdict"] == "Verified OK" else 1
     if args.command == "replay":  # pragma: no cover (needs a display)
         from cipherchase.gui.replay import run_replay
 

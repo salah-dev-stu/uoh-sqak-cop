@@ -28,3 +28,17 @@ def test_unknown_command_errors() -> None:
 
 def test_main_module_is_importable() -> None:
     import cipherchase.__main__  # noqa: F401
+
+
+def test_verify_command_prints_verdict_and_exit_codes(tmp_path, capsys) -> None:
+    import json
+    from pathlib import Path
+    sample = sorted((Path("docs/sample-run")).glob("log_*police*_g01.json"))[0]
+    assert main(["verify", "--log", str(sample)]) == 0
+    assert "Verified OK" in capsys.readouterr().out
+    log = json.loads(sample.read_text())
+    log["records"][0]["nonce"] = "0" * 32  # forged nonce
+    bad = tmp_path / "bad.json"
+    bad.write_text(json.dumps(log))
+    assert main(["verify", "--log", str(bad)]) == 1
+    assert "TAMPERED" in capsys.readouterr().out

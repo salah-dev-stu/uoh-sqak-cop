@@ -33,6 +33,10 @@ uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AN
 uv run cipherchase self-match --config config/police --out logs
 # Re-verify a logged game in the Replay Viewer (Tkinter):
 uv run cipherchase replay --log docs/sample-run/log_uoh-sqak-police-21644f70_g01.json
+# One-command integrity audit of ANY log — ours or an opponent's emailed report.
+# Re-hashes every sealed record AND replays the moves on the board (a hash-valid
+# but physically illegal log is convicted too); exit 1 + the exact record on tamper:
+uv run cipherchase verify --log docs/sample-run/log_uoh-sqak-police-21644f70_g01.json
 ```
 
 A committed **sample run** lives in `docs/sample-run/` as offline proof — the grader needs no API key, no
