@@ -2,7 +2,7 @@
 
 > **Final Project · Course 203.3763 "Orchestration of AI Agents"** · University of Haifa · Spring 2026 · Dr. Yoram Segal
 > **Team `uoh-sqak`** — Salah Qadah (323039974) + Andalus Kalash (211435797)
-> Paired repository (role-swapped): **`uoh-sqak-cop` ⇄ `uoh-sqak-thief`** *(links added at publish)*
+> Paired repository (role-swapped): **[`uoh-sqak-cop`](https://github.com/uoh-sqak/uoh-sqak-cop) ⇄ [`uoh-sqak-thief`](https://github.com/uoh-sqak/uoh-sqak-thief)**
 
 Two mutually-distrustful autonomous agents — a **Cop** and a **Thief** — chase on a **7×7** grid over a
 **peer-to-peer FastMCP** network with **no central judge**. Each agent is *simultaneously a server and a
@@ -186,8 +186,10 @@ convicted and forfeited **localised to the doctored record**, a mid-game replay 
 emailed report — re-audits offline in one command: `cipherchase verify --log <file>`.
 
 ### 6. Paired repository
-This is the `uoh-sqak-cop` view. The paired **`uoh-sqak-thief`** repository contains the identical codebase
-with role-swapped config (`config/thief/`). *(cross-link added at publish.)*
+One codebase, two league repos (D1/F14): **[`uoh-sqak-cop`](https://github.com/uoh-sqak/uoh-sqak-cop)** ⇄
+**[`uoh-sqak-thief`](https://github.com/uoh-sqak/uoh-sqak-thief)** — identical code, the role is chosen at
+launch (`cipherchase peer --role police|thief --config config/<role>`), so both repos stay byte-in-sync by
+construction (`scripts/publish_repos.sh` pushes the same `main` + `v1.0-submission` tag to both remotes).
 
 ---
 
