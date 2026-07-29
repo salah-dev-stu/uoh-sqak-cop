@@ -9,6 +9,7 @@ the log artifact, and — when ``[email].enabled`` — auto-emails the 4 reports
 
 from __future__ import annotations
 
+import json
 import time
 from pathlib import Path
 from typing import Any
@@ -29,10 +30,11 @@ _WINNER = {Outcome.CAPTURE: "police", Outcome.SURVIVAL: "thief", Outcome.TIE: "t
 class SimulationSdk:
     @staticmethod
     def run_self_match(
-        cfg: Any, *, generated_at: str, opponent: str = "uoh-opponent", gate: ApiGatekeeper | None = None
+        cfg: Any, *, generated_at: str, opponent: str = "uoh-opponent",
+        gate: ApiGatekeeper | None = None, new_opponent: bool = False,
     ) -> dict[str, dict[str, Any]]:
         gate = gate or ApiGatekeeper.from_config(cfg, now=time.monotonic)
-        result = run_game(cfg, gate=gate)
+        result = run_game(cfg, gate=gate, new_opponent=new_opponent)
         game = cfg.private["game"]
         uid = game_uid(game["group_id"], opponent, cfg.config_sha256)
         gid = game_id(game["group_id"], cfg.role, uid)
@@ -82,10 +84,18 @@ class SimulationSdk:
 
     @staticmethod
     def write_reports(
-        cfg: Any, directory: str | Path, *, generated_at: str, email_backend: Any = None
+        cfg: Any, directory: str | Path, *, generated_at: str, email_backend: Any = None,
+        opponent: str = "uoh-sqak",
     ) -> list[Path]:
         gate = ApiGatekeeper.from_config(cfg, now=time.monotonic)
-        arts = SimulationSdk.run_self_match(cfg, generated_at=generated_at, gate=gate)
+        ledger = Path(directory) / "opponents.json"
+        history = json.loads(ledger.read_text()) if ledger.exists() else []
+        new_op = opponent != cfg.private["game"]["group_id"] and opponent not in history
+        arts = SimulationSdk.run_self_match(
+            cfg, generated_at=generated_at, gate=gate, opponent=opponent, new_opponent=new_op)
+        if new_op:  # the +diversity is one-shot per opponent group — persist it
+            ledger.parent.mkdir(parents=True, exist_ok=True)
+            ledger.write_text(json.dumps([*history, opponent]))
         paths = emit.write_all(directory, list(arts.values()))
         email = cfg.private["email"]
         if email["enabled"]:

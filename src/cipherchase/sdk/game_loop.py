@@ -66,7 +66,8 @@ def _frame(step: int, cop: OwnState, thief: OwnState, barriers: frozenset[Cell],
     }
 
 
-def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> GameResult:  # noqa: C901
+def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None,
+             new_opponent: bool = False) -> GameResult:  # noqa: C901
     ba, mb, ph = (cfg.shared[k] for k in ("board_and_agents", "movement_and_barriers", "pheromones"))
     board = Board(ba["board_size"])
     strat = {**cfg.private["strategy"], "max_barriers": mb["max_barriers"]}
@@ -128,7 +129,7 @@ def run_game(cfg: Any, on_frame: OnFrame | None = None, gate: Any = None) -> Gam
             break
     if outcome is None:
         outcome = Outcome.SURVIVAL if turns >= mb["survival_threshold"] else Outcome.TIE
-    scores = Scoring(cfg.shared["scoring"]).score(outcome)
+    scores = Scoring(cfg.shared["scoring"]).score(outcome, new_opponent=new_opponent)
     return GameResult(outcome, turns, cop_book.records() + thief_book.records(), scores)
 
 

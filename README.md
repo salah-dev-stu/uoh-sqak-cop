@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 363 tests (361 run + 2 interop-gated), 100% coverage (~6 min)
+uv run pytest                                   # 369 tests (367 run + 2 interop-gated), 100% coverage (~6 min)
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 
@@ -179,7 +179,11 @@ localised to its exact record, zero escapes. Each move is **committed** (move hi
 the **end-of-game mutual audit**, which re-hashes both logs; any mismatch → `tamper_forfeit` 0/0. A **Step-0
 signed declaration** binds hardware + LLM model + the per-game GitHub commit. Reports carry a **symmetric
 mutual signature** (identical on both peers). The bluff hint may lie; the physical board may not — that
-asymmetry is what the audit enforces.
+asymmetry is what the audit enforces. And it holds under live attack: a **Byzantine harness**
+(`tests/integrity/test_byzantine.py`) plays real games against scripted cheater peers — a forged audit is
+convicted and forfeited **localised to the doctored record**, a mid-game replay flood changes nothing
+(idempotence), an oversized 600-word hint neither crashes nor stalls. Any log — including an opponent's
+emailed report — re-audits offline in one command: `cipherchase verify --log <file>`.
 
 ### 6. Paired repository
 This is the `uoh-sqak-cop` view. The paired **`uoh-sqak-thief`** repository contains the identical codebase
