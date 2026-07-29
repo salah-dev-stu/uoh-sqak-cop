@@ -10,6 +10,7 @@ live. Bound to 127.0.0.1 only (SH-8): the match room is never a remote hole.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -22,7 +23,9 @@ from make_replay_data import capture  # noqa: E402
 from cipherchase.sdk.live_match import MatchController  # noqa: E402
 
 PORT = 8777
-MATCH = MatchController(Path(tempfile.gettempdir()) / "cipherchase_spectate.jsonl")
+# per-process spool: two instances on one machine never clobber each other's stream
+MATCH = MatchController(
+    Path(tempfile.gettempdir()) / f"cipherchase_spectate_{os.getpid()}.jsonl")
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -66,6 +69,19 @@ class Handler(SimpleHTTPRequestHandler):
         return
 
 
+def serve(port: int = PORT, tries: int = 10) -> None:
+    """Bind 127.0.0.1 on the first free port from ``port`` — never a raw traceback."""
+    for candidate in range(port, port + tries):
+        try:
+            server = ThreadingHTTPServer(("127.0.0.1", candidate), Handler)
+        except OSError:
+            print(f"port {candidate} busy — trying {candidate + 1}")
+            continue
+        print(f"CipherChase 3D arena → http://localhost:{candidate}  (Ctrl-C to stop)")
+        server.serve_forever()
+        return
+    raise SystemExit(f"no free port in {port}-{port + tries - 1} — close another instance")
+
+
 if __name__ == "__main__":
-    print(f"CipherChase 3D arena → http://localhost:{PORT}  (Ctrl-C to stop)")
-    ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+    serve()
