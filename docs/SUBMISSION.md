@@ -15,11 +15,14 @@ tripwire · README honesty guard).
 
 ## 2 · Gmail reporting (F10/F11)
 
+DONE (2026-07-29): OAuth consent completed (scope `gmail.send` only, token at
+`~/parley-secrets/token.json`, git-ignored) and the sample report REALLY sent
+from BOTH roles to `rmisegal+uoh26finalgame@gmail.com` (Gmail ids
+`19fae54529a9c995` police / `19fae545bbe0c9a3` thief). For league games, re-run:
 ```bash
-uv run python scripts/gmail_oauth_setup.py     # one-time OAuth (gmail.send only)
-uv run python scripts/send_sample_report.py    # 4 signed JSON → rmisegal+uoh26finalgame@gmail.com
+CIPHERCHASE_GMAIL_TOKEN=~/parley-secrets/token.json \
+CIPHERCHASE_CONFIG=config/<role> uv run --extra real python scripts/send_sample_report.py
 ```
-Run the sender once as each role (both sides must send or neither is scored).
 
 ## 3 · League games (F14: ≥2 games vs different `uoh-*` groups)
 
