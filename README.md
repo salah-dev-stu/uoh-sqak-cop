@@ -135,7 +135,8 @@ with near-perfect belief*. **`ApexCop`** (`strategy/apex_cop.py`) breaks that ce
 alpha-beta endgame solver** (the thief plays *all* replies — a guarantee, not a prediction) that plays proven
 forced-capture lines when the thief is walled near an edge, falling back to a **best-response** step that
 minimises the thief's worst-case escape value over the reply set of a **league-robust ensemble opponent
-model** (`strategy/opponent_model.py`). Measured (`scripts/benchmark_lab.py`, N=60/cell, 95% Wilson CI):
+model** (`strategy/opponent_model.py`). Measured (`scripts/benchmark_lab.py`, N=60/cell, 95% Wilson CI —
+committed output incl. all four cops + an Elo ladder: [`analysis/benchmark_results.md`](analysis/benchmark_results.md)):
 
 | cop \ thief | ThiefBrain | EvaderV2 | NaiveEdge | Random | Still |
 |---|---|---|---|---|---|
