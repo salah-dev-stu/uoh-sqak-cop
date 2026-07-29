@@ -216,7 +216,7 @@ Uncheck (or re-scope with a pointer) each item the audit proved untrue; every on
 - **Test**: none automatable beyond IH-23's spirit; the P0 exit audit re-reads TODO against code.
 
 ### IH-25 — `viz/index.html` and the ≤150 rule (R8 stance: SPLIT)
-- **Finding**: 265 lines, outside `check_file_lines.py`'s `*.py` glob — a pedant's "you hid your biggest file from your own checker".
+- **Finding**: 265 lines, outside `check_file_lines.py`'s `*.py` glob — a pedant's "you hid your biggest file from your own checker". *(RESOLVED: P4 split it into ES modules — index.html is 80 lines and the checker now covers `viz/`.)*
 - **Fix** (recommended and chosen: **split**, not exemption): extract the inline JS into `viz/js/scene.js`, `viz/js/frames.js`, `viz/js/controls.js` (each ≤150 lines, single purpose: Three.js scene/board build · frame data + tween state · UI/timeline/new-match fetch), leaving `index.html` ≤150 as markup + module imports. Extend `scripts/check_file_lines.py` to include `viz/*.html` and `viz/js/*.js` (raw-line rule; `viz/vendor/` + `node_modules/` excluded as third-party). The checker script itself stays ≤150.
 - **Test**: line-checker run in CI covers the new globs; a manual browser smoke of the 3D arena before/after (no behavior change).
 

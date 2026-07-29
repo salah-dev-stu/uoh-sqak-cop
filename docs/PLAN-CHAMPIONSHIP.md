@@ -59,7 +59,7 @@ The pedantic-grader list (top of ~40 audit findings):
 4. **`check_compatible` never called at startup** (R6 decorative).
 5. **~10 config keys read by nothing** (`belief.alpha`, `rpc_timeout_s`, `play.seed`, `[llm]`, `[gui]`, `[paths]`, `[email]` subject/enabled, gatekeeper `concurrent/queue_depth`…) while code literals shadow them (R11/R4).
 6. **Docs promise ghost modules** (`peer/runtime.py`, `sdk/series.py`, `talk_providers.py`, `qlearning.py`, GUI live modules…), `run_peer` commands that don't parse, README says 195 tests (now 205), auto-email claimed but not wired, the emitted `declaration_*.json` lacks the signed hardware/LLM/git-commit body that `peer/declaration.py` builds.
-7. Engine duplicated in `make_replay_data.py`; `"r,c"` codec at 4+ sites (R2). `viz/index.html` is 265 lines and outside the ≤150 checker's `*.py` glob (defend or split).
+7. Engine duplicated in `make_replay_data.py`; `"r,c"` codec at 4+ sites (R2). `viz/index.html` is 265 lines and outside the ≤150 checker's `*.py` glob (defend or split). *(RESOLVED in P4: split into 15 ES modules; index.html is now 80 lines and `check_file_lines.py` covers `viz/` js+html.)*
 8. game_loop quirks: fresh deposit decayed same turn; thief sees the cop's true position (breaks Dec-POMDP realism — fix with the same delta-belief the cop gets).
 
 Every item → a task; the principle is **"docs tell the truth, the truth is impressive."** → **`PRD_integrity_hardening.md`**.

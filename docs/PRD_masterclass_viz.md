@@ -5,7 +5,7 @@
 | **Mechanism** | 3D arena upgrade: from replay toy → masterclass exhibit of the project's two invisible ideas — *partial information* and *cryptographic trust* |
 | **Phase** | P4 (Excellence & showcase) · builds on P0's engine instrumentation hook (IH) and P1's live runtime |
 | **Gates served** | F12 (GUI/replay deliverable + screenshots) · excellence band §UI/UX (Nielsen) · demo material for grading/league |
-| **Current state** | `viz/index.html` (265-line monolith, vendored Three.js, bloom, orbit/scrub/new-match) + `scripts/viz_server.py` + static `replay3d.json` fallback |
+| **Current state** | *(at planning time — since resolved by this PRD's build)* `viz/index.html` (265-line monolith, vendored Three.js, bloom, orbit/scrub/new-match) + `scripts/viz_server.py` + static `replay3d.json` fallback. **Shipped:** 15 ES modules, index.html 80 lines, all under the checker |
 | **Doc status** | Planning gate — approve before implementation. Tasks: TODO §Masterclass-Viz (T581+) |
 
 ## 1. Audit of the current arena
