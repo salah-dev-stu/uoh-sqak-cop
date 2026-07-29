@@ -62,4 +62,4 @@ ignore = ["E501"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src", "tests"]
-addopts = "--cov=cipherchase --cov-report=term-missing --cov-fail-under=85"
+addopts = "--cov=cipherchase --cov-report=term-missing --cov-fail-under=100"

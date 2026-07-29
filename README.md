@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 344 tests, 100% coverage, all externals mocked
+uv run pytest                                   # 346 tests (344 run + 2 interop-gated), 100% coverage (~6 min)
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 
@@ -102,10 +102,16 @@ never processed inline. A DRY `BaseTransport` lets an in-memory `FakeTransport` 
 tests with no socket. Coordination is stateful via a **legal-transition state machine** + **deadline tracker**
 + **watchdog** (`peer/`), so a silent peer becomes a technical loss, never a hang. Every external call —
 MCP, LLM, Gmail, subprocess — is routed through one **`ApiGatekeeper.execute()`** (token-bucket + 429 retry +
-ledger). **Interop is proven, not claimed:** `CIPHERCHASE_INTEROP=1 uv run pytest tests/interop/ -q` plays a
-full two-process series against the **course reference implementation itself** — roles swapping, both sides'
-audits **verified** — and a fast tripwire (every commit) feeds our wire bytes to the reference's own strict
-parser, crypto verifier, and negotiation checker.
+ledger). **Interop is proven, not claimed — twice.** (1) CI clones the public reference implementation
+([`rmisegal/Game-P2P-Cop-Chase`](https://github.com/rmisegal/Game-P2P-Cop-Chase)) on **every commit** and a
+tripwire feeds our wire bytes to the reference's own strict parser, crypto verifier, and negotiation checker.
+(2) A full **two-process LIVE series** against that reference peer — roles swapping, both sides' audits
+**verified** — reproduces locally in ~20 s:
+
+```bash
+git clone --depth 1 https://github.com/rmisegal/Game-P2P-Cop-Chase ../reference-repo
+CIPHERCHASE_INTEROP=1 uv run pytest tests/interop/ -q --no-cov
+```
 
 ### 3. Strategy (the graded brain)
 Movement is **always algorithmic** (`strategy/`, behind a `BrainBase` seam swappable by config) — the LLM

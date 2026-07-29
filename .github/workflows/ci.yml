@@ -12,6 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The course reference implementation (public) — its strict parser, crypto
+      # verifier and negotiation checker vet OUR wire bytes on every commit.
+      - name: Clone the course reference peer (interop tripwire target)
+        run: git clone --depth 1 https://github.com/rmisegal/Game-P2P-Cop-Chase ../reference-repo
+
       # Pin Python 3.13 explicitly — never let CI drift to 3.14 (NFR-14).
       - name: Set up Python 3.13
         uses: actions/setup-python@v5
@@ -33,7 +38,7 @@ jobs:
       - name: Version single-source sync (NFR-6)
         run: uv run python scripts/check_version_sync.py
 
-      - name: Tests + coverage ≥85% (NFR-7/10, fully mocked — no keys/servers)
+      - name: Tests + coverage = 100% (NFR-7/10, fully mocked — no keys/servers)
         run: uv run pytest
 
       - name: Offline self-match smoke — the grader path (0 tokens, no keys)
@@ -44,13 +49,12 @@ jobs:
       - name: Arena logic tests (node --test, pure modules)
         run: node --test viz/test/
 
-      - name: Interop vs the reference peer (runs only where the reference is checked out)
-        run: |
-          if [ -d ../reference-repo ]; then
-            CIPHERCHASE_INTEROP=1 uv run pytest tests/interop -q --no-cov
-          else
-            echo "reference repo absent — interop suite skipped (runs locally)"
-          fi
+      # The reference's OWN strict TurnMessage parser, CommitReveal and
+      # Negotiation.verify_peer accept our bytes — conformance, per commit.
+      # (The full two-process LIVE series needs the reference's dep tree and
+      # runs locally: CIPHERCHASE_INTEROP=1 uv run pytest tests/interop)
+      - name: Interop tripwire — reference peer vets our wire bytes
+        run: uv run pytest tests/interop/test_reference_tripwire.py -q --no-cov
 
       - name: README test-count honesty guard (IH-28)
         run: |
