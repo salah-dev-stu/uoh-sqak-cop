@@ -39,6 +39,21 @@ class SimulationSdk:
         return _assemble(cfg, result, uid, gid, generated_at, opponent, gate)
 
     @staticmethod
+    def run_self_match_both(
+        cfg_a: Any, cfg_b: Any, *, generated_at: str, opponent: str,
+        gate: ApiGatekeeper | None = None,
+    ) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+        """ONE game, BOTH role-perspective quartets — the mirrored repo evidence (F11)."""
+        gate = gate or ApiGatekeeper.from_config(cfg_a, now=time.monotonic)
+        result = run_game(cfg_a, gate=gate)
+        uid = game_uid(cfg_a.private["game"]["group_id"], opponent, cfg_a.config_sha256)
+        return tuple(
+            _assemble(cfg, result, uid, game_id(cfg.private["game"]["group_id"], cfg.role, uid),
+                      generated_at, opponent, gate)
+            for cfg in (cfg_a, cfg_b)
+        )
+
+    @staticmethod
     def run_peer(
         cfg: Any, *, natural_role: str, transport: Any = None, gate: Any = None,
         listener: Any = None,

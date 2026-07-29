@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "version": "1.00",
-  "agreed_between": ["uoh-sqak", "TBD-opponent"],
+  "agreed_between": ["uoh-sqak", "uoh-sqak"],
   "board_and_agents": {
     "board_size": 7,
     "num_agents": 2,

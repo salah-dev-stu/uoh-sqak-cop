@@ -1,5 +1,5 @@
 """Exhaustive tamper sweep (IC-1..6): every single-field mutation of the real
-committed log is caught and localised — 1795 mutations, 0 escapes."""
+committed log is caught and localised — every mutation, 0 escapes (IC-6 pins the README count)."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def _class_of(label: str) -> str:
     return label  # move / intent / barriers / nonce are their own class
 
 ROOT = Path(__file__).resolve().parents[2]
-LOG = ROOT / "docs/sample-run/log_uoh-sqak-police-c64efc39_g01.json"
+LOG = sorted((ROOT / "docs/sample-run").glob("log_uoh-sqak-police-*_g01.json"))[0]
 RECORDS = json.loads(LOG.read_text())["records"]
 
 

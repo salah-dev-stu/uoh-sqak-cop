@@ -1,16 +1,16 @@
 {
   "_schema": "config",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-police-c64efc39",
-  "game_uid": "c64efc39e0114d4a",
-  "generated_at": "2026-08-01T12:00:00+03:00",
+  "game_id": "uoh-sqak-thief-21644f70",
+  "game_uid": "21644f701c5ef695",
+  "generated_at": "2026-07-29T12:47:12+00:00",
   "sub_game": 1,
   "config": {
     "schema_version": "1.0",
     "version": "1.00",
     "agreed_between": [
       "uoh-sqak",
-      "TBD-opponent"
+      "uoh-sqak"
     ],
     "board_and_agents": {
       "board_size": 7,
@@ -100,7 +100,7 @@
       }
     }
   },
-  "config_sha256": "c30d2669495990daafb4f3a8b27caa904aca4e82fad0d78b53c8b05d711ac3dd",
+  "config_sha256": "f95f5ad2f4d2b9cff8a7394b55ab78963876a6e4f245172c551df468f6dcc460",
   "links": {
     "cop": "https://github.com/uoh-sqak/uoh-sqak-cop",
     "thief": "https://github.com/uoh-sqak/uoh-sqak-thief"

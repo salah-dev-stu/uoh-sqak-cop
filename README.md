@@ -32,11 +32,14 @@ uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AN
 # Play a full offline game → the 4 signed JSON reports:
 uv run cipherchase self-match --config config/police --out logs
 # Re-verify a logged game in the Replay Viewer (Tkinter):
-uv run cipherchase replay --log docs/sample-run/log_uoh-sqak-police-c64efc39_g01.json
+uv run cipherchase replay --log docs/sample-run/log_uoh-sqak-police-21644f70_g01.json
 ```
 
-A committed **sample run** (4 signed JSON artifacts + the visuals above) lives in `docs/sample-run/` as
-offline proof — the grader needs no API key, no credentials, and no opponent.
+A committed **sample run** lives in `docs/sample-run/` as offline proof — the grader needs no API key, no
+credentials, and no opponent. It carries **both sides of one game**: the police AND thief artifact quartets
+(8 signed JSON), with identical sealed records and a **byte-identical symmetric mutual signature** — the
+"both sides send or neither is scored" evidence, demonstrated, not asserted. Regenerate it any time with
+`uv run python scripts/make_sample_run.py` (seeded — same config, same game).
 
 ## The Masterclass 3D Arena
 
@@ -162,7 +165,7 @@ CI-bounded benchmark (§3), not asserted.
 ### 5. Fairness & integrity (why P2P works without a judge)
 `commit = SHA256(canonical_json({step,state,move,intent}) + "|" + nonce)` with a `secrets` nonce, verified in
 constant time. This isn't asserted, it's *swept*: an exhaustive tamper sweep (`tests/integrity/`) perturbs
-every single field of the committed 70-step log one at a time — **1795 mutations, 1795 caught**, each
+every single field of the committed 70-step log one at a time — **1811 mutations, 1811 caught**, each
 localised to its exact record, zero escapes. Each move is **committed** (move hidden) → **revealed** → and every nonce is disclosed only at
 the **end-of-game mutual audit**, which re-hashes both logs; any mismatch → `tamper_forfeit` 0/0. A **Step-0
 signed declaration** binds hardware + LLM model + the per-game GitHub commit. Reports carry a **symmetric

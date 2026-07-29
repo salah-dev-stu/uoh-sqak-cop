@@ -1,14 +1,19 @@
 {
   "_schema": "log",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-police-c64efc39",
-  "game_uid": "c64efc39e0114d4a",
-  "generated_at": "2026-08-01T12:00:00+03:00",
+  "game_id": "uoh-sqak-police-21644f70",
+  "game_uid": "21644f701c5ef695",
+  "generated_at": "2026-07-29T12:47:12+00:00",
   "sub_game": 1,
   "summary": {
     "turns": 35,
     "outcome": "survival",
     "gatekeeper_ledger": [
+      {
+        "service": "subprocess",
+        "action": "git_rev_parse",
+        "status": "ok"
+      },
       {
         "service": "subprocess",
         "action": "git_rev_parse",
@@ -30,8 +35,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "d3cc1ae49e05197b5871e638129d1844",
-      "commit": "963b38b082c59cf45ca2363d7996ad1cb00b5fccbbafc2d8c3598741e7dd298c"
+      "nonce": "b392f97b22a7d165838d7635d0da855f",
+      "commit": "34c4fecadc642e81af00ef5464d48b5cca023ca97e51248191aed140d37d1a82"
     },
     {
       "payload": {
@@ -51,8 +56,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "88eb961999f12ac876cf4b7601fccdfc",
-      "commit": "de01474e5e13dc23b17692640ea7a5d8d7f16cd7fce26e16bce2530f5273d41b"
+      "nonce": "fcfd48de2602aae711a61a75e8b1ce42",
+      "commit": "5e632f16874535bd787705a369d5f06eb8bd8054fcb2c8d2961b3a46320aa0fd"
     },
     {
       "payload": {
@@ -65,10 +70,10 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
-              1,
+              0,
               1
             ]
           ]
@@ -76,8 +81,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "514747965782639a8817854da6d872e0",
-      "commit": "5b66f0164ecf657b48a8f9dc2e90fd5c76c26ff2995ce9dc4d8e548fb9641f6c"
+      "nonce": "f8b9861b20509098b3270916395188d6",
+      "commit": "4b07db344fbb9e4d3542933040a338e6b44cc5d9904bd77b26c15d4eb5cb6dc4"
     },
     {
       "payload": {
@@ -90,33 +95,37 @@
           "barriers": [
             [
               0,
+              0
+            ],
+            [
+              0,
               1
             ],
             [
               1,
               0
-            ],
-            [
-              1,
-              1
             ]
           ]
         },
-        "move": "E",
+        "move": "S",
         "intent": "truth"
       },
-      "nonce": "5184b9595df7868225e93edf044a91bf",
-      "commit": "fcbbf3789b2196a4748754352a72b2c6235ed16e3659751be957d1da0127aa84"
+      "nonce": "8d4fc0e3806a400013d0e2b69afdbc38",
+      "commit": "6e85a13acbd869d8db0e3f41832196ec04f8877726e8fbac18308921bc053715"
     },
     {
       "payload": {
         "step": 5,
         "state": {
           "pos": [
-            3,
-            1
+            4,
+            0
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -124,10 +133,6 @@
             [
               1,
               0
-            ],
-            [
-              1,
-              1
             ],
             [
               2,
@@ -138,18 +143,22 @@
         "move": "E",
         "intent": "truth"
       },
-      "nonce": "d62d138d8401c1d4361bdd274d720ab7",
-      "commit": "3a14eff28974718dc3edccfca452231ee9443f4ac4ec5036daaa98a488adb6d7"
+      "nonce": "24a19832130551c78bdd5b8f9a84e435",
+      "commit": "8f0030c46175d2fb99b41b6decf02820c3e516f7c8a5b4aa78b66ccaf190991c"
     },
     {
       "payload": {
         "step": 6,
         "state": {
           "pos": [
-            3,
-            2
+            4,
+            1
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -159,34 +168,34 @@
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
             ],
             [
-              2,
-              1
+              3,
+              0
             ]
           ]
         },
-        "move": "E",
+        "move": "S",
         "intent": "truth"
       },
-      "nonce": "f0085e4a1880184c839f48dfac0d9e01",
-      "commit": "69ea29c1d2751332b04edd4e4dafedcfed6341dddae203e08ca3487a84809344"
+      "nonce": "9c4d7a540cff24f129ff618eb47523a8",
+      "commit": "19d606f06861a6406e27f121a585ddc7d3f836e7b2b70f9dc7210022061d5180"
     },
     {
       "payload": {
         "step": 7,
         "state": {
           "pos": [
-            3,
-            3
+            5,
+            1
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -196,38 +205,38 @@
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
             ],
             [
-              2,
-              1
+              3,
+              0
             ],
             [
-              2,
-              2
+              3,
+              1
             ]
           ]
         },
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "3c772182ee318506be33ec964c3148f6",
-      "commit": "f4c3c4153bcf202a214ea64ee1ade8c8ce7c1b42e658454245fc0468fdcdfcfd"
+      "nonce": "d80d76599078a2a927ab4dc448c73e99",
+      "commit": "05a6e16b3f23735d237b4daa5f80a5c1558c9b4028d21960624fceef41d14f44"
     },
     {
       "payload": {
         "step": 8,
         "state": {
           "pos": [
-            2,
-            3
+            4,
+            1
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -237,38 +246,42 @@
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
-              2
+              5,
+              0
             ]
           ]
         },
-        "move": "N",
+        "move": "S",
         "intent": "truth"
       },
-      "nonce": "31abb43b48ea106e233fb3281c4f2620",
-      "commit": "4925668b657df4a4856b257f407b51ae336c02584513d37a9b2d356e3ab7879b"
+      "nonce": "ab3c7e255fecc6183c244a7cd657817d",
+      "commit": "24b40e57ee9ec712691f55b66c4c311133ef6f36d0c4edf62e4b53f64a61da77"
     },
     {
       "payload": {
         "step": 9,
         "state": {
           "pos": [
-            1,
-            3
+            5,
+            1
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -278,38 +291,46 @@
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
-              2
+              4,
+              0
+            ],
+            [
+              5,
+              0
             ]
           ]
         },
         "move": "N",
-        "intent": "lie"
+        "intent": "truth"
       },
-      "nonce": "845a9ee388004d3f0b589ae2ae638e6e",
-      "commit": "71cf2147b5d3e7afadf5234b4d59030097c5fb45c25ef75824b6a83a47b07ec5"
+      "nonce": "32480fd2d4150b9943054121628050bb",
+      "commit": "9f53267127a35d334ed28e88dde1dfddbda1c8e1dcba4cba1cf55c073a8aba45"
     },
     {
       "payload": {
         "step": 10,
         "state": {
           "pos": [
-            0,
-            3
+            4,
+            1
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -319,273 +340,337 @@
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
-              2
+              4,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "077e8c697f4c4df42373042b8bede78d",
-      "commit": "f439be4937753985dc00bcde6dfe7b4184f4d01794016ee37a5dbcf64cf6daf1"
+      "nonce": "8b950264ea42a8ac864ba7fda2d12309",
+      "commit": "9c07ed01758d3bcfda898d708dcf190e8be4e2de06e6b79859f8deab15d2f25c"
     },
     {
       "payload": {
         "step": 11,
         "state": {
           "pos": [
-            1,
-            3
+            5,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
+              4,
+              0
+            ],
+            [
+              4,
               2
-            ]
-          ]
-        },
-        "move": "S",
-        "intent": "truth"
-      },
-      "nonce": "ff030dcdeaa362ae460ddc62116a0607",
-      "commit": "c06ea1fe83df6152fda6a05be555f926db574ebac0a4cbbdf99bcaf2ed0acc68"
-    },
-    {
-      "payload": {
-        "step": 12,
-        "state": {
-          "pos": [
-            2,
-            3
-          ],
-          "barriers": [
-            [
-              0,
-              1
             ],
             [
-              0,
-              4
-            ],
-            [
-              1,
+              5,
               0
             ],
             [
-              1,
+              6,
               1
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ]
           ]
         },
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "93fbf4fd04d94845b4ee9d0532241956",
-      "commit": "cac6bb1403eb8cf43533eb884d8340a8ba433f4b16dbfcd7edf57c28b641b862"
+      "nonce": "c06498def698cc18c29d600fd1332d61",
+      "commit": "9f6f98d041e19253d40348326b25997fa02b5de4960a426a036708d9bc8b477c"
+    },
+    {
+      "payload": {
+        "step": 12,
+        "state": {
+          "pos": [
+            4,
+            1
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "STAY",
+        "intent": "lie"
+      },
+      "nonce": "da31a99c295ed62e88f5d79a62bb717a",
+      "commit": "9b6f6210c5e0be74f1db88d74c1c5df9a255fa53368e60ec5c76738a7d7df52d"
     },
     {
       "payload": {
         "step": 13,
         "state": {
           "pos": [
-            1,
-            3
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
+              4,
+              0
+            ],
+            [
+              4,
               2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "S",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "6f916ddc12c6327b081328f1b85b3ae4",
-      "commit": "513a1afd016cc4319a2e43cef7d5f665a6241e45e8d4ec06c1606dbc04046bc4"
+      "nonce": "6fc9ab42880109244d1e20868fd67c33",
+      "commit": "e346e55de81c974016dd37461c1b9133a81951dc81fb445853dc9c301755910e"
     },
     {
       "payload": {
         "step": 14,
         "state": {
           "pos": [
-            2,
-            3
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
+              4,
+              0
+            ],
+            [
+              4,
               2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "S",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "3d28e2e0b9ef3d92049c9414e097cecb",
-      "commit": "82bf5a9e4ff8be894b0914d7cc3d35d136ba4794b09fcec39a12f3d6f08a5a0e"
+      "nonce": "a40d881e5116810c66452b63d9a2da4e",
+      "commit": "b24bf18c21e6d2c198ffab7ebb271c0ccbbc8fa4bdcc6e2dfa53f5e088e3ea9a"
     },
     {
       "payload": {
         "step": 15,
         "state": {
           "pos": [
-            3,
-            3
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
+              4,
+              0
+            ],
+            [
+              4,
               2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "S",
-        "intent": "lie"
+        "move": "STAY",
+        "intent": "truth"
       },
-      "nonce": "48d5e265b1081a226110cf8ac558f017",
-      "commit": "a04556bbb9d7d9c6c1c24dccdd512b84a1c93ea99173dfb8b11ed6d74fe00b06"
+      "nonce": "934a44ffb48bbf189bec535e62ae7ba0",
+      "commit": "9de1a98e79de4cad384415e58e115f3cfcaeb94ca304e0a596b4ea6e76887d5f"
     },
     {
       "payload": {
@@ -593,1255 +678,1219 @@
         "state": {
           "pos": [
             4,
-            3
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "N",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "67c2713684b0f7916282585f37deb4df",
-      "commit": "00f764705d43db58ce31647e895a82aaa86c9df0b69792da2fa49b5a94c6cb43"
+      "nonce": "52ad170b7a577ce67f544232e32f8b12",
+      "commit": "2916e780cfa8ffef28a01f9d9b3a93c74c031de2eb985d748710dc8864e268b2"
     },
     {
       "payload": {
         "step": 17,
         "state": {
           "pos": [
-            3,
-            3
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "N",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "5eaa7bed104e1e3f41cf5f110ff4d480",
-      "commit": "4570b598d06b947c4b06751763e81a836cca9892f7ffdb8f0b8807130916d006"
+      "nonce": "3e3362e39b84453528ef1316447f0af0",
+      "commit": "be5134a3feb93727d9bdf262848931a901f4de38f2463607baf58fae83428202"
     },
     {
       "payload": {
         "step": 18,
         "state": {
           "pos": [
-            2,
-            3
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
-        "intent": "lie"
+        "move": "STAY",
+        "intent": "truth"
       },
-      "nonce": "44445bce6250a5fd7acf213d8fef0709",
-      "commit": "e8a9eab1c164126af4f05d517eb1ef1f4b4df639fbbf85f47c0f0c41295c8bfd"
+      "nonce": "cb18eeb6835caf34ecde5d0735b7a7c6",
+      "commit": "67cfd4aef2065140031ff6ca824cb5a1847fe830a9aef607de0f508b692bcc1d"
     },
     {
       "payload": {
         "step": 19,
         "state": {
           "pos": [
-            2,
-            4
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "3ba8a90d9e0c79ddc12bbfc5e55e28b7",
-      "commit": "1f3afbd5e62659519d7ada6888219049f786271971e6bd5c1ab133eb25d332de"
+      "nonce": "1cce4f2de13ce27c86624c55c60633da",
+      "commit": "07b8d7cacf3a752de80adcfc370bbb7b7c67808d7fa9de554e896e64571c4ad7"
     },
     {
       "payload": {
         "step": 20,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "84a04e0c99ddc0c68b9032c89f7e92da",
-      "commit": "b7349f70595dc2250266b86a4fad9dfef2f81c89a4dc81750c6e848a89f26ba4"
+      "nonce": "a0ca8a1f0820a5a3f7e2e2fee7a5264c",
+      "commit": "341b40c194bb9a34ee5c277e1b630614d3576ed1a594c27e0cf4c728f90a58d0"
     },
     {
       "payload": {
         "step": 21,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
-        "intent": "truth"
+        "move": "STAY",
+        "intent": "lie"
       },
-      "nonce": "e23520746d4c94a1c6468eb94a73b480",
-      "commit": "8a74e6a53d2a5ac07388ba027f4d04cafbb1fe59392741882f12b16d121fe5a5"
+      "nonce": "b675a92ad54e617f3fb79d576a75791e",
+      "commit": "ffceaf39a97e275ebd38cd7e7ec1fa629f12430284989109e58c15686a931829"
     },
     {
       "payload": {
         "step": 22,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "b08cd7436d84b60842e2285f86e21ea3",
-      "commit": "e1cafd2ac50e5f1ae0757f4492fe6f75f0a5fa8f55e0f47a7e383bdb62b7535c"
+      "nonce": "7ad78028c5e4644adaef878fa34e7cb8",
+      "commit": "a6808bfb60e7ab5aa3abe9f982a29828e011ac9615d4b37bc22ae7a75aeb2da9"
     },
     {
       "payload": {
         "step": 23,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "6b750836a9a33d7c82310cb01317394c",
-      "commit": "fa6052d25af9995c80fe247814b0f75a98eec1221e1a180b77e1a7d58bbf7a7e"
+      "nonce": "e4c53003a0fb6af34cfce84d6a6cb7db",
+      "commit": "7d0fc89ffcd1c46d7bf6085fe93cbe960edb2f72cc3a68d6dd1ee8c207d58736"
     },
     {
       "payload": {
         "step": 24,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
-        "intent": "lie"
+        "move": "STAY",
+        "intent": "truth"
       },
-      "nonce": "37a7653e31aef8d2f72a71f4bcd17645",
-      "commit": "bb6a31bd95fbdd13811329208477c38de52c400914e41be587d7e322cd0f5072"
+      "nonce": "fad301b9a4b1046ff6c197ca4c3f7a51",
+      "commit": "ffb57675bbd7f9a3737f1be20c697614c3e8c8f44a1fc7401d82e5d22b261322"
     },
     {
       "payload": {
         "step": 25,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "c05e9b629fbffd94564040fc693b0f53",
-      "commit": "cd89ca68b3cba2cb36daff3787837075fdd2be4f895770e225636800d74899fb"
+      "nonce": "33ac2ce4971d22575885eeb8e278ae58",
+      "commit": "61316f40c779015f645d406cc9388adc8a3f61bc849345db7ee2614a3cc9a1de"
     },
     {
       "payload": {
         "step": 26,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "ec5b746eb94031c9687a08868f444c3c",
-      "commit": "2cf67d0e7f43f55448525ed93c57eee04b32e3af3794cc4308138fb01480f58a"
+      "nonce": "d0c3e51aee6c0e4a1d68c62b1c4927e6",
+      "commit": "fb78d45eb560aaa18d4ecaa102be3b1f11332a85a8a0354335784ddaf70ae840"
     },
     {
       "payload": {
         "step": 27,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
-        "intent": "lie"
+        "move": "STAY",
+        "intent": "truth"
       },
-      "nonce": "c6421fb3ed0566df168a313f5cf2e405",
-      "commit": "8be4fbd750f949a1bdb3f422f3df48bb28886add10883b2ea4c9c236ab938102"
+      "nonce": "613dd5f7a8d548a092ff038d871c58d7",
+      "commit": "43771a262d54eca802a02ac190dbc7b43c8e7ad4aef16072263a29e0ac73e232"
     },
     {
       "payload": {
         "step": 28,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "c261b176bcf171916067d5e26aec5a47",
-      "commit": "d29aa8cec277956db1af1ba23276d8cbb5c5e09ce37919204187c99e6b8a7f23"
+      "nonce": "4720ec3d17bd36f418e2c5fd33a03d85",
+      "commit": "347c51b5df664c758b00e4009a844f6f6379248808e9c3c6a70fec4634834377"
     },
     {
       "payload": {
         "step": 29,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "91e29e69dfc03d4221d4bf219910266a",
-      "commit": "00e71b986f90566dda7521fe86f761ad9a452848a7c38d6c30eddefe12cfbc78"
+      "nonce": "d9695913ecd7c6d7dc15399abacb84db",
+      "commit": "d7a74be2516899afbc90da9a5eae19d7ee1f5edab36a69a7f5c21c2f47a98dd8"
     },
     {
       "payload": {
         "step": 30,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "2c7b0db403913ec3e4d0e49ac7588387",
-      "commit": "49df7b783b8be20c515a677e6b30edf11d08b3aecccb54f4a4e8642455d12f2f"
+      "nonce": "19949516c4548f7a12a1fe4f1fa38ae7",
+      "commit": "de42ffbf6ad3e2d51ce3b39bace95c0385efb0f5e8c06fe94f7f229fd049057b"
     },
     {
       "payload": {
         "step": 31,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "558fd4747f3f3c371c3c7d52ee7dc6cc",
-      "commit": "f3dab08a5966739179ec8f71ad82d9200623f36eed94bac0500ee0b2f2c17715"
+      "nonce": "3291878bb644a05354ea3e5bc540c421",
+      "commit": "af4213064f005fb743695b73693042e10267c0f0dbac5da13e45f98061e87237"
     },
     {
       "payload": {
         "step": 32,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "d51f503163b911056771895fbeff4070",
-      "commit": "7c0e76c61570b8dd50599f35398ff6c918ccf5cd17329ff5468858c656c27575"
+      "nonce": "fd65886ef27068dbf7fab579c40c5ab4",
+      "commit": "76b96a37413ecce22681a8d6c87fa592f69b34907c27af5f433be0b4f1a776fb"
     },
     {
       "payload": {
         "step": 33,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
-        "intent": "truth"
+        "move": "STAY",
+        "intent": "lie"
       },
-      "nonce": "77888886591f1dd231a1e16b763a7e8c",
-      "commit": "8db4f2c22e69359eaeef2a8bd3c95d85480fa78c9afcb7f78c9b06829b37e49f"
+      "nonce": "9bc1f06d406c4b9e159eeb32fa652d94",
+      "commit": "4e52c0204bf03925fb3d9ca964985cb9ef1e7ff4adec0989400c82f08a795e1f"
     },
     {
       "payload": {
         "step": 34,
         "state": {
           "pos": [
-            2,
-            5
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "dd158c6dc32b614f132490dbae24c8ea",
-      "commit": "74a9c4e0c97d8045c3b67cefca0d9bb67443795de6ef2a99558b2c4e1b858fd5"
+      "nonce": "b4263cc56fe268123ff47499b866f22f",
+      "commit": "e8dfa57635abe75fc39982aaad800137ff4bcad678606c9857c1e08e35a08255"
     },
     {
       "payload": {
         "step": 35,
         "state": {
           "pos": [
-            2,
-            6
+            4,
+            1
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "d603b4c2ffed46d81a295467e6866f73",
-      "commit": "fbc5511ca63a02483f350d848a1acfde070432adcb7d03dbf8fea49888af6bf1"
+      "nonce": "a9bd4113f3a2de12ff6c1611dc44dc9b",
+      "commit": "50d764e419c17438fdae60c253b9027dc7654bf8460cafa67cef49a8a4920c99"
     },
     {
       "payload": {
@@ -1858,46 +1907,50 @@
             ]
           ]
         },
-        "move": "E",
+        "move": "S",
         "intent": "truth"
       },
-      "nonce": "45c9001d661dd0dd5415311c46b0debb",
-      "commit": "60f92d2fbe1161443e5d083e9706403f8bc3dc9335417cba6c8b11fa0086cbbf"
+      "nonce": "4edc6c477b8fb263b1de369943eefb34",
+      "commit": "9c786b50497c243cba4e68d44d9b238e5c47b1da35c9e699aca95615698b9e5f"
     },
     {
       "payload": {
         "step": 2,
         "state": {
           "pos": [
-            3,
-            4
+            4,
+            3
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
-              1,
+              0,
               1
             ]
           ]
         },
-        "move": "E",
+        "move": "S",
         "intent": "truth"
       },
-      "nonce": "3e6d9ff14de3432a8dc881bcc294b239",
-      "commit": "61872c04d4857692154ca777663e672e6de717d9f7740a27813d10c62507e345"
+      "nonce": "762dcd77f25bc0ff2e674ee961355823",
+      "commit": "17fd363d2c490692ff231e21ae91919a0c47d8d56b4631877d90102caae02840"
     },
     {
       "payload": {
         "step": 3,
         "state": {
           "pos": [
-            3,
-            5
+            5,
+            3
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -1905,139 +1958,28 @@
             [
               1,
               0
-            ],
-            [
-              1,
-              1
-            ]
-          ]
-        },
-        "move": "N",
-        "intent": "lie"
-      },
-      "nonce": "8e200c7b7f54d06068c645286f67466a",
-      "commit": "ec9ab1aaafad759657bd9c48d7971d17834a0233a893dc0aec3a8527f4819e9f"
-    },
-    {
-      "payload": {
-        "step": 4,
-        "state": {
-          "pos": [
-            2,
-            5
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              2,
-              0
-            ]
-          ]
-        },
-        "move": "N",
-        "intent": "truth"
-      },
-      "nonce": "b4b8b07e1b8eed854db00f3b1c136548",
-      "commit": "182f395d2fc54ad77cba4d65cbdda5cd8769f6e0864e6a3aa92ecbc1514a8e4b"
-    },
-    {
-      "payload": {
-        "step": 5,
-        "state": {
-          "pos": [
-            1,
-            5
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ]
-          ]
-        },
-        "move": "N",
-        "intent": "truth"
-      },
-      "nonce": "427a2884e9c9914ee9641765c64d067f",
-      "commit": "8e04d125ae1c6b87a7d5b8019c051dfb3a90efa8bb9ff403da6f31cc5fbae119"
-    },
-    {
-      "payload": {
-        "step": 6,
-        "state": {
-          "pos": [
-            0,
-            5
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ]
           ]
         },
         "move": "E",
         "intent": "truth"
       },
-      "nonce": "191d988c19ad763152272766c6fe3965",
-      "commit": "4a9e3f0da634f4f395f148347f0583c9064a98377f2b1584eac729145bd8c316"
+      "nonce": "92c50e23e221262f9a1766aa1e9b7a5f",
+      "commit": "8184ca9f3240dfe1450cad3d5011d74a2a1095043369140590f72cd4f4801e98"
     },
     {
       "payload": {
-        "step": 7,
+        "step": 4,
         "state": {
           "pos": [
-            0,
-            6
+            5,
+            4
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -2047,38 +1989,30 @@
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ]
           ]
         },
-        "move": "STAY",
+        "move": "E",
         "intent": "truth"
       },
-      "nonce": "ea5831cee2214c200a860eb7169a641c",
-      "commit": "589b398000a1f59b013ef43583199e84e381f71b2722ab56d1bee32636abd80b"
+      "nonce": "34dacbf4254346c947838bd3a0a79bd0",
+      "commit": "8e1fe216ba119aef2e374507b6454ba91f8aac13dd3253a4d0f5d5ece47f794b"
     },
     {
       "payload": {
-        "step": 8,
+        "step": 5,
         "state": {
           "pos": [
-            0,
-            6
+            5,
+            5
           ],
           "barriers": [
+            [
+              0,
+              0
+            ],
             [
               0,
               1
@@ -2088,212 +2022,387 @@
               0
             ],
             [
-              1,
-              1
-            ],
-            [
               2,
               0
             ],
             [
-              2,
-              1
-            ],
-            [
-              2,
-              2
+              3,
+              0
             ]
           ]
         },
-        "move": "STAY",
+        "move": "E",
         "intent": "truth"
       },
-      "nonce": "ec2792ac181d226129bc65416dc211fe",
-      "commit": "4371d8833ba3723d16e5ddb7660e515136f08bc23e0133d820b24d75d8245f0c"
+      "nonce": "882d0ce0aeac95fa590284ad5b7bd525",
+      "commit": "f90dcc74986c21572c72fc43328581ce22d0d4cdce3bcfd8ff32e6111b4a2534"
     },
     {
       "payload": {
-        "step": 9,
+        "step": 6,
         "state": {
           "pos": [
-            0,
+            5,
             6
           ],
           "barriers": [
             [
               0,
-              1
-            ],
-            [
-              1,
               0
             ],
-            [
-              1,
-              1
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
-            ]
-          ]
-        },
-        "move": "S",
-        "intent": "truth"
-      },
-      "nonce": "2427e2aacd84c316608013001bfd53f1",
-      "commit": "4ad209cf0dd18fffeac8411ae699d8e25f36e54a585bca3d0a45e04e6bb60a15"
-    },
-    {
-      "payload": {
-        "step": 10,
-        "state": {
-          "pos": [
-            1,
-            6
-          ],
-          "barriers": [
             [
               0,
               1
             ],
             [
-              0,
-              4
-            ],
-            [
               1,
               0
-            ],
-            [
-              1,
-              1
             ],
             [
               2,
               0
             ],
             [
-              2,
-              1
-            ],
-            [
-              2,
-              2
-            ]
-          ]
-        },
-        "move": "S",
-        "intent": "truth"
-      },
-      "nonce": "312304deac6dac53e349ad993c604e28",
-      "commit": "6e0b90008a54292e3474416af0985a5d5c93109c3006006f087dcef0035e71e0"
-    },
-    {
-      "payload": {
-        "step": 11,
-        "state": {
-          "pos": [
-            2,
-            6
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              0,
-              4
-            ],
-            [
-              1,
+              3,
               0
             ],
             [
-              1,
+              3,
               1
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ]
           ]
         },
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "8145ff880e00ecab5ceb40d87dcb657f",
-      "commit": "b47333981bf7c919a26a88f860badbe1df43902d505343b0da666f4889049d28"
+      "nonce": "9a35b3d8e1d8a5d9c4a5c0fb3060c510",
+      "commit": "5370aa71f89c7497c2878f28630b7b9d02babf022017bd927007fd1e7efdad05"
     },
     {
       "payload": {
-        "step": 12,
+        "step": 7,
         "state": {
           "pos": [
-            1,
+            4,
             6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              5,
+              0
+            ]
+          ]
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "c017d722d6a372fbb1797341a79454b7",
+      "commit": "ff1c834b043ee3673e9f879ea1cd13764d2b8207d261cfde67dac8e55525dc93"
+    },
+    {
+      "payload": {
+        "step": 8,
+        "state": {
+          "pos": [
+            5,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
               1
             ],
             [
               1,
-              4
+              0
             ],
             [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
+              4,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ]
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "a59a85a21b68d6a914821bffbeb36580",
+      "commit": "bc93f7124ffb2bd551e24fd7dbdbb01532a473b04e5d7e54f02ebd50dc408a7f"
+    },
+    {
+      "payload": {
+        "step": 9,
+        "state": {
+          "pos": [
+            4,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
               2,
-              2
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
         "move": "S",
         "intent": "lie"
       },
-      "nonce": "938a89109d05f2d10447bb8678f8fa32",
-      "commit": "7956341d71f80bf7db164723c096f83f8dfb3f34fa2cba01d24af2c1ddb2deb5"
+      "nonce": "d3e0a1380db2aaea50bd13fb2f38818f",
+      "commit": "2214877f57f4786bd3b681224fd07883f73bb42097bc762df0e9aea40e6037bf"
+    },
+    {
+      "payload": {
+        "step": 10,
+        "state": {
+          "pos": [
+            5,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "9e11fcac6264e720dd83be5d103de0bc",
+      "commit": "9d7bd5e28e1d857ada96301199078680f7f002eb654721b9cc46dfcbc600216c"
+    },
+    {
+      "payload": {
+        "step": 11,
+        "state": {
+          "pos": [
+            4,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "4375168d219079410b6542bd16a0a595",
+      "commit": "b8276fedfddeb3384529dcab72cdc2bf3c6b81d3c3762068f49bd7bfff595182"
+    },
+    {
+      "payload": {
+        "step": 12,
+        "state": {
+          "pos": [
+            3,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "N",
+        "intent": "lie"
+      },
+      "nonce": "6b6733dec59bce72735832c087d5d7b7",
+      "commit": "5dab35b79bfe14b482144253feb2e5cf03cb2d341c7768723e15a33d1fe4ff22"
     },
     {
       "payload": {
@@ -2306,271 +2415,59 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
             ],
             [
-              2,
+              3,
+              0
+            ],
+            [
+              3,
               1
             ],
             [
-              2,
+              4,
+              0
+            ],
+            [
+              4,
               2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "S",
+        "move": "N",
         "intent": "truth"
       },
-      "nonce": "d72149bd52e2d42a8d88a689232ee588",
-      "commit": "56995b2065856bb72e48588f7990309c7fbff9301a68da4edb55fde3510fd845"
+      "nonce": "9887b632f6be0326101376acfb1c1d44",
+      "commit": "09f331b6b4aff712e915f6b6157deb1cb96f9b9fc9344c4cd28da438bf966177"
     },
     {
       "payload": {
         "step": 14,
-        "state": {
-          "pos": [
-            3,
-            6
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              0,
-              4
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
-            ]
-          ]
-        },
-        "move": "S",
-        "intent": "truth"
-      },
-      "nonce": "7a8d30ca2d69af2a805f2d8e8962d1fd",
-      "commit": "766f748ce34042a22e11d65d02fe6635716aed5df48c578a47e44fd2a59f4647"
-    },
-    {
-      "payload": {
-        "step": 15,
-        "state": {
-          "pos": [
-            4,
-            6
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              0,
-              4
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
-            ],
-            [
-              3,
-              4
-            ]
-          ]
-        },
-        "move": "N",
-        "intent": "truth"
-      },
-      "nonce": "684fd1c4827348b57a9fd9cc9086346d",
-      "commit": "caf13b65ecc3d66324fe72d6905d9cf4f15458670042eb51bf7b0f6c1e4d4d88"
-    },
-    {
-      "payload": {
-        "step": 16,
-        "state": {
-          "pos": [
-            3,
-            6
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              0,
-              4
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
-            ],
-            [
-              3,
-              4
-            ]
-          ]
-        },
-        "move": "N",
-        "intent": "truth"
-      },
-      "nonce": "156582dfb4450161a928e798bba91257",
-      "commit": "b54af7acbff6d1a9693f63520081001d4da1054bec18a058515053480a2035af"
-    },
-    {
-      "payload": {
-        "step": 17,
-        "state": {
-          "pos": [
-            2,
-            6
-          ],
-          "barriers": [
-            [
-              0,
-              1
-            ],
-            [
-              0,
-              4
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              2,
-              0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
-            ],
-            [
-              3,
-              4
-            ]
-          ]
-        },
-        "move": "N",
-        "intent": "truth"
-      },
-      "nonce": "a8d4b9492bd1d197a30393cae288a338",
-      "commit": "d8b5bafe3af8c5e521ae8d0a969f19c26269ad179e1004ec257d22180b4c610c"
-    },
-    {
-      "payload": {
-        "step": 18,
         "state": {
           "pos": [
             1,
@@ -2579,51 +2476,299 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
         "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "28e58d0f8f577db81162a29228b33366",
+      "commit": "bef66e4659eb3da1cbc0705ee507ec178d442ce6e9d16820925ac536850e22fb"
+    },
+    {
+      "payload": {
+        "step": 15,
+        "state": {
+          "pos": [
+            0,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "40c2bcd57ac1564cf5007881623eb8fc",
+      "commit": "d0330d5dd78760e0a3a20167b3a4fa1f7f4eb6f5f2a0b96a59bec5e2110bde78"
+    },
+    {
+      "payload": {
+        "step": 16,
+        "state": {
+          "pos": [
+            0,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "65b4135261161aa2e9ff379bdbe21ba0",
+      "commit": "46763536d9e2751cd3054d1d4404bbcecf5fbddf88c98c4231a37e093c0dc74c"
+    },
+    {
+      "payload": {
+        "step": 17,
+        "state": {
+          "pos": [
+            0,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "933902d7030e37cc57cd4c7d57b19d10",
+      "commit": "8a59f9b707ad015cc33437f211f456f5019aa98458386c4d8dfe9dfbbc004c77"
+    },
+    {
+      "payload": {
+        "step": 18,
+        "state": {
+          "pos": [
+            0,
+            6
+          ],
+          "barriers": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ]
+          ]
+        },
+        "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "febf9139198731b30314bb8be29d67f2",
-      "commit": "d166e6491dc0154a74c36015c9031d61d62b707ebf37bdfbb4b5d95535da3423"
+      "nonce": "5728eba0630bc866461acf8f53b0aab5",
+      "commit": "8b309976ba75b5e01ebbcc85dec4da150fb05b23241cc77df2568a82d42870ee"
     },
     {
       "payload": {
@@ -2636,51 +2781,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "b660874f82364c4ca1fc72c708627f73",
-      "commit": "6299de20adf1bd55f2f21a41171954597b15c1daeb5fe1d6dd0e6c491f946a8b"
+      "nonce": "1b0f3a18343c09ea771a4c99e16a5e1e",
+      "commit": "fa3d2702dbf0a93250f338835981aec1973cc6c0e6ef25e2e2465e7ac1ec4b2c"
     },
     {
       "payload": {
@@ -2693,55 +2842,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "8ac2c9ac8e95db9ec71c3e79184a7bac",
-      "commit": "2fb5fb88efd438d64285153f507ce14d175d82a3230317848566e104ad8a8fd5"
+      "nonce": "ec411f8ab4c50971e64b5f9205ae01d8",
+      "commit": "7aae8849c003ab09f8946325dfc22b056f2cb63c94c903a581f5e26c901e510a"
     },
     {
       "payload": {
@@ -2749,64 +2898,60 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "628e54b9ea74503cf694a999f0755481",
-      "commit": "ee326b0099cf619d89e12bffd897af12d2302d3603078275b3deb0674a9228a2"
+      "nonce": "1dc4fc8932a6c886bb425384a1c75746",
+      "commit": "5a07da82edc4256df20444253ed0b223273e45a93c7b18550d3937619494c403"
     },
     {
       "payload": {
@@ -2819,59 +2964,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "ae08a7780a08126c6f9b3c46ea740242",
-      "commit": "704544ee0eee1e6dd9e4ba23b84989b6b78179955cc15e0f60b26b1c14c11e77"
+      "nonce": "c38d4f4c447d98c241fcd017803853fe",
+      "commit": "a01196ba8588c5f109722290a96461b39e6dd54fa707b46e87517ae4a0e3f810"
     },
     {
       "payload": {
@@ -2879,64 +3020,60 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "521a7d479e1c80cd7b6058c649f45fbd",
-      "commit": "f3add91f0feedd1e0e77a6ab0688257bdfdf5857c23e4ad16dfdaa04893a0c71"
+      "nonce": "2690207a9d07a8095451a8bbf3d7b663",
+      "commit": "524e4634bad1557f88fd64a113803fd49774bc9be460fb489f18a59402d36517"
     },
     {
       "payload": {
@@ -2949,59 +3086,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "da3b34e95711d7762a5e079838ff01f1",
-      "commit": "b6022f1ede4540aaa601b2e394347c2702e209bf5ccb37b5ddeefe22733e92df"
+      "nonce": "461733386aa25b601e6cd3788a275f97",
+      "commit": "685f64898a88d7ee9fba4811a38b5b54a7d09bb5eb20dabf61414b2d2cc1c45c"
     },
     {
       "payload": {
@@ -3009,64 +3142,60 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "0a83974a910545e278e993825ee03abb",
-      "commit": "af575d5b64ccb3b5fed96d1e82a41fcb94e88fc1d722ed3b268cd54fdfdcbb3f"
+      "nonce": "e6447431c3e0645b05f886a4ed17e64a",
+      "commit": "76be9ddc13980af3f8f16c064ea2a87304a8c0c17006840735eae7506df521d1"
     },
     {
       "payload": {
@@ -3079,59 +3208,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "63beb0d92572faebe0d8fd8af33ee3f8",
-      "commit": "c84fbac14bf7d3cce6e00c0cba8497c50940e3796f63856eda80a73e958cb4a1"
+      "nonce": "5991669fc8ade922a70595b217c20331",
+      "commit": "f8e21ad329975b2638edf71a3ee82983d77c08a4c3891bedbdce05e754fe4876"
     },
     {
       "payload": {
@@ -3139,64 +3264,60 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
-        "intent": "lie"
+        "move": "STAY",
+        "intent": "truth"
       },
-      "nonce": "1e3fb511b93800baed4c98996bfedcd6",
-      "commit": "35df78d2ce1382e621d7ddf6493c43449c4072c8bf2e0d4fb652381fefc47edd"
+      "nonce": "918b2cbea8ef3adac6533e881eba4360",
+      "commit": "922ed5ba8178a4a2212396976b2ee9fc76641810f95fb6de199544bf9f17e496"
     },
     {
       "payload": {
@@ -3209,59 +3330,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "151e489abc0afb9626c74291ec4b170c",
-      "commit": "e9af0a20a494f1b5a862fb8859daa91c182ae6c0cf5be8695ec9d3d51519aa21"
+      "nonce": "f4d8e12f64c4939cab56292a18655edc",
+      "commit": "35d7c09a90778aa6541b38d95110cf0abb81f4a61dfe6bb745a46b430496c0c9"
     },
     {
       "payload": {
@@ -3269,64 +3386,60 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "1effab1227a74e625d0c06c3b9a47cd4",
-      "commit": "0465aa3bd77ca7634ef587fa5d51ae870d8be5d6908f354dd62fe9021673f626"
+      "nonce": "c03f1d20c5073fd132cc42017bc0facf",
+      "commit": "67261019cb2b0fd9333d458c83ff4f268f003a2387a1552aa035cd317008f44e"
     },
     {
       "payload": {
@@ -3339,59 +3452,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "5763fbd8dc92ea9be03285e782399e9c",
-      "commit": "54a6921db213e988d109f6ebec8f11aac8d2815014bdade609ad2a9dec345a34"
+      "nonce": "5ab3f173ba40da235ba96b44303bc7a8",
+      "commit": "adc4053fb2cfe1b7529aff047e49a3ab26fdd69a8f8ffb42a162fd54262b36c0"
     },
     {
       "payload": {
@@ -3399,64 +3508,60 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "8b359e3651fe2d26bbc76cb515ecef94",
-      "commit": "32a55d5c0d57904fe941fbf3d5e044fa77a246564e2f84689bcc625db688d91c"
+      "nonce": "3db606c4037724b2f86397090857d823",
+      "commit": "21519277bc3099ec05d2b7756e3b9090ce90c1ca705761c7d9604afc30d9909c"
     },
     {
       "payload": {
@@ -3469,59 +3574,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "6bc84a1acc800fa50586142ff7a60068",
-      "commit": "d83fc8854669596631b6f91772f2b170ecf8d6570636a295aaf3e2ed5ecc64ea"
+      "nonce": "5a2e442ec50fec955cafbd80f28e34ed",
+      "commit": "0c3cb512ced9efe2692263e8ee48df51697da74fd012f2d47a561865c9b69991"
     },
     {
       "payload": {
@@ -3529,64 +3630,60 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
-        "intent": "truth"
+        "move": "STAY",
+        "intent": "lie"
       },
-      "nonce": "4a2defbb4100d8ac7527055b6857b874",
-      "commit": "fb96f3829a12549c73e0d309a14a0639eaad77905913ea6451e87080d22a83bf"
+      "nonce": "da755b559722882059b58dd0e0d6b05d",
+      "commit": "88fd84e4b0fa669b0995f08be519969b267e7199e6b4edbac5b02bee3efd941e"
     },
     {
       "payload": {
@@ -3599,59 +3696,55 @@
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "W",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "15e3ad5eeb3cc0e8886db16098b6ec2a",
-      "commit": "f8ca0fe0d8e1f33d039206d932fc5339ceaa821fff88b6b52a0c9ad9dd68b30d"
+      "nonce": "b45d100c3df44e90a9a9f4eed7421628",
+      "commit": "808a93af704e7392b3aae6ee7248b9dbfac835fe1a734baeea7ee00d5bd97ae8"
     },
     {
       "payload": {
@@ -3659,68 +3752,64 @@
         "state": {
           "pos": [
             0,
-            5
+            6
           ],
           "barriers": [
             [
               0,
-              1
+              0
             ],
             [
               0,
-              4
+              1
             ],
             [
               1,
               0
             ],
             [
-              1,
-              1
-            ],
-            [
-              1,
-              3
-            ],
-            [
-              1,
-              4
-            ],
-            [
-              1,
-              5
-            ],
-            [
-              1,
-              6
-            ],
-            [
               2,
               0
-            ],
-            [
-              2,
-              1
-            ],
-            [
-              2,
-              2
             ],
             [
               3,
-              4
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
             ]
           ]
         },
-        "move": "E",
+        "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "c097a0cd2bbb2e4d2b6fef35d3a41a42",
-      "commit": "49a8e0931947b765b3e2b1840600ec5fcf1a0bbf159e73c679e14795613f9a1b"
+      "nonce": "ae2ffa33859655d649ab259840df9e6d",
+      "commit": "934e2a8518b1da71c0d358168504937dc189de3499cd67390e59cb2811a8f8bb"
     }
   ],
   "mutual_agreement": {
-    "signature": "a04e6f73ce268d6030c4d37869233333147c4a2c605117d98f5210ff64e31bf5",
+    "signature": "eb927af80798c2e36404bf0a77a112d06f0945375135f762f8113ac0ff25556b",
     "audit": "verified"
   },
   "links": {

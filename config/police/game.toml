@@ -47,7 +47,7 @@ every_n_steps = 3
 lie_probability = 0.4
 
 [play]
-seed = 12345
+seed = 2
 
 [network]
 host = "127.0.0.1"

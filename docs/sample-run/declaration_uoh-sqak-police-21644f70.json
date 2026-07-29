@@ -1,0 +1,43 @@
+{
+  "_schema": "declaration",
+  "schema_version": "1.1",
+  "game_id": "uoh-sqak-police-21644f70",
+  "game_uid": "21644f701c5ef695",
+  "generated_at": "2026-07-29T12:47:12+00:00",
+  "timezone": "Asia/Jerusalem",
+  "groups": [
+    "uoh-sqak",
+    "uoh-sqak"
+  ],
+  "num_sub_games": 1,
+  "max_tokens": 200000,
+  "links": {
+    "cop": "https://github.com/uoh-sqak/uoh-sqak-cop",
+    "thief": "https://github.com/uoh-sqak/uoh-sqak-thief"
+  },
+  "step0": {
+    "schema": "declaration/1.0",
+    "team": "uoh-sqak",
+    "players": [
+      "Salah Qadah:323039974",
+      "Andalus Kalash:211435797"
+    ],
+    "role": "police",
+    "git_commit": "9622dd21753fff9523618930299dacc34fa1d9b1",
+    "llm": {
+      "provider": "template",
+      "model": "template",
+      "version": "n/a"
+    },
+    "system": {
+      "os": "Darwin 25.2.0",
+      "cpu": "arm",
+      "cpu_count": 8,
+      "ram_gb": 8.6,
+      "gpu": "Apple Silicon",
+      "python": "3.13.12"
+    },
+    "version": "1.00",
+    "signature": "ce31b8df9acab7189007494ab0ef8eb9bd39748f214788ba48fa9f84671c1a1a"
+  }
+}

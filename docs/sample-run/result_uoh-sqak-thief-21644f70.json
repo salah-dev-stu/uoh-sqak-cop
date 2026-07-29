@@ -1,0 +1,26 @@
+{
+  "_schema": "result",
+  "schema_version": "1.1",
+  "game_id": "uoh-sqak-thief-21644f70",
+  "game_uid": "21644f701c5ef695",
+  "generated_at": "2026-07-29T12:47:12+00:00",
+  "sub_games": [
+    {
+      "sub_game": 1,
+      "outcome": "survival",
+      "scores": {
+        "police": 5,
+        "thief": 10
+      }
+    }
+  ],
+  "final_result": "thief",
+  "mutual_agreement": {
+    "signature": "eb927af80798c2e36404bf0a77a112d06f0945375135f762f8113ac0ff25556b",
+    "audit": "verified"
+  },
+  "links": {
+    "cop": "https://github.com/uoh-sqak/uoh-sqak-cop",
+    "thief": "https://github.com/uoh-sqak/uoh-sqak-thief"
+  }
+}

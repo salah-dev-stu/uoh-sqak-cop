@@ -42,7 +42,7 @@ def belief_heatmap() -> None:
 
 
 def replay_proof() -> None:
-    log = json.loads(next(OUT.glob("log_*.json")).read_text())
+    log = json.loads(sorted(OUT.glob("log_*.json"))[0].read_text())
     steps = verify_records(log["records"])
     ok = sum(s["status"] == "Verified OK" for s in steps)
     fig, ax = plt.subplots(figsize=(5.2, 1.8))
