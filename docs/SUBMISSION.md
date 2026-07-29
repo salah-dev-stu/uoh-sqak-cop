@@ -6,20 +6,12 @@ day — finish steps 1–3 immediately, league games by Aug 8, paperwork by Aug 
 
 ## 1 · Publish the two repos (F14 — unpushed = auto-zero)
 
-1. On GitHub, create the free **organization `uoh-sqak`** (matches the URLs
-   already committed in config/README/declaration), then inside it two **empty**
-   repos (no README/license — we push everything): `uoh-sqak-cop`, `uoh-sqak-thief`.
-   Make them **public**, or private + invite `rmisegal@gmail.com` as reader.
-   *(Using a personal account instead? Fine — but then have the agent update the
-   URLs in `config/*/game.toml`, README, and regenerate the sample run first.)*
-2. From the repo root:
-   ```bash
-   scripts/publish_repos.sh https://github.com/uoh-sqak/uoh-sqak-cop.git \
-                            https://github.com/uoh-sqak/uoh-sqak-thief.git
-   ```
-3. Open the **Actions** tab of either repo and watch the first CI run go green
-   (ruff · ≤150 · version-sync · 100%-coverage suite · self-match smoke · node
-   arena tests · reference-interop tripwire · README honesty guard).
+DONE (2026-07-29): both repos live under `salah-dev-stu` (the course requires
+two cross-linked repos accessible to the grader — the owner account is free):
+`https://github.com/salah-dev-stu/uoh-sqak-cop` ⇄ `…/uoh-sqak-thief`, pushed via
+`scripts/publish_repos.sh`, first CI run green (ruff · ≤150 · version-sync ·
+100%-coverage suite · self-match smoke · node arena tests · reference-interop
+tripwire · README honesty guard).
 
 ## 2 · Gmail reporting (F10/F11)
 

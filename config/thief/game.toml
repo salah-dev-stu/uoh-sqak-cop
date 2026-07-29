@@ -6,7 +6,7 @@ group_id = "uoh-sqak"
 role = "thief"
 sub_game_number = 1
 members = ["Salah Qadah:323039974", "Andalus Kalash:211435797"]
-repos = { cop = "https://github.com/uoh-sqak/uoh-sqak-cop", thief = "https://github.com/uoh-sqak/uoh-sqak-thief" }
+repos = { cop = "https://github.com/salah-dev-stu/uoh-sqak-cop", thief = "https://github.com/salah-dev-stu/uoh-sqak-thief" }
 
 [belief]
 smell_trust = 4.0

@@ -2,7 +2,7 @@
 
 > **Final Project · Course 203.3763 "Orchestration of AI Agents"** · University of Haifa · Spring 2026 · Dr. Yoram Segal
 > **Team `uoh-sqak`** — Salah Qadah (323039974) + Andalus Kalash (211435797)
-> Paired repository (role-swapped): **[`uoh-sqak-cop`](https://github.com/uoh-sqak/uoh-sqak-cop) ⇄ [`uoh-sqak-thief`](https://github.com/uoh-sqak/uoh-sqak-thief)**
+> Paired repository (role-swapped): **[`uoh-sqak-cop`](https://github.com/salah-dev-stu/uoh-sqak-cop) ⇄ [`uoh-sqak-thief`](https://github.com/salah-dev-stu/uoh-sqak-thief)**
 
 Two mutually-distrustful autonomous agents — a **Cop** and a **Thief** — chase on a **7×7** grid over a
 **peer-to-peer FastMCP** network with **no central judge**. Each agent is *simultaneously a server and a
@@ -174,7 +174,7 @@ CI-bounded benchmark (§3), not asserted.
 ### 5. Fairness & integrity (why P2P works without a judge)
 `commit = SHA256(canonical_json({step,state,move,intent}) + "|" + nonce)` with a `secrets` nonce, verified in
 constant time. This isn't asserted, it's *swept*: an exhaustive tamper sweep (`tests/integrity/`) perturbs
-every single field of the committed 70-step log one at a time — **1811 mutations, 1811 caught**, each
+every single field of the committed 70-step log one at a time — **1800 mutations, 1800 caught**, each
 localised to its exact record, zero escapes. Each move is **committed** (move hidden) → **revealed** → and every nonce is disclosed only at
 the **end-of-game mutual audit**, which re-hashes both logs; any mismatch → `tamper_forfeit` 0/0. A **Step-0
 signed declaration** binds hardware + LLM model + the per-game GitHub commit. Reports carry a **symmetric
@@ -186,8 +186,8 @@ convicted and forfeited **localised to the doctored record**, a mid-game replay 
 emailed report — re-audits offline in one command: `cipherchase verify --log <file>`.
 
 ### 6. Paired repository
-One codebase, two league repos (D1/F14): **[`uoh-sqak-cop`](https://github.com/uoh-sqak/uoh-sqak-cop)** ⇄
-**[`uoh-sqak-thief`](https://github.com/uoh-sqak/uoh-sqak-thief)** — identical code, the role is chosen at
+One codebase, two league repos (D1/F14): **[`uoh-sqak-cop`](https://github.com/salah-dev-stu/uoh-sqak-cop)** ⇄
+**[`uoh-sqak-thief`](https://github.com/salah-dev-stu/uoh-sqak-thief)** — identical code, the role is chosen at
 launch (`cipherchase peer --role police|thief --config config/<role>`), so both repos stay byte-in-sync by
 construction (`scripts/publish_repos.sh` pushes the same `main` + `v1.0-submission` tag to both remotes).
 
