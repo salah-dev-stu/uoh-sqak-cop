@@ -83,6 +83,7 @@ def test_police_ends_on_caught_response_or_win_claim() -> None:
     )
     assert out.result == ("capture", "police")
     rt2 = _runtime("police", a)
+    rt2.last_seen_step = 8  # mid-game: step 9 is the next expected inbound
     out2 = rt2.handle(
         TurnMessage(step=9, sender="thief", win_claim={"type": "survival"}).to_dict()
     )
@@ -136,7 +137,9 @@ def test_strategic_deception_lies_by_rule_not_dice() -> None:
     rt.deception_mode = "strategic"  # opt-in rule-based bluffing (F8)
     rt.me = rt.me.moved_to((3, 3))
     rt.belief.reweight([(3, 5)], 1e6)  # believe the thief is 2 cells away → close
-    assert rt._intent() == "lie"  # cop bluffs when it has closed the gap
+    from cipherchase.strategy.deception import choose_intent
+    assert choose_intent(rt) == "lie"  # cop bluffs when it has closed the gap
     rt.belief.reweight([(3, 5)], 0.0)
     rt.belief.reweight([(6, 6)], 1e6)  # now believe it is far
-    assert rt._intent() == "truth"  # nothing to gain from lying when distant
+    assert choose_intent(rt) == "truth"  # nothing to gain from lying when distant
+

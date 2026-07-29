@@ -19,11 +19,12 @@ from cipherchase.domain.scent_decode import ScentDecoder
 from cipherchase.domain.smell import SmellField
 from cipherchase.infra.llm_provider import TalkContext, TemplateProvider, build_provider
 from cipherchase.peer import handshake, summary, turn_handler, turn_sender
+from cipherchase.peer.control_link import ControlLink
 from cipherchase.peer.deadline import Deadline
 from cipherchase.peer.sealing import SealBook, sealed_spec_record
 from cipherchase.peer.state_machine import State, StateMachine
 from cipherchase.peer.watchdog import Watchdog
-from cipherchase.strategy.deception import should_bluff
+from cipherchase.strategy.deception import choose_intent
 from cipherchase.strategy.factory import load_brain
 from cipherchase.strategy.trash_talk import TrashTalk
 
@@ -72,17 +73,10 @@ class PeerRuntime:
         self.sm = StateMachine(State.HANDSHAKE)
         self.now = now or time.monotonic
         self.listener = listener  # spectate stream (SH-1); None = zero behaviour change
-
-    def _intent(self) -> str:
-        if self.deception_mode != "strategic":
-            return self.talk.choose_intent()  # random bluff at lie_probability
-        cop, thief = ((self.me.position, self.belief.most_likely()) if self.role == "police"
-                      else (self.belief.most_likely(), self.me.position))
-        return "lie" if should_bluff(self.role, cop, thief, self.barriers, self.board,
-                                     gap_threshold=self.gap_threshold) else "truth"
+        self.control = ControlLink(role, transport, self.book)  # signed control channel
 
     def talk_for(self, step: int) -> tuple[str, str]:
-        intent = self._intent()
+        intent = choose_intent(self)
         hint = self.talk.maybe_generate(TalkContext(role=self.role, step=step, intent=intent))
         return (intent if hint else "truth"), hint
 
@@ -123,6 +117,9 @@ class PeerRuntime:
             return summary.finish(self, ("handshake_failed", "-"), note=str(exc))
         self.sm.transition(State.WAITING)
         sealed_spec_record(self.book, self.cfg, self.sub_game_number)
+        self.control.enable()  # signed control channel: announce, seal, share status
+        self.control.broadcast_status("PLAYING", sub_game_number=self.sub_game_number,
+                                      step_budget=net["turn_timeout_seconds"])
         result = self.take_turn(None) if self.role == "thief" else None
         deadline = Deadline(net["turn_timeout_seconds"], self.now)
         watchdog = Watchdog(net["turn_timeout_seconds"], self.now)
@@ -130,9 +127,12 @@ class PeerRuntime:
             if deadline.expired() or watchdog.expired():
                 result = ("timeout", self.role)  # silent peer → our technical win
                 break
-            control = self.transport.poll_control_or_none(0.0)
-            if control and control.get("kind") == "quit":
+            self.control.drain()
+            if self.control.opponent_quit:
                 result = ("opponent_quit", self.role)
+                break
+            if self.control.take_pending_restart():
+                result = ("restart", "-")  # auto-approved whole-series restart
                 break
             wire = self.transport.poll_turn_or_none(net["poll_interval_seconds"])
             if wire is None:

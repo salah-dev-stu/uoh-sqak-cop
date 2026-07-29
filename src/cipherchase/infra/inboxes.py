@@ -42,11 +42,21 @@ class Inboxes:
 
     def drain_all(self) -> None:
         for box in self._boxes.values():
-            while True:
-                try:
-                    box.get_nowait()
-                except queue.Empty:
-                    break
+            self._drain(box)
+
+    def drain_stale(self) -> None:
+        """Restart drain: clear stale turns/controls/audits but NEVER a queued
+        agreement — the faster-restarting peer's fresh handshake may already be in."""
+        for name in ("turn", "control", "audit"):
+            self._drain(self._boxes[name])
+
+    @staticmethod
+    def _drain(box: queue.Queue) -> None:
+        while True:
+            try:
+                box.get_nowait()
+            except queue.Empty:
+                break
 
     # raising getters (legacy/tests) -------------------------------------------------
     def put_turn(self, msg: Message) -> None:

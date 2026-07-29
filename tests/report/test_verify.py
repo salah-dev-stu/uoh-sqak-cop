@@ -51,3 +51,5 @@ def test_physically_illegal_but_hash_valid_record_is_caught(tmp_path) -> None:
     assert report["verdict"] == "TAMPERED"
     assert report["failed_steps"] == []          # every hash still checks out…
     assert 3 in report["physical_violations"]    # …but physics says no
+    from cipherchase.report.verify import render
+    assert "PHYSICALLY ILLEGAL" in render(report) and "match void 0/0" in render(report)

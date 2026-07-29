@@ -28,7 +28,8 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
                now: Any = None, listener: Any = None) -> SeriesResult:
     result = SeriesResult()
     num_games = int(cfg.shared["network_and_league"]["num_games"])
-    for n in range(1, num_games + 1):
+    n, restarts = 1, 0
+    while n <= num_games:
         # NOTE: no drain here — a fast peer's next agreement may already be queued
         # (reference behaviour: drain only on explicit restart, §2.6/§2.7).
         runtime = PeerRuntime(
@@ -39,4 +40,9 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
         result.game_id = result.game_id or summary["game_id"]
         result.game_uid = result.game_uid or summary["game_uid"]
         result.summaries.append(summary)
+        if summary["result"] == "restart" and restarts == 0:
+            restarts, n = 1, 1  # auto-approved whole-series restart — replay once, ever
+            transport.drain_stale()  # reference §2.6/§2.7: drain on restart — but never a queued agreement
+            continue
+        n += 1
     return result

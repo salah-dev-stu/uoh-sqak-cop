@@ -15,7 +15,8 @@ from cipherchase.domain.crypto import audit_records
 from cipherchase.domain.physical_audit import physical_audit
 from cipherchase.domain.protocol import AuditPayload
 
-NO_AUDIT_RESULTS = {"timeout", "stopped", "error", "quit", "opponent_quit", "handshake_failed"}
+NO_AUDIT_RESULTS = {"timeout", "stopped", "error", "quit", "opponent_quit",
+                    "handshake_failed", "restart"}
 
 
 def _fsm_step(rt: Any, target: Any) -> None:

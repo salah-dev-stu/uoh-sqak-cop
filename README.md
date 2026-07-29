@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 346 tests (344 run + 2 interop-gated), 100% coverage (~6 min)
+uv run pytest                                   # 363 tests (361 run + 2 interop-gated), 100% coverage (~6 min)
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 
@@ -107,7 +107,11 @@ Each peer runs **its own FastMCP HTTP server** (`infra/mcp_server.py`) exposing 
 to the opponent's URL. Inbound messages land in **thread-safe bounded queues** (queue-not-drop backpressure),
 never processed inline. A DRY `BaseTransport` lets an in-memory `FakeTransport` drive full loopback matches in
 tests with no socket. Coordination is stateful via a **legal-transition state machine** + **deadline tracker**
-+ **watchdog** (`peer/`), so a silent peer becomes a technical loss, never a hang. Every external call —
++ **watchdog** (`peer/`), so a silent peer becomes a technical loss, never a hang. A **signed control
+channel** (`peer/control_link.py`) carries the spec's bidirectional `enable`/`status`/`restart`/`quit`
+overlay — reference-wire-compatible, with an auto-approved whole-series restart — and goes one step further
+than the reference: **every control message, sent and received, is commit-sealed into the audit book**, so
+"you paused", "you stalled", "you quit" are checkable claims, not arguments. Every external call —
 MCP, LLM, Gmail, subprocess — is routed through one **`ApiGatekeeper.execute()`** (token-bucket + 429 retry +
 ledger). **Interop is proven, not claimed — twice.** (1) CI clones the public reference implementation
 ([`rmisegal/Game-P2P-Cop-Chase`](https://github.com/rmisegal/Game-P2P-Cop-Chase)) on **every commit** and a

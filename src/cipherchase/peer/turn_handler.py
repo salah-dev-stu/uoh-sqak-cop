@@ -44,6 +44,11 @@ def process(rt: Any, wire: dict[str, Any]) -> Incoming:
         return Incoming(malformed=True)
     if step <= rt.last_seen_step:
         return Incoming(duplicate=True)
+    if rt.last_seen_step == 0 and step != 1:
+        # Strict alternation: a fresh game's first inbound step is ALWAYS 1. Anything
+        # later is a stale echo of an aborted game (series restart) — never let it
+        # poison last_seen_step or real turns become "duplicates".
+        return Incoming(duplicate=True)
     rt.last_seen_step = step
     if msg.barrier_placed:
         rt.barriers = rt.barriers | {tuple(msg.barrier_placed)}

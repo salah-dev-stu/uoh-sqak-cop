@@ -23,3 +23,13 @@ def should_bluff(
         escapes = [n for n in board.neighbors(thief, barriers) if n != cop]
         return len(escapes) <= 1
     return False
+
+
+def choose_intent(rt) -> str:
+    """Runtime-facing intent picker: strategic rule when opted in, else seeded dice."""
+    if rt.deception_mode != "strategic":
+        return rt.talk.choose_intent()  # random bluff at lie_probability
+    cop, thief = ((rt.me.position, rt.belief.most_likely()) if rt.role == "police"
+                  else (rt.belief.most_likely(), rt.me.position))
+    return "lie" if should_bluff(rt.role, cop, thief, rt.barriers, rt.board,
+                                 gap_threshold=rt.gap_threshold) else "truth"

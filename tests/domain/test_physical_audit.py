@@ -41,3 +41,20 @@ def test_move_through_own_barrier_is_a_violation() -> None:
 
 def test_malformed_record_is_flagged_not_crashed() -> None:
     assert move_violations([{"payload": {"move": "N"}}], BOARD) == [0]
+
+
+def test_typed_non_move_records_are_exempt_from_board_replay() -> None:
+    # Live books carry sealed NON-move records (step-0 spec, control channel).
+    # They have no state/move — the board must not convict what it cannot replay.
+    from cipherchase.domain.board import Board
+    from cipherchase.domain.crypto import CommitReveal
+    from cipherchase.domain.physical_audit import physical_audit
+    spec = {"step": 0, "type": "system_spec", "model": "template"}
+    control = {"step": 3, "type": "control", "kind": "status", "status": "PLAYING"}
+    move = {"step": 1, "state": {"pos": [0, 0], "barriers": []}, "move": "S", "intent": "truth"}
+    records = []
+    for payload in (spec, move, control):
+        commit, nonce = CommitReveal.seal(payload)
+        records.append({"payload": payload, "nonce": nonce, "commit": commit})
+    verdict = physical_audit(records, Board(7))
+    assert verdict["passed"] is True and verdict["violations"] == []

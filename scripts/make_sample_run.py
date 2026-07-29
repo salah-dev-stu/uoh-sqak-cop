@@ -43,7 +43,7 @@ def main() -> int:
     records = json.loads(log.read_text())["records"]
     n = len(records) * 10 + sum(len(set(r["commit"])) for r in records)
     print(f"\nsample log: {log.name} · {len(records)} records · tamper-sweep N = {n}")
-    print("README must state exactly:  {0} mutations, {0} caught".format(n))
+    print(f"README must state exactly:  {n} mutations, {n} caught")
     return 0
 
 
