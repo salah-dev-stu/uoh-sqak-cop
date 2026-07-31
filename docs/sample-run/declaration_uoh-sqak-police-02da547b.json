@@ -1,9 +1,9 @@
 {
   "_schema": "declaration",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-thief-21644f70",
-  "game_uid": "21644f701c5ef695",
-  "generated_at": "2026-07-29T14:33:31+00:00",
+  "game_id": "uoh-sqak-police-02da547b",
+  "game_uid": "02da547b6fe4ce04",
+  "generated_at": "2026-07-31T07:27:23+00:00",
   "timezone": "Asia/Jerusalem",
   "groups": [
     "uoh-sqak",
@@ -22,8 +22,8 @@
       "Salah Qadah:323039974",
       "Andalus Kalash:211435797"
     ],
-    "role": "thief",
-    "git_commit": "1073560a49023fec61ad711cdfa0a588e968820e",
+    "role": "police",
+    "git_commit": "0afc342948950c16d90bde9cb50c60e2a24c59b4",
     "llm": {
       "provider": "template",
       "model": "template",
@@ -38,6 +38,6 @@
       "python": "3.13.12"
     },
     "version": "1.00",
-    "signature": "be7ab58b45f5a01e2a5bfeaf4dbdd70bcb92a149fcc56e6389fb9925b6a4dcfd"
+    "signature": "6e5999e59d5c4a87bbbfb79a0d5b0a352b916815caa46c3daf3c5eedd582845d"
   }
 }

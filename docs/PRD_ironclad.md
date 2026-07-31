@@ -11,7 +11,7 @@
 | **Dependency changes** | `hypothesis>=6.100` added to `[dependency-groups].dev` in `pyproject.toml` **only** (never a runtime dependency; `real` extra untouched) |
 | **Version** | 1.00 (single-source `shared/version.py`) |
 | **Status** | Per-mechanism draft — approve before TODO §Phenomenal (T623+) build |
-| **Depends on** | `domain/crypto.py` (`CommitReveal`, `audit_records`) · `domain/canonical.py` · `domain/belief.py` · `domain/board.py` · `domain/protocol.py` · `peer/turn_handler.py` · `gui/replay_data.py` · `tests/fakes/fake_transport.py` (`.sent` tap) · committed sample log `docs/sample-run/log_uoh-sqak-police-21644f70_g01.json` |
+| **Depends on** | `domain/crypto.py` (`CommitReveal`, `audit_records`) · `domain/canonical.py` · `domain/belief.py` · `domain/board.py` · `domain/protocol.py` · `peer/turn_handler.py` · `gui/replay_data.py` · `tests/fakes/fake_transport.py` (`.sent` tap) · committed sample log `docs/sample-run/log_uoh-sqak-police-02da547b_g01.json` |
 | **Absorbs** | Leftover TODO guard tasks **T430** (dead config keys), **T463** (doc-truth CLI), **T465** (PLAN §3 inventory), and **T518** (golden transcripts) |
 | **Cut order** | golden transcripts → property tests → **(never cut) tamper sweep** (PLAN-PHENOMENAL §3) |
 
@@ -21,7 +21,7 @@
 
 The integrity story currently rests on *sampled* evidence: a handful of tamper tests, one tampered replay fixture, an every-commit reference tripwire. P8 upgrades each claim from "tested" to "quantified over the whole space we can enumerate":
 
-- **Tamper sweep** — not "a tampered record is caught" but "**all N mutations of the real committed log are caught, N = 1800 today, 0 escapes**" — a one-line Integrity proof no prose can match.
+- **Tamper sweep** — not "a tampered record is caught" but "**all N mutations of the real committed log are caught, N = 1805 today, 0 escapes**" — a one-line Integrity proof no prose can match.
 - **Property tests** — not "these payloads round-trip" but "**∀ JSON-able payloads** round-trip; ∀ perturbations fail; ∀ op sequences the belief stays a distribution; ∀ hostile dicts the boundary never crashes."
 - **Golden transcripts** — the interop tripwire's deterministic twin: every byte shape we ever emit is frozen on disk and replayed on every commit, with and without the reference repo present.
 - **Truth guards** — the last three unchecked doc/config-honesty tasks land here so P8 closes the "no false claim anywhere" milestone for good.
@@ -34,7 +34,7 @@ Everything in this PRD is test-side. If a property test finds a real production 
 
 ### 3.1 Exhaustive tamper sweep — `tests/integrity/test_tamper_sweep.py`
 
-**IC-1 — Sweep target is the real committed artifact.** The sweep loads `docs/sample-run/log_uoh-sqak-police-21644f70_g01.json` and takes its `records` list (70 sealed `{payload, nonce, commit}` triples; payload schema `{step:int, state:{pos:[r,c], barriers:[[r,c]…]}, move:str, intent:str}`). A precondition test asserts the pristine log passes `audit_records` (`passed=True`, `failed_steps==[]`) — the sweep proves *discrimination*, not just rejection.
+**IC-1 — Sweep target is the real committed artifact.** The sweep loads `docs/sample-run/log_uoh-sqak-police-02da547b_g01.json` and takes its `records` list (70 sealed `{payload, nonce, commit}` triples; payload schema `{step:int, state:{pos:[r,c], barriers:[[r,c]…]}, move:str, intent:str}`). A precondition test asserts the pristine log passes `audit_records` (`passed=True`, `failed_steps==[]`) — the sweep proves *discrimination*, not just rejection.
 
 **IC-2 — Deterministic mutation generator, precisely specified.** A helper module `tests/integrity/mutations.py` exposes `mutations_of(records) -> Iterator[tuple[str, int, list[dict]]]` yielding `(label, record_index, mutated_records)` — each item a **deep copy** of the full record list with **exactly one** field perturbed. No randomness anywhere; the generator is a pure function of the log bytes. Per record at index `i`, in this fixed order:
 
@@ -48,13 +48,13 @@ Everything in this PRD is test-side. If a property test finds a real production 
 | f | `nonce` | hex char at position `i mod 32` replaced by `hex((int(ch,16)+1) % 16)` — always a different char | 1 |
 | g | `commit` (nibble classes) | for **each distinct hex-digit value** `v` present in the 64-char commit (sorted ascending), the **first occurrence** of `v` is replaced by `hex((v+1) % 16)` | `D_i` (14–16 observed) |
 
-**IC-3 — Count formula and floor.** Expected total `N = Σ_i (9 + D_i) = 10·R + Σ_i (D_i) − R` … stated exactly: `N = R·10 + Σ_i D_i` where `R = len(records)` and `D_i = |{distinct hex digits in commit_i}|` (rows a–e give 9 payload mutations, row f gives 1, row g gives `D_i`). For the committed log: `R = 70`, `Σ D_i = 1100` → **`N = 700 + 1100 = 1800`**. The test asserts `N ≥ 500` (PLAN-PHENOMENAL §2 P8 acceptance floor) so a regenerated shorter sample run still satisfies the gate.
+**IC-3 — Count formula and floor.** Expected total `N = Σ_i (9 + D_i) = 10·R + Σ_i (D_i) − R` … stated exactly: `N = R·10 + Σ_i D_i` where `R = len(records)` and `D_i = |{distinct hex digits in commit_i}|` (rows a–e give 9 payload mutations, row f gives 1, row g gives `D_i`). For the committed log: `R = 70`, `Σ D_i = 1105` → **`N = 700 + 1105 = 1805`**. The test asserts `N ≥ 500` (PLAN-PHENOMENAL §2 P8 acceptance floor) so a regenerated shorter sample run still satisfies the gate.
 
 **IC-4 — Zero escapes, asserted per mutation and in aggregate.** For every yielded mutation: `audit_records(mutated)` must return `passed=False` **and** include exactly `record_index` in `failed_steps` (localisation, not just rejection). Escapes are accumulated and the final assert reads `assert not escapes, …` with a message embedding the tally, and the closing assert emits the headline count: `assert caught == total and total >= 500, f"tamper sweep: {caught}/{total} mutations caught"` — so the number is visible in test output.
 
 **IC-5 — The Replay Viewer path agrees.** One additional test drives a **sample** of the sweep (first mutation of each class per record — `7·R` cases) through `gui/replay_data.verify_records` / `replay_verdict` and asserts the mutated step is `"TAMPERED"` and the verdict is `BAD`. This proves the GUI verdict path (F12) discriminates with the same power as the auditor, without doubling the full sweep's runtime.
 
-**IC-6 — README honesty line, guard-enforced.** README's Integrity section gains the line "**1800 mutations, 1800 caught**" (exact wording contains `<N> mutations, <N> caught`). The sweep test parses that line out of `README.md` and asserts both numbers equal the computed `N` — same self-honesty pattern as the tests-count CI guard (T472). Regenerating the sample log without updating the README fails CI.
+**IC-6 — README honesty line, guard-enforced.** README's Integrity section gains the line "**1805 mutations, 1805 caught**" (exact wording contains `<N> mutations, <N> caught`). The sweep test parses that line out of `README.md` and asserts both numbers equal the computed `N` — same self-honesty pattern as the tests-count CI guard (T472). Regenerating the sample log without updating the README fails CI.
 
 ### 3.2 Property-based tests (`hypothesis`, dev-dep) — `tests/properties/`
 
@@ -94,7 +94,7 @@ The test file carries the comment: `# transcript drift = interop break: if this 
 
 | # | Check |
 |---|---|
-| A1 | Tamper sweep: **≥ 500 mutations, 0 escapes** (current log: 1800/1800), each localised to its record index; pristine log passes (IC-1..4) |
+| A1 | Tamper sweep: **≥ 500 mutations, 0 escapes** (current log: 1805/1805), each localised to its record index; pristine log passes (IC-1..4) |
 | A2 | Replay-viewer sample sweep: all mutated steps `TAMPERED` (IC-5); README "N mutations, N caught" line matches computed N (IC-6) |
 | A3 | All hypothesis suites green in CI at the pinned `ci` profile (`max_examples=100`, `derandomize=True`, `deadline=None`) (IC-7..12) |
 | A4 | Golden transcript: capture script self-checks determinism; replay test green with our parser everywhere and with the reference's strict parser when `../reference-repo` is present (IC-13/14) |

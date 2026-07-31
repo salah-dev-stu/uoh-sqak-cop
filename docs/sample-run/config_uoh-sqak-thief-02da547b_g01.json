@@ -1,9 +1,9 @@
 {
   "_schema": "config",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-thief-21644f70",
-  "game_uid": "21644f701c5ef695",
-  "generated_at": "2026-07-29T14:33:31+00:00",
+  "game_id": "uoh-sqak-thief-02da547b",
+  "game_uid": "02da547b6fe4ce04",
+  "generated_at": "2026-07-31T07:27:23+00:00",
   "sub_game": 1,
   "config": {
     "schema_version": "1.0",
@@ -23,12 +23,12 @@
         0,
         0
       ],
-      "axis_origin_corner": "top_left",
+      "axis_origin_corner": "top-left",
       "axis_start_index": 0
     },
     "world": {
-      "map_area": "7x7",
-      "hint_max_words": 30
+      "map_area": "New York",
+      "hint_max_words": 15
     },
     "movement_and_barriers": {
       "move_set": [
@@ -57,13 +57,13 @@
       "center_intensity": 0.9,
       "decay": 0.1,
       "falloff": 0.7,
-      "min_center_intensity": 0.001,
+      "min_center_intensity": 0.5,
       "absorb_gain": 1.0
     },
     "network_and_league": {
       "response_timeout_s": 30,
       "watchdog_s": 60,
-      "num_games": 1,
+      "num_games": 6,
       "mini_games_per_match": 6,
       "diversity_reward": 10,
       "min_games_to_pass": 2,
@@ -100,7 +100,7 @@
       }
     }
   },
-  "config_sha256": "f95f5ad2f4d2b9cff8a7394b55ab78963876a6e4f245172c551df468f6dcc460",
+  "config_sha256": "5412761cfa1f418e06c67e1e87b7fcb1b6abed2929ec94af411c8ebcb481aa1a",
   "links": {
     "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
     "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
