@@ -100,3 +100,17 @@ def test_fresh_game_rejects_a_stale_echo_before_step_one() -> None:
     assert stale.duplicate is True and rt.last_seen_step == 0
     fresh = rt.handle(Turn(step=1, sender="thief", smell_grid={"3,3": 0.9}).to_dict())
     assert fresh.duplicate is False and rt.last_seen_step == 1
+
+
+def test_handshake_failure_retries_the_same_sub_game_number() -> None:
+    # A peer that launches first burns handshake windows while the opponent is
+    # still down. Advancing the sub-game counter on those burns DESYNCS the two
+    # series (warm-up #2 vs najamjad: our sub-2 cop met their sub-1 cop — nobody
+    # was the thief). handshake_failed must retry the SAME n, bounded.
+    a, _b = make_pair()  # nobody ever answers → every window fails
+    cfg = _fast(ConfigManager.load(CONFIG / "police"), num_games=2)
+    cfg.private["network"]["connect_timeout_seconds"] = 0.2
+    series = run_series(cfg, "police", a)
+    fails = [s for s in series.summaries if s["result"] == "handshake_failed"]
+    assert len(fails) > 2, "handshake windows must RETRY, not just burn one per sub-game"
+    assert {s["sub_game_number"] for s in fails} == {1}  # counter never advanced past sub 1

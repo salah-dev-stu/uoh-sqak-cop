@@ -28,7 +28,8 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
                now: Any = None, listener: Any = None) -> SeriesResult:
     result = SeriesResult()
     num_games = int(cfg.shared["network_and_league"]["num_games"])
-    n, restarts = 1, 0
+    retries = int(cfg.network.get("handshake_retries", 5))
+    n, restarts, burned = 1, 0, 0
     while n <= num_games:
         # NOTE: no drain here — a fast peer's next agreement may already be queued
         # (reference behaviour: drain only on explicit restart, §2.6/§2.7).
@@ -40,6 +41,12 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
         result.game_id = result.game_id or summary["game_id"]
         result.game_uid = result.game_uid or summary["game_uid"]
         result.summaries.append(summary)
+        if summary["result"] == "handshake_failed":
+            burned += 1  # peer not up yet: RETRY the SAME sub-game — advancing the
+            if burned <= retries:  # counter desyncs the two series (both play cop!)
+                continue
+            break  # opponent never appeared — no series, don't burn the schedule
+        burned = 0
         if summary["result"] == "restart" and restarts == 0:
             restarts, n = 1, 1  # auto-approved whole-series restart — replay once, ever
             transport.drain_stale()  # reference §2.6/§2.7: drain on restart — but never a queued agreement

@@ -59,6 +59,7 @@ turn_timeout_seconds = 180
 poll_interval_seconds = 0.5
 connect_timeout_seconds = 60
 retry_interval_seconds = 1.0
+handshake_retries = 5
 audit_send_timeout_seconds = 10
 queue_maxsize = 100
 
