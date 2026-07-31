@@ -8,8 +8,10 @@ present.  Run:  CIPHERCHASE_INTEROP=1 uv run pytest tests/interop/test_vs_refere
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
+import signal
 import subprocess
 from pathlib import Path
 
@@ -108,22 +110,30 @@ def test_full_series_vs_the_reference_peer(tmp_path: Path, our_role: str, ports:
     theirs = _ref_config(tmp_path, ref_role, ports[1], ports[0])
     workdir = tmp_path / "refwork"
     workdir.mkdir()
+    # start_new_session: each Popen leads its own process GROUP, so a timeout kill
+    # reaps the real peer under the `uv run` wrapper — an orphan squats the fixed
+    # ports and poisons every later run (learned the hard way, warm-up day).
     ref = subprocess.Popen(
         ["uv", "run", "--project", str(REFERENCE), "python", "-m", "police_thief", "peer",
          "--role", ref_role, "--config", str(theirs), "--stub-llm", "--no-gui"],
         cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        start_new_session=True,
     )
     mine = subprocess.Popen(
         ["uv", "run", "cipherchase", "peer", "--role", our_role, "--config", str(ours)],
         cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        start_new_session=True,
     )
     try:
         my_out, my_err = mine.communicate(timeout=300)
         ref_out, ref_err = ref.communicate(timeout=60)
     except subprocess.TimeoutExpired:
-        mine.kill()
-        ref.kill()
-        pytest.fail(f"series deadlocked\nOURS:{mine.stdout}\nREF:{ref.stdout}")
+        for proc in (mine, ref):
+            with contextlib.suppress(ProcessLookupError):
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)  # the whole group
+        my_out, _ = mine.communicate()
+        ref_out, _ = ref.communicate()
+        pytest.fail(f"series deadlocked\nOURS:{my_out[-2000:]}\nREF:{ref_out[-2000:]}")
     assert mine.returncode == 0, f"our peer failed:\n{my_out}\n{my_err}"
     assert ref.returncode == 0, f"reference failed:\n{ref_out}\n{ref_err}"
     summary = json.loads(my_out.strip().splitlines()[-1])

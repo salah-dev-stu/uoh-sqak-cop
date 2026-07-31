@@ -47,12 +47,15 @@ def validate_terms(cfg: Any) -> dict[str, Any]:
 def identity_from_config(cfg: Any) -> dict[str, Any]:
     game = cfg.private["game"]
     net = cfg.network
+    # rule 49 (najamjad warm-up finding): the declaration must advertise the
+    # PUBLIC tunnel URL when one is configured — never a localhost address.
+    url = net.get("public_url") or f"http://{net['host']}:{net['my_port']}/mcp"
     return {
         "group_id": game["group_id"],
         "group_name": game["group_name"],
         "members": list(game["members"]),
         "repos": dict(game.get("repos", {})),
-        "mcp_servers": {cfg.role: f"http://{net['host']}:{net['my_port']}/mcp"},
+        "mcp_servers": {cfg.role: url},
         "llm_model": cfg.private.get("llm", {}).get("model", "template"),
         "spec": system_info(),
     }

@@ -52,6 +52,8 @@ seed = 2
 [network]
 host = "127.0.0.1"
 my_port = 8002
+# Public tunnel URL advertised in the Step-0 declaration (rule 49); empty = local.
+public_url = ""
 opponent_url = "http://127.0.0.1:8001/mcp"
 turn_timeout_seconds = 180
 poll_interval_seconds = 0.5

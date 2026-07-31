@@ -82,3 +82,18 @@ def test_unknown_control_kind_is_reported_not_crashed() -> None:
     ours.transport.send_control({"kind": "dance", "sender": "police"})
     events = theirs.drain()
     assert events == [{"type": "control_unknown", "kind": "dance"}]
+
+
+def test_control_wire_carries_exactly_the_reference_key_set() -> None:
+    # najamjad warm-up finding: a strict peer parses controls with cls(**data) —
+    # our internal `payload` field must never leak onto the wire.
+    reference_keys = {"kind", "sender", "sub_game_number", "status", "step_budget"}
+    ours, _theirs, a, _b = _pair()
+    ours.enable()
+    ours.broadcast_status("PLAYING", sub_game_number=2, step_budget=30.0)
+    ours.send_restart()
+    ours.send_quit()
+    control_wires = [w for (tool, _k, w) in a.sent if tool == "receive_control"]
+    assert len(control_wires) == 4
+    for wire in control_wires:
+        assert set(wire) == reference_keys, wire

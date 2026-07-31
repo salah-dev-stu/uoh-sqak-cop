@@ -45,7 +45,9 @@ class ControlLink:
     def _send(self, kind: str, **fields: Any) -> None:
         msg = ControlMessage(kind=kind, sender=self.role, **fields)
         self._seal("sent", msg)
-        self.transport.send_control(msg.to_dict())
+        wire = msg.to_dict()
+        wire.pop("payload", None)  # internal field — strict cls(**data) peers would crash
+        self.transport.send_control(wire)
 
     def enable(self) -> None:
         self.i_enabled = True

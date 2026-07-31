@@ -74,3 +74,13 @@ def test_derive_game_ids_reference_formula_and_symmetry() -> None:
     expected = str(uuid.UUID(bytes=hashlib.sha256(seed.encode("utf-8")).digest()[:16]))
     assert guid == expected
     assert derive_game_ids(terms, "uoh-aaa", "uoh-zzz") == (gid, guid)  # order-independent
+
+
+def test_identity_advertises_the_public_url_when_configured() -> None:
+    # najamjad warm-up finding (rule 49): the declaration's mcp_servers carried
+    # 127.0.0.1 — the lecturer-facing address must be the public tunnel when set.
+    cfg = ConfigManager.load(CONFIG / "thief")
+    assert "127.0.0.1" in identity_from_config(cfg)["mcp_servers"]["thief"]  # local fallback
+    cfg.private["network"]["public_url"] = "https://example.ngrok-free.app/mcp"
+    assert identity_from_config(cfg)["mcp_servers"] == {
+        "thief": "https://example.ngrok-free.app/mcp"}
