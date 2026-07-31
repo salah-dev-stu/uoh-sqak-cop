@@ -21,7 +21,8 @@ class _AllowAll:
 def test_serve_params_read_host_and_port_from_config() -> None:
     cfg = ConfigManager.load(CONFIG / "police")
     assert serve_params(cfg) == {
-        "transport": "http", "host": "127.0.0.1", "port": 8001, "show_banner": False
+        "transport": "http", "host": "127.0.0.1", "port": 8001, "show_banner": False,
+        "stateless_http": True,  # league interop: accept sessionless JSON-RPC peers too
     }
 
 

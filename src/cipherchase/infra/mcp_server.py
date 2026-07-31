@@ -56,9 +56,15 @@ def build_peer_server(role: str, inboxes: Inboxes) -> FastMCP:
 
 
 def serve_params(config: Any) -> dict[str, Any]:
-    """HTTP serving params from config (host/port never hardcoded, FR-E1)."""
+    """HTTP serving params from config (host/port never hardcoded, FR-E1).
+
+    ``stateless_http`` — liberal-in-what-we-accept (league interop, warm-up
+    finding vs najamjad): some peers POST raw JSON-RPC without the MCP
+    initialize/session handshake; stateless mode serves them AND spec-full
+    clients alike. Our own client stays fully session-negotiated either way.
+    """
     return {"transport": "http", "host": config.network["host"], "port": config.my_port,
-            "show_banner": False}
+            "show_banner": False, "stateless_http": True}
 
 
 def start_peer_server(role: str, config: Any) -> Inboxes:  # pragma: no cover (real socket)
