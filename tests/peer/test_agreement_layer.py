@@ -80,7 +80,8 @@ def test_identity_advertises_the_public_url_when_configured() -> None:
     # najamjad warm-up finding (rule 49): the declaration's mcp_servers carried
     # 127.0.0.1 — the lecturer-facing address must be the public tunnel when set.
     cfg = ConfigManager.load(CONFIG / "thief")
-    assert "127.0.0.1" in identity_from_config(cfg)["mcp_servers"]["thief"]  # local fallback
+    cfg.private["network"]["public_url"] = ""  # explicit: empty → local fallback
+    assert "127.0.0.1" in identity_from_config(cfg)["mcp_servers"]["thief"]
     cfg.private["network"]["public_url"] = "https://example.ngrok-free.app/mcp"
     assert identity_from_config(cfg)["mcp_servers"] == {
         "thief": "https://example.ngrok-free.app/mcp"}

@@ -71,10 +71,23 @@ class ScentDecoder:
                     best_cell, best_err = center, err
         return best_cell if best_err <= self.fit_tolerance else None
 
+    def fresh_peak(self, snapshot: dict[str, float]) -> Cell | None:
+        """League-robust shortcut (najamjad warm-up finding): on fields that never
+        saturate, the unique fresh-emit-intensity cell IS the opponent. Our own
+        physics saturates old trail to 1.0 > emit, which rejects this path and
+        keeps the matched filter in charge exactly where it is needed."""
+        if not snapshot:
+            return None
+        peak = max(snapshot.values())
+        if peak >= 1.0 or peak < self.emit - 1e-6:
+            return None  # saturated trail or no fresh stamp → not this field style
+        tops = [k for k, v in snapshot.items() if v >= peak - 1e-6]
+        return parse_cell(tops[0]) if len(tops) == 1 else None
+
     def update(self, snapshot: dict[str, float]) -> BeliefGrid:
         """Fold one received snapshot into the persistent belief; return it."""
         self.grid.diffuse()
-        self.last_decoded = self.decode(snapshot)
+        self.last_decoded = self.fresh_peak(snapshot) or self.decode(snapshot)
         if self.last_decoded is not None:
             self.grid.observe_smell({cell_key(self.last_decoded): SHARP_TRUST})
         elif snapshot:
