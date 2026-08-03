@@ -21,7 +21,7 @@ def take_turn(rt: Any, claim_response: dict[str, Any] | None) -> tuple[str, str]
     rt.step_number += 1
     step = rt.step_number
     decision = rt.brain.decide(rt.me, rt.belief, rt.barriers)
-    decision.intent, decision.hint = rt.talk_for(step)
+    decision.intent, decision.hint = rt.talk_for(step, decision.direction)
     try:
         target = rt.board.step(rt.me.position, decision.direction, rt.barriers)
     except IllegalMoveError:  # HOLD fallback — never stall the loop
@@ -29,7 +29,6 @@ def take_turn(rt: Any, claim_response: dict[str, Any] | None) -> tuple[str, str]
         decision.direction = Direction.STAY
     commit, _nonce = rt.book.seal(move_payload(step, rt.me, decision))
     barrier_placed = _maybe_barrier(rt, decision.barrier_cell, target)
-    moved = target != rt.me.position
     rt.me = rt.me.moved_to(target)
     rt.my_smell.decay_all()
     rt.my_smell.deposit(rt.me.position)
@@ -40,7 +39,7 @@ def take_turn(rt: Any, claim_response: dict[str, Any] | None) -> tuple[str, str]
         step=step, sender=rt.role, hint=trim_words(decision.hint, rt.hint_max_words),
         smell_grid=rt.my_smell.snapshot(), commit=commit, timestamp=now_iso(),
         barrier_placed=barrier_placed,
-        capture_claim=list(rt.me.position) if rt.role == "police" and moved else None,
+        capture_claim=list(rt.me.position) if rt.role == "police" else None,
         claim_response=claim_response, win_claim=win_claim,
     )
     rt.transport.send_turn(message.to_dict())

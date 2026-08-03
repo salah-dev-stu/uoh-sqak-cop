@@ -1,0 +1,176 @@
+{
+ "game_id": "",
+ "game_uid": "",
+ "sub_games": [
+  {
+   "sub_game_number": 1,
+   "role": "thief",
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   }
+  },
+  {
+   "sub_game_number": 1,
+   "role": "thief",
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   }
+  },
+  {
+   "sub_game_number": 1,
+   "role": "thief",
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   }
+  },
+  {
+   "sub_game_number": 1,
+   "role": "thief",
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   }
+  },
+  {
+   "sub_game_number": 1,
+   "role": "thief",
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   }
+  },
+  {
+   "sub_game_number": 1,
+   "role": "thief",
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   }
+  }
+ ],
+ "summaries": [
+  {
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "sub_game_number": 1,
+   "role": "thief",
+   "game_id": "",
+   "game_uid": "",
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   },
+   "records": [],
+   "history": [],
+   "note": "negotiate -> https://cop.4laboratory.com/mcp: Server error '502 Bad Gateway' for url 'https://cop.4laboratory.com/mcp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+   "fsm": "REPORTING"
+  },
+  {
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "sub_game_number": 1,
+   "role": "thief",
+   "game_id": "",
+   "game_uid": "",
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   },
+   "records": [],
+   "history": [],
+   "note": "negotiate -> https://cop.4laboratory.com/mcp: Server error '502 Bad Gateway' for url 'https://cop.4laboratory.com/mcp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+   "fsm": "REPORTING"
+  },
+  {
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "sub_game_number": 1,
+   "role": "thief",
+   "game_id": "",
+   "game_uid": "",
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   },
+   "records": [],
+   "history": [],
+   "note": "negotiate -> https://cop.4laboratory.com/mcp: Server error '502 Bad Gateway' for url 'https://cop.4laboratory.com/mcp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+   "fsm": "REPORTING"
+  },
+  {
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "sub_game_number": 1,
+   "role": "thief",
+   "game_id": "",
+   "game_uid": "",
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   },
+   "records": [],
+   "history": [],
+   "note": "negotiate -> https://cop.4laboratory.com/mcp: Server error '502 Bad Gateway' for url 'https://cop.4laboratory.com/mcp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+   "fsm": "REPORTING"
+  },
+  {
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "sub_game_number": 1,
+   "role": "thief",
+   "game_id": "",
+   "game_uid": "",
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   },
+   "records": [],
+   "history": [],
+   "note": "negotiate -> https://cop.4laboratory.com/mcp: Server error '502 Bad Gateway' for url 'https://cop.4laboratory.com/mcp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+   "fsm": "REPORTING"
+  },
+  {
+   "result": "handshake_failed",
+   "winner": "-",
+   "steps": 0,
+   "sub_game_number": 1,
+   "role": "thief",
+   "game_id": "",
+   "game_uid": "",
+   "audit": {
+    "status": "skipped",
+    "passed": null
+   },
+   "records": [],
+   "history": [],
+   "note": "negotiate -> https://cop.4laboratory.com/mcp: Server error '502 Bad Gateway' for url 'https://cop.4laboratory.com/mcp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+   "fsm": "REPORTING"
+  }
+ ]
+}

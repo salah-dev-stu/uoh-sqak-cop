@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from cipherchase.exceptions import ConfigError, ProviderUnavailableError
@@ -36,15 +36,29 @@ class TalkContext:
     step: int
     own_move: str = ""
     intent: str = "truth"
+    direction: Any = None          # heading actually taken (grounds truth/lie, F6)
+    gap: int = 0                   # believed distance to the opponent
+    barriers: int = 0              # barriers placed so far
+    landmarks: list[str] = field(default_factory=list)   # setting flavour, from config
+    max_words: int = 15            # the agreed hint_max_words
 
 
 class TemplateProvider:
-    """Pure-Python canned phrases — deterministic, zero tokens, intent-aware."""
+    """Zero-token hints, but GROUNDED: the composer builds each line from the real
+    heading, gap, barriers and the setting's landmarks (F6, book Ch4/6)."""
 
     def generate(self, ctx: TalkContext) -> str:
-        banks = _PHRASES.get(ctx.role, {"truth": ["..."], "lie": ["..."]})
-        phrases = banks.get(ctx.intent, banks["truth"])
-        return phrases[ctx.step % len(phrases)]
+        from cipherchase.constants import Direction
+        from cipherchase.strategy.hint_writer import HintContext, compose
+        if ctx.direction is None:  # no game state (early boot) → static fallback bank
+            banks = _PHRASES.get(ctx.role, {"truth": ["..."], "lie": ["..."]})
+            phrases = banks.get(ctx.intent, banks["truth"])
+            return phrases[ctx.step % len(phrases)]
+        return compose(HintContext(
+            role=ctx.role, intent=ctx.intent, step=ctx.step,
+            direction=ctx.direction if isinstance(ctx.direction, Direction) else Direction.STAY,
+            gap=ctx.gap, barriers=ctx.barriers, landmarks=list(ctx.landmarks),
+            max_words=ctx.max_words))
 
 
 class ClaudeCliProvider:

@@ -63,9 +63,9 @@ class PeerRuntime:
             build_provider({**cfg.private.get("llm", {}), **tt}, gate=gate), TemplateProvider(),
             every_n_steps=tt["every_n_steps"], lie_probability=tt["lie_probability"], rng=rng,
         )
-        self.max_steps = mb["survival_threshold"]
-        self.barriers_max = mb["max_barriers"]
+        self.max_steps, self.barriers_max = mb["survival_threshold"], mb["max_barriers"]
         self.hint_max_words = cfg.shared["world"]["hint_max_words"]
+        self.landmarks = list(tt.get("landmarks", []))
         self.book, self.history = SealBook(), []
         self.barriers: frozenset = frozenset()
         self.step_number, self.last_seen_step = 0, 0
@@ -75,9 +75,13 @@ class PeerRuntime:
         self.listener = listener  # spectate stream (SH-1); None = zero behaviour change
         self.control = ControlLink(role, transport, self.book)  # signed control channel
 
-    def talk_for(self, step: int) -> tuple[str, str]:
+    def talk_for(self, step: int, direction: Any = None) -> tuple[str, str]:
         intent = choose_intent(self)
-        hint = self.talk.maybe_generate(TalkContext(role=self.role, step=step, intent=intent))
+        peak = self.belief.most_likely()
+        hint = self.talk.maybe_generate(TalkContext(
+            role=self.role, step=step, intent=intent, direction=direction,
+            gap=self.board.distance(self.me.position, peak), barriers=len(self.barriers),
+            landmarks=self.landmarks, max_words=self.hint_max_words))
         return (intent if hint else "truth"), hint
 
     def _emit(self, phase: str, wire: dict | None = None, outcome: dict | None = None) -> None:

@@ -114,3 +114,20 @@ def test_handshake_failure_retries_the_same_sub_game_number() -> None:
     fails = [s for s in series.summaries if s["result"] == "handshake_failed"]
     assert len(fails) > 2, "handshake windows must RETRY, not just burn one per sub-game"
     assert {s["sub_game_number"] for s in fails} == {1}  # counter never advanced past sub 1
+
+
+def test_police_stay_turn_still_claims_its_own_cell() -> None:
+    # najamjad sanity-series finding, the expensive way: our cop stood ON their
+    # camped thief for 25 straight turns and never asked — claims only attached
+    # to MOVE turns. A police turn must claim its cell whether it moved or not;
+    # co-location via STAY is exactly when the claim matters most.
+    from cipherchase.peer.state_machine import State
+    a, _b = make_pair()
+    rt = PeerRuntime(role="police", cfg=_fast(ConfigManager.load(CONFIG / "police")),
+                     transport=a, sub_game_number=1)
+    rt.sm.transition(State.WAITING)
+    for _ in range(4):  # several turns: some will be STAY once settled
+        rt.take_turn(None)
+    stay_wires = [w for (_t, _k, w) in a.sent
+                  if w.get("sender") == "police" and w.get("capture_claim") is None]
+    assert stay_wires == [], "every police turn must carry a capture claim"

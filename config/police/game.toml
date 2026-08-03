@@ -45,6 +45,8 @@ bluff_weight = 0.0  # Bayesian hint-fusion pull (F6); 0 disables, ~0.15 to enabl
 provider = "template"
 every_n_steps = 3
 lie_probability = 0.4
+# Setting flavour for grounded hints (F6). Private — never the signed game.json.
+landmarks = ["Harlem", "Central Park", "the waterfront", "Brooklyn Bridge", "Wall Street", "Times Square"]
 
 [play]
 seed = 2
