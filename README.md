@@ -25,7 +25,7 @@ run (`docs/sample-run/`) re-verifies clean on all 70 steps.
 
 ```bash
 uv sync --dev                                   # Python 3.13 venv, all deps
-uv run pytest                                   # 382 tests (380 run + 2 interop-gated), 100% coverage (~6 min)
+uv run pytest                                   # 396 tests (394 run + 2 interop-gated), 100% coverage (~6 min)
 uv run ruff check .                             # 0 findings
 uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AND logical)
 
@@ -116,7 +116,12 @@ MCP, LLM, Gmail, subprocess — is routed through one **`ApiGatekeeper.execute()
 ledger). **Interop is proven, not claimed — twice.** (1) CI clones the public reference implementation
 ([`rmisegal/Game-P2P-Cop-Chase`](https://github.com/rmisegal/Game-P2P-Cop-Chase)) on **every commit** and a
 tripwire feeds our wire bytes to the reference's own strict parser, crypto verifier, and negotiation checker.
-(2) A full **two-process LIVE series** against that reference peer — roles swapping, both sides' audits
+(2) Independently, our bytes are certified against the **Cop-Thief League Interop Kit**
+(teams ImreEyal + anrbj666): all four CORE fixtures — canonical JSON, commit-reveal seal,
+agreement signature, and `game_uid`/`game_id` derivation — reproduce exactly, vendored into our
+suite at `tests/interop/league_vectors/` so CI re-proves it on every commit. That matters because
+the audit is *mutual*: the opponent re-hashes our log with their code, and two honest peers whose
+canonical JSON differs by one escaped character both score 0/0. (3) A full **two-process LIVE series** against the reference peer — roles swapping, both sides' audits
 **verified** — reproduces locally in ~20 s:
 
 ```bash
