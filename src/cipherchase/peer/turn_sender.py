@@ -39,7 +39,7 @@ def take_turn(rt: Any, claim_response: dict[str, Any] | None) -> tuple[str, str]
         step=step, sender=rt.role, hint=trim_words(decision.hint, rt.hint_max_words),
         smell_grid=rt.my_smell.snapshot(), commit=commit, timestamp=now_iso(),
         barrier_placed=barrier_placed,
-        capture_claim=list(rt.me.position) if rt.role == "police" else None,
+        capture_claim=_capture_claim(rt),
         claim_response=claim_response, win_claim=win_claim,
     )
     rt.transport.send_turn(message.to_dict())
@@ -59,6 +59,26 @@ def send_final(rt: Any, claim_response: dict[str, Any]) -> None:
         claim_response=claim_response,
     )
     rt.transport.send_turn(message.to_dict())
+
+
+def _capture_claim(rt: Any) -> list[int] | None:
+    """Ask "are you here?" on evidence, never on schedule.
+
+    A claim names our post-move cell exactly, so an unconditional one hands the
+    thief our position every turn under the hidden-position model. We claim when
+    our belief puts the thief on the cell we occupy: if it is really there the
+    game ends and the disclosure is free; if it is provably elsewhere, silence
+    costs us nothing. A co-located thief emits its scent at our own cell, so the
+    peak lands here and a camper is still challenged — including on a STAY turn,
+    which is the case that cost us 25 unchallenged turns against najamjad.
+    """
+    if rt.role != "police":
+        return None
+    here = rt.me.position
+    floor = float(rt.cfg.private["strategy"].get("claim_mass_threshold", 0.08))
+    if rt.belief.most_likely() == here or rt.belief.mass_at(here) >= floor:
+        return list(here)
+    return None
 
 
 def _maybe_barrier(rt: Any, q: Any, target: Any) -> list[int] | None:

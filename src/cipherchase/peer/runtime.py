@@ -68,7 +68,7 @@ class PeerRuntime:
         self.landmarks = list(tt.get("landmarks", []))
         self.book, self.history = SealBook(), []
         self.barriers: frozenset = frozenset()
-        self.step_number, self.last_seen_step = 0, 0
+        self.step_number, self.last_seen_step, self.seen_commits = 0, 0, {}
         self.game_id, self.game_uid, self.peer_identity = "", "", {}
         self.sm = StateMachine(State.HANDSHAKE)
         self.now = now or time.monotonic

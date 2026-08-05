@@ -22,6 +22,10 @@ w_exits = 0.3
 w_risk = 1.0
 lambda_barrier = 0.2
 min_gain = 1
+# Claim "are you here?" only when belief mass on our own cell reaches this.
+# A claim names our cop's cell exactly, so an unconditional one donates our
+# position every turn; 0 restores unconditional claiming.
+claim_mass_threshold = 0.08
 # ApexCop (P6): best-response over an opponent model + exact endgame proof.
 # opponent_model: thief_v1 | evader_v2 | naive_edge | still | random | paranoid | ensemble
 # ("ensemble" = league-robust hedge over the deterministic archetypes).

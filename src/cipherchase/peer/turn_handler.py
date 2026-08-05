@@ -21,6 +21,7 @@ class Incoming:
     result: tuple[str, str] | None = None
     claim_response: dict[str, Any] | None = None
     duplicate: bool = False
+    equivocation: dict[str, Any] | None = None
     malformed: bool = False
 
 
@@ -36,6 +37,20 @@ def _fuse_hint(rt: Any, hint: str | None, prev_peak: Any) -> None:
                bluff_weight=rt.bluff_weight, board_size=rt.board.size)
 
 
+def _equivocation(rt: Any, step: int, commit: str) -> dict[str, Any] | None:
+    """A repeat of a step with a DIFFERENT commit is two stories, not a retry.
+
+    Recorded and sealed, never acted on unilaterally — the logs decide (rule 35).
+    """
+    seen = rt.seen_commits.get(step)
+    if not seen or not commit or seen == commit:
+        return None
+    evidence = {"step": step, "commits": sorted([seen, commit])}
+    rt.history.append({"equivocation": evidence})
+    rt.book.seal({"type": "equivocation", **evidence})
+    return evidence
+
+
 def process(rt: Any, wire: dict[str, Any]) -> Incoming:
     try:
         msg = TurnMessage.from_dict(dict(wire))
@@ -44,13 +59,14 @@ def process(rt: Any, wire: dict[str, Any]) -> Incoming:
         rt.history.append({"malformed": True})
         return Incoming(malformed=True)
     if step <= rt.last_seen_step:
-        return Incoming(duplicate=True)
+        return Incoming(duplicate=True, equivocation=_equivocation(rt, step, msg.commit))
     if rt.last_seen_step == 0 and step != 1:
         # Strict alternation: a fresh game's first inbound step is ALWAYS 1. Anything
         # later is a stale echo of an aborted game (series restart) — never let it
         # poison last_seen_step or real turns become "duplicates".
         return Incoming(duplicate=True)
     rt.last_seen_step = step
+    rt.seen_commits[step] = msg.commit
     if msg.barrier_placed:
         rt.barriers = rt.barriers | {tuple(msg.barrier_placed)}
     prev_peak = rt.belief.most_likely()

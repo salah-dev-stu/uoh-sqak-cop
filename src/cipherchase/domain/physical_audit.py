@@ -20,7 +20,7 @@ def move_violations(records: list[dict[str, Any]], board: Board) -> list[int]:
     bad: list[int] = []
     for index, record in enumerate(records):
         payload = record.get("payload", {})
-        if "type" in payload:  # typed non-move records (step-0 spec, control) — no board replay
+        if "type" in payload:  # typed non-move records (step-0 spec, control, equivocation) — no replay
             continue
         try:
             pos: Cell = tuple(payload["state"]["pos"])  # type: ignore[assignment]

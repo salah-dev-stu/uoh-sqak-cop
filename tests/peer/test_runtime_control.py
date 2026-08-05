@@ -119,15 +119,17 @@ def test_handshake_failure_retries_the_same_sub_game_number() -> None:
 def test_police_stay_turn_still_claims_its_own_cell() -> None:
     # najamjad sanity-series finding, the expensive way: our cop stood ON their
     # camped thief for 25 straight turns and never asked — claims only attached
-    # to MOVE turns. A police turn must claim its cell whether it moved or not;
-    # co-location via STAY is exactly when the claim matters most.
+    # to MOVE turns. Whether the cop MOVED must not decide whether it asks;
+    # co-location via STAY is exactly when the claim matters most. (What does
+    # decide it is belief — see tests/peer/test_capture_claims.py.)
     from cipherchase.peer.state_machine import State
     a, _b = make_pair()
     rt = PeerRuntime(role="police", cfg=_fast(ConfigManager.load(CONFIG / "police")),
                      transport=a, sub_game_number=1)
     rt.sm.transition(State.WAITING)
     for _ in range(4):  # several turns: some will be STAY once settled
+        rt.belief.reweight([rt.me.position], 1e6)  # believe the thief is under us
         rt.take_turn(None)
-    stay_wires = [w for (_t, _k, w) in a.sent
-                  if w.get("sender") == "police" and w.get("capture_claim") is None]
-    assert stay_wires == [], "every police turn must carry a capture claim"
+    unasked = [w for (_t, _k, w) in a.sent
+               if w.get("sender") == "police" and w.get("capture_claim") is None]
+    assert unasked == [], "a believed co-location is challenged, moved or not"

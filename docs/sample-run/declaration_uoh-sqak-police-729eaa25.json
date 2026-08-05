@@ -1,9 +1,9 @@
 {
   "_schema": "declaration",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-police-c3111114",
-  "game_uid": "c311111406af073f",
-  "generated_at": "2026-08-05T20:31:04+00:00",
+  "game_id": "uoh-sqak-police-729eaa25",
+  "game_uid": "729eaa253867bac4",
+  "generated_at": "2026-08-05T21:00:37+00:00",
   "timezone": "Asia/Jerusalem",
   "groups": [
     "uoh-sqak",
@@ -23,7 +23,7 @@
       "Andalus Kalash:211435797"
     ],
     "role": "police",
-    "git_commit": "29b6009f6ea162516df49d3b1e3d7eb1fcccb7a5",
+    "git_commit": "87d817f2a67eaa06451df78ebf344c4a66d9dc6b",
     "llm": {
       "provider": "template",
       "model": "template",
@@ -38,6 +38,6 @@
       "python": "3.13.12"
     },
     "version": "1.00",
-    "signature": "8eab556dc6356db1bb14d42c1f98a4c826135c3b5957787257f39ba474c32d4e"
+    "signature": "6279259d31f317b1c7d0810a44a1324e2cf85cc7382adea9e668daaa4a3147f0"
   }
 }
