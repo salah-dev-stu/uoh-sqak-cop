@@ -57,20 +57,32 @@ def is_boxed_in(board: Board, thief: Cell, cop: Cell, barriers: frozenset[Cell])
     return not escapes
 
 
+def is_enclosed(board: Board, thief: Cell, barriers: frozenset[Cell]) -> bool:
+    """Rules 46/47 — barrier on the thief's OWN cell, or no legal move at all.
+
+    Cop-free by construction: enclosure is a property of the thief's hidden cell,
+    so it is a fact only the THIEF can observe. That is why a conforming thief
+    must announce it (``claim_response.caught``) instead of settling silently —
+    an unannounced enclosure forks the game into capture-vs-timeout, which is
+    the contradictory-report shape rule 35 scores 0/0 for BOTH teams.
+    """
+    return thief in barriers or not board.neighbors(thief, barriers)
+
+
 def is_capture(
     board: Board,
     cop: Cell,
     thief: Cell,
     barriers: frozenset[Cell],
-    *,
-    require_cop_adjacent: bool = True,
 ) -> bool:
-    """Co-location, barrier-on-thief, or a boxed-in thief (cop adjacent if required)."""
-    if cop == thief or thief in barriers:
-        return True
-    if is_boxed_in(board, thief, cop, barriers):
-        return not require_cop_adjacent or board.distance(cop, thief) == 1
-    return False
+    """Co-location (cop claims the thief's cell) or a rules-46/47 enclosure.
+
+    No cop-adjacency condition: the book makes the three capture families equal
+    in standing, so a thief walled in from across the board is caught just the
+    same. Requiring adjacency here would let us score SURVIVAL on a sub-game the
+    opponent scores CAPTURE — two honest reports contradicting, which is 0/0.
+    """
+    return cop == thief or is_enclosed(board, thief, barriers)
 
 
 def outcome(
@@ -81,10 +93,9 @@ def outcome(
     turn: int,
     *,
     survival_threshold: int,
-    require_cop_adjacent: bool = True,
 ) -> Outcome | None:
     """CAPTURE if caught, SURVIVAL at the threshold, else None (game continues)."""
-    if is_capture(board, cop, thief, barriers, require_cop_adjacent=require_cop_adjacent):
+    if is_capture(board, cop, thief, barriers):
         return Outcome.CAPTURE
     if turn >= survival_threshold:
         return Outcome.SURVIVAL

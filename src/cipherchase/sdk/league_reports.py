@@ -1,0 +1,94 @@
+"""The four App-F artifacts for a LIVE league series (F11/F14).
+
+``SimulationSdk.run_peer`` plays the real series; this turns its summaries into
+the reports both teams email. The distinction matters: the offline self-match
+writer replays a game the opponent never saw, so a counted match reported from
+it would describe a fixture, not the match.
+
+Per sub-game: one ``config`` + one ``log`` (sealed records + audit verdict).
+Per series: one ``declaration`` (signed Step-0) + one ``result`` carrying the
+symmetric mutual signature the opponent independently recomputes.
+"""
+
+from __future__ import annotations
+
+import json
+import time
+from pathlib import Path
+from typing import Any
+
+from cipherchase.report import artifacts, emit, league
+from cipherchase.sdk.step0 import step0
+from cipherchase.shared.gatekeeper import ApiGatekeeper
+
+Json = dict[str, Any]
+
+
+def write_league_series(
+    cfg: Any, outcome: Json, directory: str | Path, *, generated_at: str,
+    opponent: str, email_backend: Any = None,
+) -> list[Path]:
+    """Build, persist and (rule 32) auto-email one played series' reports."""
+    gate = ApiGatekeeper.from_config(cfg, now=time.monotonic)
+    ledger = Path(directory) / "opponents.json"
+    history: list[str] = json.loads(ledger.read_text()) if ledger.exists() else []
+    first_meeting = opponent != cfg.private["game"]["group_id"] and opponent not in history
+    played = [*history, opponent]
+    arts = build_series_artifacts(
+        cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
+        games_played=played.count(opponent), first_meeting=first_meeting)
+    paths = emit.write_all(directory, arts)
+    ledger.parent.mkdir(parents=True, exist_ok=True)
+    ledger.write_text(json.dumps(played))
+    email = cfg.private["email"]
+    if email["enabled"]:
+        from cipherchase.infra.email_sender import GmailSender
+
+        sender = GmailSender(gate, recipient=email["recipient"],
+                             sender=email.get("sender", ""), backend=email_backend)
+        sender.send(email["subject_template"].format(game_id=outcome["game_id"]), paths)
+    return paths
+
+
+def build_series_artifacts(
+    cfg: Any, outcome: Json, *, opponent: str, generated_at: str,
+    gate: ApiGatekeeper, games_played: int = 1, first_meeting: bool = False,
+) -> list[Json]:
+    game = cfg.private["game"]
+    own = game["group_id"]
+    summaries = outcome["summaries"]
+    table = cfg.shared["scoring"]
+    rows = league.subgame_rows(summaries, own, opponent, table)
+    agg = league.aggregate(rows, table["tie_score"])
+    gid, uid = outcome["game_id"], outcome["game_uid"]
+    common = {"game_id": gid, "game_uid": uid, "generated_at": generated_at,
+              "links": game.get("repos", {})}
+    confirmed = all(s.get("audit", {}).get("passed") for s in summaries)
+    agreement = {"sha256": league.series_signature(gid, agg, rows), "confirmed": confirmed}
+
+    declaration = artifacts.build_declaration(
+        **common, groups=sorted([own, opponent]), num_sub_games=len(summaries),
+        max_tokens=cfg.shared["network_and_league"]["token_budget_per_series"])
+    declaration["step0"] = step0(cfg, gate)
+    out: list[Json] = [declaration]
+    for summary in summaries:
+        n = summary["sub_game_number"]
+        out.append(artifacts.build_config(
+            **common, sub_game=n, shared_config=cfg.shared,
+            config_sha256=cfg.config_sha256))
+        out.append(artifacts.build_log(
+            **common, sub_game=n,
+            summary={k: summary[k] for k in ("result", "winner", "steps", "role")},
+            records=summary.get("records", []), mutual_agreement=agreement))
+    result = artifacts.build_result(
+        **common, sub_games=rows, final_result=agg, mutual_agreement=agreement,
+        groups=sorted([own, opponent]))
+    # Truthful and mutually consistent, or it is a rule-38 project-level
+    # disqualification — the bonus rides on the first meeting, never a repeat.
+    result["league"] = {
+        "games_played_including_this": games_played,
+        "first_meeting_between_groups": first_meeting,
+        "diversity_reward_applied": first_meeting,
+    }
+    out.append(result)
+    return out

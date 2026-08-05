@@ -32,11 +32,11 @@ uv run python scripts/check_file_lines.py       # every .py ≤150 lines (raw AN
 # Play a full offline game → the 4 signed JSON reports:
 uv run cipherchase self-match --config config/police --out logs
 # Re-verify a logged game in the Replay Viewer (Tkinter):
-uv run cipherchase replay --log docs/sample-run/log_uoh-sqak-police-02da547b_g01.json
+uv run cipherchase replay --log docs/sample-run/log_uoh-sqak-police-c3111114_g01.json
 # One-command integrity audit of ANY log — ours or an opponent's emailed report.
 # Re-hashes every sealed record AND replays the moves on the board (a hash-valid
 # but physically illegal log is convicted too); exit 1 + the exact record on tamper:
-uv run cipherchase verify --log docs/sample-run/log_uoh-sqak-police-02da547b_g01.json
+uv run cipherchase verify --log docs/sample-run/log_uoh-sqak-police-c3111114_g01.json
 ```
 
 A committed **sample run** lives in `docs/sample-run/` as offline proof — the grader needs no API key, no
@@ -179,7 +179,7 @@ CI-bounded benchmark (§3), not asserted.
 ### 5. Fairness & integrity (why P2P works without a judge)
 `commit = SHA256(canonical_json({step,state,move,intent}) + "|" + nonce)` with a `secrets` nonce, verified in
 constant time. This isn't asserted, it's *swept*: an exhaustive tamper sweep (`tests/integrity/`) perturbs
-every single field of the committed 70-step log one at a time — **1807 mutations, 1807 caught**, each
+every single field of the committed 70-step log one at a time — **1803 mutations, 1803 caught**, each
 localised to its exact record, zero escapes. Each move is **committed** (move hidden) → **revealed** → and every nonce is disclosed only at
 the **end-of-game mutual audit**, which re-hashes both logs; any mismatch → `tamper_forfeit` 0/0. A **Step-0
 signed declaration** binds hardware + LLM model + the per-game GitHub commit. Reports carry a **symmetric

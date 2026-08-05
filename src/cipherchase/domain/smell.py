@@ -22,6 +22,7 @@ class SmellField:
         falloff: float = 0.7,
         min_center: float = 1e-3,
         absorb_gain: float = 1.0,
+        model: str = "multiplicative_cheb",
     ) -> None:
         self.board_size = board_size
         self.radius = grid_size // 2
@@ -30,18 +31,41 @@ class SmellField:
         self.falloff = falloff
         self.min_center = min_center
         self.absorb_gain = absorb_gain
+        # "subtractive_chebyshev_v1" is the league's CORE registration (SPEC §7):
+        # linear falloff, subtractive decay, 3-decimal rounding, and only values
+        # above zero on the wire. Selectable so a match can agree one and both
+        # peers then emit the same physics.
+        self.model = model
         self._field: dict[Cell, float] = {}
+
+    @property
+    def _subtractive(self) -> bool:
+        return self.model == "subtractive_chebyshev_v1"
+
+    def load(self, field: dict[str, float]) -> None:
+        """Replace the field wholesale (fixtures and restarts)."""
+        self._field = {c: float(v) for k, v in field.items()
+                       if (c := parse_cell(k)) is not None}
 
     def deposit(self, center: Cell, intensity: float | None = None) -> None:
         peak = self.center_intensity if intensity is None else intensity
+        step = peak / (self.radius + 1)
         for cell in self._window(center):
             dist = max(abs(cell[0] - center[0]), abs(cell[1] - center[1]))
-            delta = peak * (self.falloff**dist)
+            if self._subtractive:
+                delta = round(max(0.0, peak - step * dist), 3)
+            else:
+                delta = peak * (self.falloff**dist)
             self._field[cell] = min(1.0, self._field.get(cell, 0.0) + delta)
 
     def decay_all(self) -> None:
         faded: dict[Cell, float] = {}
         for cell, value in self._field.items():
+            if self._subtractive:
+                new = round(max(0.0, value - self.decay), 3)
+                if new > 0.0:
+                    faded[cell] = new
+                continue
             new = max(0.0, (1.0 - self.decay) * value)
             if new >= self.min_center:
                 faded[cell] = new

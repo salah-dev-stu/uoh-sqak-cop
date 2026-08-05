@@ -10,13 +10,19 @@ from __future__ import annotations
 from typing import Any
 
 from cipherchase.domain.game_ids import derive_game_ids
+from cipherchase.domain.model_registry import declared_hash
 from cipherchase.domain.negotiation import Negotiation
 from cipherchase.exceptions import HandshakeError
 from cipherchase.peer.terms import identity_from_config, terms_from_config
 
 
 def negotiate(rt: Any) -> dict[str, Any]:
-    neg = Negotiation(terms_from_config(rt.cfg), identity_from_config(rt.cfg))
+    scent = rt.cfg.private.get("scent", {}).get("model", "multiplicative_cheb")
+    neg = Negotiation(
+        terms_from_config(rt.cfg), identity_from_config(rt.cfg),
+        sub_game_number=rt.sub_game_number, role=rt.role,
+        scent_model_sha256=declared_hash(scent), info_mode_sha256=declared_hash("belief"),
+    )
     rt.transport.exchange_agreement_push(neg.signed())
     theirs = rt.transport.poll_agreement_or_none(rt.cfg.network["connect_timeout_seconds"])
     if theirs is None:
@@ -26,4 +32,11 @@ def negotiate(rt: Any) -> dict[str, Any]:
     mine = rt.cfg.private["game"]["group_id"]
     peer_gid = str(identity.get("group_id", "peer"))
     rt.game_id, rt.game_uid = derive_game_ids(neg.terms, mine, peer_gid)
+    # The uid never crosses the wire during play, so two peers can complete a
+    # whole series under different uids and only discover it when the reports
+    # fail to join. If the peer declared one, reconcile it now.
+    if (theirs_uid := theirs.get("game_uid")) and theirs_uid != rt.game_uid:
+        raise HandshakeError(
+            f"game_uid disagreement: ours {rt.game_uid} vs theirs {theirs_uid} — "
+            "the two reports would never join")
     return identity

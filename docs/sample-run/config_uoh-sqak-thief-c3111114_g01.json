@@ -1,9 +1,9 @@
 {
   "_schema": "config",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-police-02da547b",
-  "game_uid": "02da547b6fe4ce04",
-  "generated_at": "2026-08-05T17:06:42+00:00",
+  "game_id": "uoh-sqak-thief-c3111114",
+  "game_uid": "c311111406af073f",
+  "generated_at": "2026-08-05T20:31:04+00:00",
   "sub_game_number": 1,
   "sub_game": 1,
   "config": {
@@ -41,8 +41,7 @@
       ],
       "max_barriers": 14,
       "max_moves": 35,
-      "survival_threshold": 35,
-      "require_cop_adjacent": true
+      "survival_threshold": 35
     },
     "scoring": {
       "capture_cop": 20,
@@ -101,7 +100,7 @@
       }
     }
   },
-  "config_sha256": "5412761cfa1f418e06c67e1e87b7fcb1b6abed2929ec94af411c8ebcb481aa1a",
+  "config_sha256": "0a79c47d5282f886f4e63d8614a06fa138beb1ed8599ae1f0364fbe3c386dba0",
   "links": {
     "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
     "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"

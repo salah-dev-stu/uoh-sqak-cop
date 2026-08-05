@@ -64,14 +64,16 @@ def test_is_capture_colocation_and_barrier_on_thief() -> None:
     assert not rules.is_capture(B, (0, 0), (6, 6), EMPTY)
 
 
-def test_boxed_in_requires_cop_adjacent_by_config() -> None:
-    boxed = frozenset({(1, 0), (0, 1)})  # thief (0,0) has no escape
-    # Cop far away: require_cop_adjacent=True → NOT a capture (survival track, T080).
-    assert not rules.is_capture(B, (5, 5), (0, 0), boxed)
-    # Toggle off → boxed-in alone is a capture.
-    assert rules.is_capture(B, (5, 5), (0, 0), boxed, require_cop_adjacent=False)
-    # Cop adjacent → capture even with the toggle on.
-    assert rules.is_capture(B, (1, 0), (0, 0), frozenset({(0, 1)}))
+def test_an_enclosure_is_a_capture_from_any_distance() -> None:
+    # The book's three capture families are equal in standing, so there is no
+    # cop-adjacency condition. We used to require one; that made us score
+    # SURVIVAL where a conforming opponent scored CAPTURE — rule 35 zeroes both
+    # teams for exactly that contradiction.
+    boxed = frozenset({(1, 0), (0, 1)})  # thief (0,0) has no legal move
+    assert rules.is_capture(B, (5, 5), (0, 0), boxed)
+    assert rules.outcome(B, (5, 5), (0, 0), boxed, 3, survival_threshold=35) is Outcome.CAPTURE
+    # The cop's own body is not a wall: it blocks no move under rules 46/47.
+    assert not rules.is_capture(B, (1, 0), (0, 0), frozenset({(0, 1)}))
 
 
 def test_reachable_cells_open_board_is_everything() -> None:
@@ -87,3 +89,17 @@ def test_outcome_capture_survival_none() -> None:
     assert rules.outcome(B, (2, 2), (2, 2), EMPTY, 3, survival_threshold=35) is Outcome.CAPTURE
     assert rules.outcome(B, (0, 0), (6, 6), EMPTY, 35, survival_threshold=35) is Outcome.SURVIVAL
     assert rules.outcome(B, (0, 0), (6, 6), EMPTY, 3, survival_threshold=35) is None
+
+
+def test_is_enclosed_is_the_spec_rule_46_and_47_predicate() -> None:
+    # SPEC 3.1 / rules 46-47: a barrier on the thief's OWN cell, or every
+    # orthogonal neighbour a barrier or off the board. The cop's body is not
+    # part of it — enclosure is a fact of the thief's cell alone, which is why
+    # only the thief can observe it and therefore must SAY it (concession).
+    assert rules.is_enclosed(B, (2, 2), frozenset({(2, 2)}))  # rule 46
+    walled = frozenset({(1, 2), (3, 2), (2, 1), (2, 3)})
+    assert rules.is_enclosed(B, (2, 2), walled)  # rule 47
+    assert not rules.is_enclosed(B, (2, 2), frozenset({(1, 2), (3, 2), (2, 1)}))  # one exit
+    corner = frozenset({(1, 0), (0, 1)})  # off-board edges count as walls
+    assert rules.is_enclosed(B, (0, 0), corner)
+    assert not rules.is_enclosed(B, (2, 2), frozenset()), "a cop adjacent is not enclosure"

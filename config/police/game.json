@@ -18,8 +18,7 @@
     "move_set": ["N", "S", "E", "W", "STAY"],
     "max_barriers": 14,
     "max_moves": 35,
-    "survival_threshold": 35,
-    "require_cop_adjacent": true
+    "survival_threshold": 35
   },
   "scoring": {
     "capture_cop": 20,

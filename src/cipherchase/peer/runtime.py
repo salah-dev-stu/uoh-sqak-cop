@@ -57,7 +57,7 @@ class PeerRuntime:
             self.board.size, ph["grid_size"], ph["center_intensity"], ph["decay"],
             ph["falloff"], min_center=ph["min_center_intensity"],
             absorb_gain=ph["absorb_gain"],
-        )
+            model=cfg.private.get("scent", {}).get("model", "multiplicative_cheb"))
         tt = cfg.private["trash_talk"]
         self.talk = TrashTalk(
             build_provider({**cfg.private.get("llm", {}), **tt}, gate=gate), TemplateProvider(),

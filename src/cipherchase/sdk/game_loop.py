@@ -138,5 +138,5 @@ def _terminal(
 ) -> Outcome | None:
     return rules.outcome(
         board, cop.position, thief.position, barriers, step,
-        survival_threshold=mb["survival_threshold"], require_cop_adjacent=mb["require_cop_adjacent"],
+        survival_threshold=mb["survival_threshold"],
     )

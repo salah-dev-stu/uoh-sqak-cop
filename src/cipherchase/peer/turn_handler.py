@@ -12,6 +12,7 @@ from typing import Any
 
 from cipherchase.domain.hint_belief import apply_hint, extract_claim, in_cone
 from cipherchase.domain.protocol import TurnMessage
+from cipherchase.domain.rules import is_enclosed
 from cipherchase.peer.turn_sender import send_final
 
 
@@ -63,6 +64,13 @@ def process(rt: Any, wire: dict[str, Any]) -> Incoming:
         if caught:
             send_final(rt, claim_response)
             return Incoming(result=("capture", "police"), claim_response=claim_response)
+    if rt.role == "thief" and is_enclosed(rt.board, rt.me.position, rt.barriers):
+        # Rules 46/47 (SPEC §3.1): enclosure is a fact of OUR hidden cell, which
+        # the cop cannot infer. Settling it silently would leave them to time out
+        # and report TIMEOUT against our CAPTURE — rule 35 zeroes both for that.
+        concession = {"claim": list(rt.me.position), "caught": True}
+        send_final(rt, concession)
+        return Incoming(result=("capture", "police"), claim_response=concession)
     if rt.role == "police" and msg.claim_response and msg.claim_response.get("caught"):
         return Incoming(result=("capture", "police"))
     if msg.win_claim:

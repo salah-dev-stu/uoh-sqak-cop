@@ -48,6 +48,12 @@ lie_probability = 0.4
 # Setting flavour for grounded hints (F6). Private — never the signed game.json.
 landmarks = ["Harlem", "Central Park", "the waterfront", "Brooklyn Bridge", "Wall Street", "Times Square"]
 
+[scent]
+# Named emit model (SPEC §7), declared to the opponent as `scent_model_sha256`.
+# "subtractive_chebyshev_v1" = the league CORE registration; "multiplicative_cheb"
+# = our own profile. Both peers must name the same one or the physics differ.
+model = "multiplicative_cheb"
+
 [play]
 seed = 2
 
