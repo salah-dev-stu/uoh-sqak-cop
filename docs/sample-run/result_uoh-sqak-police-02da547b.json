@@ -3,7 +3,12 @@
   "schema_version": "1.1",
   "game_id": "uoh-sqak-police-02da547b",
   "game_uid": "02da547b6fe4ce04",
-  "generated_at": "2026-07-31T07:27:23+00:00",
+  "generated_at": "2026-08-05T17:06:42+00:00",
+  "groups": [
+    "uoh-sqak",
+    "uoh-sqak"
+  ],
+  "num_sub_games": 1,
   "sub_games": [
     {
       "sub_game": 1,

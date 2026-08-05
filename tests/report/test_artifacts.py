@@ -42,3 +42,19 @@ def test_result_artifact_holds_final_result() -> None:
     )
     assert art["_schema"] == "result"
     assert art["final_result"] == "police"
+
+
+def test_artifacts_carry_the_league_required_keys() -> None:
+    # League interop kit Gate 3 + reference report/artifacts.py + book p95/p131:
+    # config keys the sub-game by `sub_game_number` (the book's own term), and the
+    # result names both groups and the sub-game count. A grader (or an opponent's
+    # checker) reads these; missing keys read as a malformed report.
+    common = {"game_id": "a-vs-b", "game_uid": "u", "generated_at": "t", "links": {}}
+    config = artifacts.build_config(**common, sub_game=1, shared_config={}, config_sha256="c")
+    assert config["sub_game_number"] == 1
+
+    result = artifacts.build_result(
+        **common, sub_games=[{"sub_game": 1, "outcome": "capture", "scores": {}}],
+        final_result="police", mutual_agreement={}, groups=["a", "b"])
+    assert result["groups"] == ["a", "b"]
+    assert result["num_sub_games"] == 1

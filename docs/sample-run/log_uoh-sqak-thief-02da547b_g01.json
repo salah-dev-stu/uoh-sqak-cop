@@ -3,7 +3,7 @@
   "schema_version": "1.1",
   "game_id": "uoh-sqak-thief-02da547b",
   "game_uid": "02da547b6fe4ce04",
-  "generated_at": "2026-07-31T07:27:23+00:00",
+  "generated_at": "2026-08-05T17:06:42+00:00",
   "sub_game": 1,
   "summary": {
     "turns": 35,
@@ -35,8 +35,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "333d2dad7af4e324778d6d55a1021cb6",
-      "commit": "e91fd3ec8c4df56ed1fc7c2560fed2724563b96ff4f59f80ca6b323290d2743b"
+      "nonce": "81de7d83cec22dd6a8c1c2faf0321042",
+      "commit": "740cfbfa9805b7dcb3cf2b2c4dee90f3d2335ab2fc9b85013d343f7df01da87a"
     },
     {
       "payload": {
@@ -56,8 +56,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "bf603ecfe9e93d036cd68a14fdd8ea4f",
-      "commit": "ef73151edefb6d8407410ef6910de304ae30d58ca6bd445f41666f036fc6ccc5"
+      "nonce": "43d5303634496eec5dc6fe7e4be31f54",
+      "commit": "323d337557099e742403669affab0292f6c030adaed6219587cf3c75b2069f10"
     },
     {
       "payload": {
@@ -81,8 +81,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "5dec21197f83abcd964f8e27ef8be923",
-      "commit": "ad9287f7541f6c64f82a92216a77e89932b0c41688a09924de4382d877e767dd"
+      "nonce": "6f6610b61115ebfd31fbdc7e041a3cc5",
+      "commit": "42307ae74a5fdad20ee30e1e0f76fb472fbee151e6b5d3e59e47c45b1ebe3819"
     },
     {
       "payload": {
@@ -110,8 +110,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "2c33d3fbf2560d4144f236861f217cab",
-      "commit": "c6eeae3c29e9342ab99d3191ef92d7689005216ee515cb2ef85d7c54af812d34"
+      "nonce": "569b5ac4756357fd6ad27fbfb7fe1a79",
+      "commit": "d62ef1e2836f17630d57a865e1c71f8dccdd941b9c5d66368f202e047b863a33"
     },
     {
       "payload": {
@@ -143,8 +143,8 @@
         "move": "E",
         "intent": "truth"
       },
-      "nonce": "81f22a0c93ca91b362f008e824beeff8",
-      "commit": "9d57e71d4ec0404ae56be67d88d585c77f8dd0447dee1c3d18dd3e4e52cd522c"
+      "nonce": "2dcc3c4659f4992815101ed0febdb50a",
+      "commit": "648aac2fb49c976687b011796261aa1e6da591096a5cb2dead8bc3374c1d1a8c"
     },
     {
       "payload": {
@@ -180,8 +180,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "559a7873d41769d617d8c1e10ee75a3a",
-      "commit": "53130245ac6d1e25fc01127d4714bc31e1dd918da9dbac2ef683939be903d18e"
+      "nonce": "f9ea788375d1204bbd1914279b8df68b",
+      "commit": "cf981b8b150bf929ab5434bd6bfc1d1654e6657315b05458007a96e40918633f"
     },
     {
       "payload": {
@@ -221,8 +221,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "51ff32ca515a54fab57329991164d6b2",
-      "commit": "5f9020ea5538bdfd640e193406c76e0583353ea7bc6a41c8acc761bd7f732824"
+      "nonce": "4b0be9398d94d2d410c3062465fe0d83",
+      "commit": "1f0dfffb768b67321cd2728acb5d65a97652287449a4900010d041348b4dce65"
     },
     {
       "payload": {
@@ -266,8 +266,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "cfa3d3f2de8275e4b7d7945062570d35",
-      "commit": "1770a676d030c66b8ece3a191c8d4c31d48694b21782aba28a80a8e5895ef19d"
+      "nonce": "335a07539b64b5ca66427f866b9ea456",
+      "commit": "6fadfb688a8aec73d35e82f3b837a7b0de5a994c811e6ea02605aab29ee04926"
     },
     {
       "payload": {
@@ -315,8 +315,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "268c5e791905ffb5df96f2a50b6a6c6b",
-      "commit": "2990499e85bd5552108a710ff3dabbbdee0bd2bdee2c43488768569bde8e8167"
+      "nonce": "b2687a901eab4cce03ecbde55f9ee5a7",
+      "commit": "e1f46886498289db121acc8ca4c7d6d19b17cb110c5a21d08b27e98ff1adbee8"
     },
     {
       "payload": {
@@ -368,8 +368,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "eceed3129be841550597e90384350105",
-      "commit": "373cf7741f0bd50fd208451aa46ff2917212d095b09f537b0b71dd19ce2768bd"
+      "nonce": "963c92d5cdd509a8d5e5adf2c0fe2a5e",
+      "commit": "d2a49447db7fb9eecb931831c8abd1795447478b05c7602252fbeee9477879f4"
     },
     {
       "payload": {
@@ -425,8 +425,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "340cfb9b3de5fd9549de4a0fcf5b56f3",
-      "commit": "00b5bd3018094e5b2f94a49ad497ca547e063bba00b066c62a327ade8c663a18"
+      "nonce": "d783bf6ff29e6a33707729488bd5b7c0",
+      "commit": "a88c8ccecb680c588dee3fff2aa2173ed585122a156f1636ce4ed86f49537c58"
     },
     {
       "payload": {
@@ -486,8 +486,8 @@
         "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "8f9079a2e67ad42f3dcbd33197b8350e",
-      "commit": "c680d22bbe16c3a139b2929ac3cefdea350ef5c9dddd3d4a6dffa21850598010"
+      "nonce": "05819263b3bbf31f953a8bbf24d1c31e",
+      "commit": "d4cdf6f8e470ca480c9a8b5a216678175765e64209ca0f80422e9b9e619969d2"
     },
     {
       "payload": {
@@ -547,8 +547,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "47c04d85afc0a4a8e2f9fc4754aac4a6",
-      "commit": "e946ca8f39ea83c9849b5213c591fb3142aa6828a6e5340cc057f6963cecb08f"
+      "nonce": "afff8f672ffd3fdab827c1cca60a5d26",
+      "commit": "bfd927f391505f9e98ab23377f4389858dec0495702c47c9104427776c26d5c6"
     },
     {
       "payload": {
@@ -608,8 +608,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "442c5d4c757f833b6c8e437c2ea01800",
-      "commit": "a1fe85465647c6bc259754c5f23fc1f6aec53ec5538b733599570e0836fa4dad"
+      "nonce": "d649eb34453de15a7718bca2344e8f4f",
+      "commit": "80d4ec4fb9b8e21b5793b2051e0e6442db78c8521cc66dccc7ee4bf9a1997be1"
     },
     {
       "payload": {
@@ -669,8 +669,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "74724068434c7139e23dd526b24e0673",
-      "commit": "367f5d457037c0e4d9803fece0102ad0773dabb20d16898c9cace28d0b4a57b6"
+      "nonce": "0738e93a9493b326fa56ef0b4cdcf3c1",
+      "commit": "711a8f6ef1f0b41d010e3fbad10b6042c1468404709d880aa508076f644ae6b8"
     },
     {
       "payload": {
@@ -730,8 +730,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "a276cdeb8f7e3148d0d17f6951a22973",
-      "commit": "cce7e20c69ef0a000d3778cea2682fa38d63ea06269c706796d7551d190e74d1"
+      "nonce": "07b3d8ef74e80abcca3095ae839ef5db",
+      "commit": "0edb0e50dc3486a0fc20e7124e0a681b7ff345c46a7c6964ac02c5bae2748fd4"
     },
     {
       "payload": {
@@ -791,8 +791,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "134b0d9c235888ef8f998177a656b9a2",
-      "commit": "2e66a8909529e36b0790c530f78dd563848810aa0905d0d0f052788b2e12ccaf"
+      "nonce": "2dd76451c1ddb2b816f4179026f9c762",
+      "commit": "0ca630c724b377e3d03000bc4d0f667d68649ffbac91125696e0e3f67ec05cb3"
     },
     {
       "payload": {
@@ -852,8 +852,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "deb6014263823b295827acb6b74ac32b",
-      "commit": "196b3c8278263e904172469efa96a6f022dc098e91ee7ea14de9b37406ca333d"
+      "nonce": "094193aeafef473bcbde5e1070137522",
+      "commit": "31e39b02d2aebd5fcac4409e5d1a44fc50b86f40240262beb07e512f2e7667da"
     },
     {
       "payload": {
@@ -913,8 +913,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "84e0a23f07821b53aabb85ad39b203ab",
-      "commit": "03acacdb8c23cad79f7906a3c49aeb87dce1f3fa65b92130e94347fd3a7f0fd0"
+      "nonce": "8d561c054a6de364d835a4df4540ac4a",
+      "commit": "e87aac58918a366a5f2bddba9b8b9596453d98b2d2a79ed7184c40fb884dcf45"
     },
     {
       "payload": {
@@ -974,8 +974,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "996d67354b58d0c5679b975ec7f38026",
-      "commit": "e4c171c320c95b316135001170bd0a8160aa372286149a32f9bd5e94c5f22cef"
+      "nonce": "4c787e347985faf74964ba1ffe3f8fc0",
+      "commit": "d82b359a231e30bc85b155868f8837fae298a1ce84945797ecf0bc0751209d69"
     },
     {
       "payload": {
@@ -1035,8 +1035,8 @@
         "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "bdfa13676d0e697d4d7d710212483472",
-      "commit": "6eff100a544daf12d34589ca0e92b53ecc58b3227ac51622e95097a866e92b8d"
+      "nonce": "d50d7340cdbaa6bf442d2457a91fa559",
+      "commit": "4f9d0eac67c8c0426952ed415fe9cfe0f924301f6d041436f1037ee30ef283db"
     },
     {
       "payload": {
@@ -1096,8 +1096,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "488645d74ca68aded788185f93c12199",
-      "commit": "7a5f2409b478bb247b9cb9ad12d5a975ff3fa8c567e970b6c48caa2266b60001"
+      "nonce": "8deca828d3317c83ebdbee29da8f96ec",
+      "commit": "2262d1e3b8c31675b85ad1dc9ac6d84e549a524a5033448f30637604b4d5b540"
     },
     {
       "payload": {
@@ -1157,8 +1157,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "77679087c2b167139b89ddf89e22b6a9",
-      "commit": "ed95b2d902a070eb350997c3167e9a7dd79017f4acf1c6d61103e4c7497e6af7"
+      "nonce": "9a8e1dc33cba6a86dc3f231f800f1f22",
+      "commit": "43dd19f2aa397b5e25a296d07a37902c2a4c883189129b1c9680222465b72de6"
     },
     {
       "payload": {
@@ -1218,8 +1218,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "4634a191c7c60b177174f78db43a1a4c",
-      "commit": "7669836642f88f998acea4ee65e5893abce7972487f084414f77ab6f18136ed1"
+      "nonce": "d3b1346c0ebdb9946bc3d8647e8b04e2",
+      "commit": "0c106a70c581b1fd294ab93fa248993073d7547a67658f4142770c2d6fdec4bb"
     },
     {
       "payload": {
@@ -1279,8 +1279,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "7d91a8d8e3425ea2a513b6eb8c616df2",
-      "commit": "b6d708b85b855a9e99662737fe09102176cf305018871faf99b27eb2f866e7d4"
+      "nonce": "bd5714c8aaef08129b117000f11e8f0d",
+      "commit": "e8cbbd6eeb61da68506497d4e62a6ece3f415781cec71993e42b28edf3fc56af"
     },
     {
       "payload": {
@@ -1340,8 +1340,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "fb7b0682b7cbdbd7514c82aa534e892b",
-      "commit": "e4c34c306ddab7b9292e041e5d868f8ff82f9b35d565c7f8dbf9e33f2da06875"
+      "nonce": "706ebc4363974c4221f31ad3b49a23bc",
+      "commit": "bed4ae43fce0043fa10957404ef9d53eb80ab6c07bf2db54b8ad6a81a05f62ed"
     },
     {
       "payload": {
@@ -1401,8 +1401,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "1fbcac74016460d603d847a7a44a5685",
-      "commit": "5f01f68ade52a400affa31d9314df56f2f131c45f90905128082a2fb1402bba4"
+      "nonce": "7654537bd4f50a88427f18ac5ea51cc2",
+      "commit": "68d8b362e17392a48fd8a8e559cc95d020fcd405b7f8fa4575713115a39306dc"
     },
     {
       "payload": {
@@ -1462,8 +1462,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "8cb4a345ec5f7fb08a621d1affb1e17f",
-      "commit": "99dfbb9eb3fd1c7a0b7918825c62ab77b0348be1818b627865f4ae772162c952"
+      "nonce": "4b2f1a1f210f90240c9d9ac099926262",
+      "commit": "0f50f197ebf07a8ba1921ff32e213ebf31abab5b1810002ddb18d44b23c7407a"
     },
     {
       "payload": {
@@ -1523,8 +1523,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "1ecd953ee895f3aa22c0c55a58c14423",
-      "commit": "fdc390334fceefcd900ae1587aa862f375763b07549cf5a0a06ba1b7b22bb880"
+      "nonce": "69ec045c1f1b7ce69abc1702fe67e17c",
+      "commit": "4c34cd158bff9d40f338860d35596168f40452b2a9691bc39361280c7af8da28"
     },
     {
       "payload": {
@@ -1584,8 +1584,8 @@
         "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "a98989e2673b885c4f7d6c80dd9d63ac",
-      "commit": "117a634afce52a79b8de6ae0ce744b94d7f90d4a38174e2e4358acc81d018aae"
+      "nonce": "662b0849800ad751ef7e3b722fa171fb",
+      "commit": "e22650b2ae20785cdb13e55e494f0c03e0e10914269107104b5b2349566ee8e5"
     },
     {
       "payload": {
@@ -1645,8 +1645,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "c052d5d926a7559a9db96de942e3c414",
-      "commit": "5ca073720ec877dfe9e353de9ce6a02ecb69f29980385fe5baccf1483070d076"
+      "nonce": "a857250b6133e70c84412ae1bd939da9",
+      "commit": "6002cdea4b21f526b88f9977fd2383ac153518ed7ac3216807a357226e31d853"
     },
     {
       "payload": {
@@ -1706,8 +1706,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "12335ec8bfeec40c2694ed36605958a8",
-      "commit": "58f96166af52c651dacabf0213972d43a5eec090824c6085101e925654344e67"
+      "nonce": "851c5eb7c501ec1e5810896ac1bb9274",
+      "commit": "15982c30a28110d5e969239d9402e1b54455b395fe3054cb2f254d3d66f4cafe"
     },
     {
       "payload": {
@@ -1767,8 +1767,8 @@
         "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "9408687c9cbb8f7b53a6eacb2fcb3bf3",
-      "commit": "506d7a306aaea1771229681a715f689aa7c346e1cf9a9b530741200f8852f196"
+      "nonce": "13222a06a8bea3891cdd358b94b000f8",
+      "commit": "ac1a407817b020bdc60b8433d1c93445e731564f56e8f7119e6a12a7c6f039d7"
     },
     {
       "payload": {
@@ -1828,8 +1828,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "a809248ee05d8e6cc6cbd321869f38da",
-      "commit": "fe17a301e493680dcc22af2b7f9e52dc6f54a22ecafde431c5f3aac66c473067"
+      "nonce": "d3b42fc29a0da7ef657020e7a8753404",
+      "commit": "320ac70057273d2978aad6cd480e8aa61f78341ab8520e5327097fcac5d7cf59"
     },
     {
       "payload": {
@@ -1889,8 +1889,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "4196384a9509be521e6a8d506da6e1d6",
-      "commit": "f2bb00e1fa3de0091f1eaee520fb518f1f3a69ab25e562810c27f9cee545ddb3"
+      "nonce": "64de7c9fefa54757425c8a27e449c661",
+      "commit": "c18e5bf8fae98bc658507854a4685e6de147c2c02ca290301515de88270ec30a"
     },
     {
       "payload": {
@@ -1910,8 +1910,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "2ba6556bdeda0de1f533b5d17dc5c138",
-      "commit": "a899325a60e9d7f324160dee9ff6aa1cff37ca78867ba0d32ae5c1cfc368dfd3"
+      "nonce": "a5341273815d47e8f8ce4ddff035688b",
+      "commit": "b7943bf17a21db86dc110e5cef482560582963b37fd28d25e057047b73bf40f2"
     },
     {
       "payload": {
@@ -1935,8 +1935,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "a31ca86d2ff459cf387d7777ca2117ef",
-      "commit": "59bb61e7d3ef6cf7b1fe44489eb238ad0c6761042b49357014a4c0f467159767"
+      "nonce": "39f8b26d52710b423aef7bd41684732b",
+      "commit": "f3de2b99bba2ed5721531be8954e5278d830d07a8c74db822228038bfc50da49"
     },
     {
       "payload": {
@@ -1964,8 +1964,8 @@
         "move": "E",
         "intent": "truth"
       },
-      "nonce": "eb6822d5284bb227c51d9d93ff7ae668",
-      "commit": "2fd943213277cc2812d2df663f103703a28f599466e0da2b6623378fd53fc916"
+      "nonce": "37938f3fe906697f35034e4788da5706",
+      "commit": "8eabc214bc90f98430a0c592e53dc35a0b09522c64a04009b66880f79ebc6fad"
     },
     {
       "payload": {
@@ -1997,8 +1997,8 @@
         "move": "E",
         "intent": "truth"
       },
-      "nonce": "2feda47db115c1947faec63cb7cb5c58",
-      "commit": "00dd4dc61c3eeecd5aa466b1efe454d44cac15244d9cc163dadea7b01c9cf25c"
+      "nonce": "67ce4b599f6ee6bb7abd1a9b8ab01412",
+      "commit": "432e4521f4f300b0a92be22cf680951d2339696572692d05b19a162469dadcbc"
     },
     {
       "payload": {
@@ -2034,8 +2034,8 @@
         "move": "E",
         "intent": "truth"
       },
-      "nonce": "7e8de5aa34a821bfd7ca5727c652e4bf",
-      "commit": "fbc642b172586665d4d423b97b7cc028f2a59b514f4a42ba998a7f9de2ee2aeb"
+      "nonce": "217349e20d7470b4ae942f264086daa8",
+      "commit": "dd700bf7164c4be0f27320225e052d14b2f6773cd6cc1c50a871fbd5d50b294a"
     },
     {
       "payload": {
@@ -2075,8 +2075,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "db93662f9228d0053c58bb6bd633dc7a",
-      "commit": "7d051417bf85f4aa819c07a5563bcfe0775b86741022a6b056f5de74d61da964"
+      "nonce": "b7cca07b00cc98da2048dde06c6ac7ad",
+      "commit": "b343ea3c210a9e9cfc52a9c5e0ba577024e6d31b8d31c8ee7d7dd11f231a0b26"
     },
     {
       "payload": {
@@ -2120,8 +2120,8 @@
         "move": "S",
         "intent": "truth"
       },
-      "nonce": "99e376b236f2e6425b549cd628ca2b8d",
-      "commit": "5ca611b460b27c6fe58c4edd3886f7ac49e701edf7a965346c4b403f7cd3fa28"
+      "nonce": "49eb0657e1c10288a55d599763f5c653",
+      "commit": "405bd7861db91c613983a049e76451f235bd49b0e6e1ed0b6b9cf1944845e9de"
     },
     {
       "payload": {
@@ -2169,8 +2169,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "ba5769ee093e89d54009293e2df05c63",
-      "commit": "02c527faca0ff6c8bb629bf3832d11fd2a9a5e0a31c86db31d525be2a6ed300b"
+      "nonce": "16445acdd48252ac3515930f12713f67",
+      "commit": "9d3341fa7fed78f37d7df30332cdcccd90969509c334827e3c6ddd606cd4a4c5"
     },
     {
       "payload": {
@@ -2222,8 +2222,8 @@
         "move": "S",
         "intent": "lie"
       },
-      "nonce": "ad5464b31e4e8cdde641bcaf7cdb7712",
-      "commit": "b892a2b5fef0c827cecc775fbdf78c0f5991e399b8c8928ba7dbae54c671664b"
+      "nonce": "0c63aa170af8bf1335ad31416d5dd6cd",
+      "commit": "1f1be42907a22d2230a42dcacf8c516cbf5e896e3a8cda5f2337a64ae469ea37"
     },
     {
       "payload": {
@@ -2279,8 +2279,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "a927481b038b8eb0f2297335f5d59dc1",
-      "commit": "6c490e6f7b4c791f600a79ec98f73570dd390c4165481a914fe6ee42269c35f9"
+      "nonce": "fa64c083905f077f1c483a22f245eae8",
+      "commit": "4041c57c655d2fcb66de623f6fdf61ae47577b25904bbf5ed598899064ff2315"
     },
     {
       "payload": {
@@ -2340,8 +2340,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "db37409fa74536d6c941627280738a02",
-      "commit": "cb9034c43084902799470a9691db7fc72f77558e6eed512a53f8758e34ec2b44"
+      "nonce": "782fa10b2ab94c1dac2a24097e4602cd",
+      "commit": "effbee24044ea2c317a53cd13bd79fe0c89d8044a182451c16b9ebcd86dc7e3a"
     },
     {
       "payload": {
@@ -2401,8 +2401,8 @@
         "move": "N",
         "intent": "lie"
       },
-      "nonce": "ad9897c1edb479db149d91601ec3ce1f",
-      "commit": "412d49381cd50b78831aa6b67fe169f523850b10bf795c4dd10d101efb5a6b53"
+      "nonce": "73959eaf1b9c1de83085705cd5f1dacb",
+      "commit": "3156f2c40e2ddbca1f549efd6f98ba49e9b7b49a21c56237275a313ef24ebd5d"
     },
     {
       "payload": {
@@ -2462,8 +2462,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "0aca16eb7ae20c06f489c923da1df5bb",
-      "commit": "69a0336712152669b7d147e9de587e2e869c3bd72c2f5defd5bd56fac1f12547"
+      "nonce": "b6cc917b0902bced5ed09ede81b364a5",
+      "commit": "5d73a846696755380beda40910189d9ec8b09c9176595c6ae5d41b0e0f38e212"
     },
     {
       "payload": {
@@ -2523,8 +2523,8 @@
         "move": "N",
         "intent": "truth"
       },
-      "nonce": "f09e563adfc4edb94c6fc093fd083cb9",
-      "commit": "773ddd5aa4995db74c18a31c6131c7033f86bebfd80f2d61ee067b1e00e8a3b0"
+      "nonce": "29eec6d321a7403214e8f0fe411edb0c",
+      "commit": "049e0ac9aae2dbbf869455f8367868685b1f6681bb0b971c3de550138fddb933"
     },
     {
       "payload": {
@@ -2584,8 +2584,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "709066a3eb8375a32133755feb1a61a0",
-      "commit": "f0f0ec76250711c77fa0a2de4df4e492956f76752d8a4f8e861bb895857583e5"
+      "nonce": "e315c82c2583727dcd6b07de2ac328f5",
+      "commit": "158be033de9404b7dacf781d5708afb6529785807300729102b8a027b558e73a"
     },
     {
       "payload": {
@@ -2645,8 +2645,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "23e0e88d408cbbc18f003177929b30f9",
-      "commit": "efc92c1e9ab558ede44b47d54ec7445a3c73109a5ce2a6f73d993c432c1b6b8c"
+      "nonce": "2e308997f21674231712dfd8a7501459",
+      "commit": "07f7a284bc79db422c0e7f3b957aac5ef722bf74a9e5657c52c9324a99250fcd"
     },
     {
       "payload": {
@@ -2706,8 +2706,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "6a0566710e9daa0e456e470b32afd358",
-      "commit": "34ac0aa60313d99942b1a030ba5c6c717e576ddf0347f626fee7d0c6762731ef"
+      "nonce": "516156e042758d3198b53a2e9d6ed69b",
+      "commit": "940c3d5ba7d785deb7106b6af92cc83458fa2b103d399f230b5331ec200fba78"
     },
     {
       "payload": {
@@ -2767,8 +2767,8 @@
         "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "51c6269bd5ac54edddcc7b0b42485f34",
-      "commit": "5b596cd2c738952d1801cd6260bc11943f148b1590574279c721fa910f4f4454"
+      "nonce": "1df295adade6273054bc2b2310934f9b",
+      "commit": "f9e9b0b48a4db59e5ba3e3910998eff09279d9855b03ce6dbae3b2b70c1d12c1"
     },
     {
       "payload": {
@@ -2828,8 +2828,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "6be3677decb2579e70bbaa6d077f9937",
-      "commit": "e948fa953d62d2ad3cad5a95a2b85f195030b32c5b966ea2d896dfeb28959c17"
+      "nonce": "be7ee28b1985ac025d50ab769154b550",
+      "commit": "2c0e89f207d7812ef09de70c9359814605f092dd909e8200202f1af19a6c1a21"
     },
     {
       "payload": {
@@ -2889,8 +2889,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "7da48325bb3897dd6a74c6b36af59c2d",
-      "commit": "3d3eda0e44a4085ac7db7490b5b3f6c305d3f3f170b3c7249f5d44579d0af518"
+      "nonce": "91b9ff21c8fee3823ea785e567ac8e09",
+      "commit": "59e03076c702a30d96e766caf30a05d20104da1eda3413c2cb581fa38e64bec3"
     },
     {
       "payload": {
@@ -2950,8 +2950,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "dcb7d35b191cf2226508cd1089412187",
-      "commit": "66e691eb0b37edb86020f500c42ffcb6cb50f27c48f511d0310f1c8752cebdb9"
+      "nonce": "7f3be2776a34a24c5c16871b72ca4ae5",
+      "commit": "34d9ed775ccb85747a5e9a24d328f6d4fe292c813d438d46372d095e8e4c1fe6"
     },
     {
       "payload": {
@@ -3011,8 +3011,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "c988c9dfc7f35d94b1dbcabf6444a036",
-      "commit": "03e9afd403eb2118c22bfd4a0210467ad051fe900142d8aa99f79900b14b1543"
+      "nonce": "78e645fefac6119dd9f8861b360503b9",
+      "commit": "b39a63500a880b323c5117ed0486109c050312f04bb38ff77f373ec117fc0679"
     },
     {
       "payload": {
@@ -3072,8 +3072,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "ab180b411583a378b268e46e6cef9215",
-      "commit": "a31d8c263c98b5e4cab58285f11c912a2f7567a5ae8b877b98dc7871ba81caa2"
+      "nonce": "8f4cba743f2b6df6dd83fda622414e7e",
+      "commit": "b150c776ef76741d4516b15678882ad80f4bc90920016ec962d9bab849a23b9a"
     },
     {
       "payload": {
@@ -3133,8 +3133,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "b9c55e0f3d012bbeb72c9977ac3d67d9",
-      "commit": "87ef6b53fc15cfe2d24ec5922588a122813e001507c941ef3da59646db30f2e9"
+      "nonce": "03b851c5a2814bcc16b00a6ca1c921b5",
+      "commit": "ef5cca51fc37af3c7ef57609de469077c38a78d956e069e9ffa328815d8385ce"
     },
     {
       "payload": {
@@ -3194,8 +3194,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "94cf2607818908f3dcc27bf146bdcb8f",
-      "commit": "75dfe805edeb33a014eb3d7c3a8a43bb6922c0a475bd0d6f5f349616ed50b542"
+      "nonce": "0f6fbc11966daabf78418aa0bb5bc055",
+      "commit": "c42a37030c8be797ed671a2cdb88574527ca92af8e71d9f4c20bea25ee24ba9f"
     },
     {
       "payload": {
@@ -3255,8 +3255,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "c7c42b6402c1f057ad2196ca87d82a59",
-      "commit": "b1a258af2b6762de35c823507dbc8093171c739925f05c3673ca45f9af68de3b"
+      "nonce": "83bed58f6b3670e31742d64836347989",
+      "commit": "ab4d7592d035bc4b309e477c142a28edfdd7b1180b66d8773cec572f108cc018"
     },
     {
       "payload": {
@@ -3316,8 +3316,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "0994affcf1b3806397e4eef23236f87e",
-      "commit": "7c9fd52fa6c0466ae31bcf95c7012473a63f187c4ddab329570810485aee4ce4"
+      "nonce": "b941034a57178056cf1a186f0a939745",
+      "commit": "935ed8390033fd5013d7b7a086c8dd222bec4dd9bf3f25fb3fb5f29c7a6ffaed"
     },
     {
       "payload": {
@@ -3377,8 +3377,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "0a444224c1f8aac2de51b08ca68a6673",
-      "commit": "be4d12e46ca15529003c0a5d0c33474a7125385267d654f8cde10602dcf01900"
+      "nonce": "8d3d192c34e5f37f5f838a482f57a4a3",
+      "commit": "df6db1790a2cc4e2885446e3a29f9e500d24566aa782ee25267514a7a66676df"
     },
     {
       "payload": {
@@ -3438,8 +3438,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "c29a00ef71ad0ec4cb1bc6c704ac487e",
-      "commit": "8512134f518cf53d7ad6db7157302c22a52713a2db7a22701b71f8188e8f4d6c"
+      "nonce": "6fac8c1d939d3544efae036e129084d1",
+      "commit": "86703cbb27d64c700ea6d32fc92c7148e47b6f0ed8341d791dd99a56a8cdc0a5"
     },
     {
       "payload": {
@@ -3499,8 +3499,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "519564dcf8c6d97f892a42e6483022f9",
-      "commit": "32cb0e5988d05544e7ba2c6796870939fd8209f51419856d869b7da8543a9b41"
+      "nonce": "e466c95ee4c1aedb82f5d378c76041ab",
+      "commit": "9e67f126f4d625ec6b62aa5441664b59e8a0a908d69ace65cafa3c751615a09d"
     },
     {
       "payload": {
@@ -3560,8 +3560,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "8342554b074d6c883997687b6a8016d2",
-      "commit": "55b8a5bf969cf41aa5c319efd2ccb1bd96e792c9347c6146c11154846d7937da"
+      "nonce": "03fc19478ed93d18abfc5753c9c34d53",
+      "commit": "67d880d4c7122a7f9e3ec4d11eb1d01131315305b56c3097a4a0e10b1c1184c7"
     },
     {
       "payload": {
@@ -3621,8 +3621,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "16db1e1aca14e6bb2b879748a46b7756",
-      "commit": "fdb1f56dca779c67f22105b82ef820bec9f4caf3e49e2d6cb3eaa5b15e307c8f"
+      "nonce": "28f0b738be3e8553f562d21f9c06b4ff",
+      "commit": "ad510bc46c1b342fd788c98a77ac3157b888a333cc823f4d0cb2d862abf55683"
     },
     {
       "payload": {
@@ -3682,8 +3682,8 @@
         "move": "STAY",
         "intent": "lie"
       },
-      "nonce": "4ccce857ff9da1c6f75985503aebec08",
-      "commit": "b2ddcd7a039ec86f60a094cbeee615082b0b3d37d1b2a487d446e7ba3cc95113"
+      "nonce": "e746c0e3db35d96ff205a205d8f7669f",
+      "commit": "782194ec86686378f7445177eef3b85557ffb1e63243e00be6a1cc9e84bd3e62"
     },
     {
       "payload": {
@@ -3743,8 +3743,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "a887b398ca90680863b76883603fa26f",
-      "commit": "80c0fa7bc23fa0a39ce6e59cb352fda18aa1eacc7ce042d5e92486f38b933202"
+      "nonce": "5bf99b92c7dfb8bdbb5198fde4e4d2e3",
+      "commit": "f9918729d908db833c1e81e11b3545f15a3101141fd9fe134f8345c61f0c9f66"
     },
     {
       "payload": {
@@ -3804,8 +3804,8 @@
         "move": "STAY",
         "intent": "truth"
       },
-      "nonce": "b565f798cc560a15e02b3b4fc31f4671",
-      "commit": "3bf816b13d5769d0ed53fb2d65dab61bc31e97e2ef97c4408bf4159e559f414b"
+      "nonce": "397e023e6c9a4b80a119560e9cad3366",
+      "commit": "4553a9c8a346887a2c2a85f6a27dd177d1b37c7a518386748209626775a09171"
     }
   ],
   "mutual_agreement": {

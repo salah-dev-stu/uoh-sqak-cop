@@ -145,5 +145,6 @@ def _assemble(
         "result": artifacts.build_result(
             **common, sub_games=[{"sub_game": 1, "outcome": outcome, "scores": scores}],
             final_result=final, mutual_agreement=agreement,
+            groups=[game["group_id"], opponent],
         ),
     }

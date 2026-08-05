@@ -42,7 +42,9 @@ def build_config(
 ) -> Json:
     return {
         **_base(schemas.CONFIG, game_id, game_uid, generated_at),
-        "sub_game": sub_game, "config": shared_config,
+        # `sub_game_number` is the book's own term (p131) and the reference's key;
+        # the league Gate-3 checker requires it. `sub_game` kept as a legacy alias.
+        "sub_game_number": sub_game, "sub_game": sub_game, "config": shared_config,
         "config_sha256": config_sha256, "links": links,
     }
 
@@ -61,9 +63,11 @@ def build_log(
 def build_result(
     *, game_id: str, game_uid: str, generated_at: str,
     sub_games: list[Json], final_result: str, mutual_agreement: Json, links: Json,
+    groups: list[str] | None = None,
 ) -> Json:
     return {
         **_base(schemas.RESULT, game_id, game_uid, generated_at),
+        "groups": list(groups or []), "num_sub_games": len(sub_games),
         "sub_games": sub_games, "final_result": final_result,
         "mutual_agreement": mutual_agreement, "links": links,
     }
