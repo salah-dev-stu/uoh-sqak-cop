@@ -79,6 +79,6 @@ step_deadline_seconds = 8.0
 
 [email]
 recipient = "rmisegal+uoh26finalgame@gmail.com"
-sender = ""
+sender = "skadah324@gmail.com"
 enabled = false
 subject_template = "CipherChase report {game_id}"

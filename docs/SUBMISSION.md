@@ -31,15 +31,33 @@ CIPHERCHASE_CONFIG=config/<role> uv run --extra real python scripts/send_sample_
    `https://…/mcp` URLs; set theirs in `config/<role>/game.toml → [network]
    opponent_url` and agree the shared `game.json` (edit `agreed_between` to
    `["uoh-sqak", "<their-group>"]` on BOTH sides — must stay byte-identical).
-3. Play:
+3. **Set the recipient for the KIND of game you are about to play.** A friendly
+   goes to the two teams only — mailing the lecturer a practice series is not
+   undoable. `[email] recipient` accepts a comma-separated list:
+   ```toml
+   # FRIENDLY (uncounted): both teams, never the lecturer
+   recipient = "<their addresses>, skadah324@gmail.com"
+   # COUNTED: the lecturer alone
+   recipient = "rmisegal+uoh26finalgame@gmail.com"
+   ```
+   Set `enabled = true` only once the recipient is right for this game.
+4. Play — naming the opponent is what turns a peer run into a *reported* series
+   (without `--opponent` it plays and reports nothing):
    ```bash
-   uv run cipherchase peer --role police --config config/police   # or --role thief
+   uv run cipherchase peer --role police --config config/police \
+       --opponent <their-group-id> --out docs/league/<their-group-id>
    ```
    Watch it live: `uv run python scripts/viz_server.py` → match room panel.
-4. After each match: email the 4 artifacts (step 2's sender, with
-   `--opponent <their-group>` semantics via `write_reports`), and commit the
-   emitted JSONs under `docs/league/<group>/` as evidence. Repeat with a second
-   group (the diversity bonus fires once per new group — ledger-tracked).
+   This writes the 4 App-F artifacts **of the series actually played** and
+   auto-mails them (rule 32 — never a human sending it). Filenames key off the
+   sorted pair, so both teams derive the same `result_<a>-vs-<b>.json`.
+5. Before anyone emails a counted series, run the league kit's checker over BOTH
+   artifact directories so the cross-team join is verified, not assumed:
+   `python tools/check_artifacts.py <ours> <theirs>`.
+6. Commit the emitted JSONs under `docs/league/<group>/` as evidence. Repeat with
+   a second group (the diversity bonus fires once per new group — ledger-tracked
+   in `opponents.json`, and `first_meeting_between_groups` is declared truthfully
+   in the result: a false one is a rule-38 project-level disqualification).
 
 ## 4 · Freeze: the submission tag
 
