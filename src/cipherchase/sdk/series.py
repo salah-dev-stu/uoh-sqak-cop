@@ -18,6 +18,22 @@ class SeriesResult:
         return sum(1 for s in self.summaries if s["winner"] == s["role"] == group_role)
 
 
+def settles(summary: Any) -> bool:
+    """Did a game actually happen in this window?
+
+    A technical loss IS a settlement — it has a result and it is scored, so the
+    index advances and the sub-game is never replayed. But a window that saw
+    ZERO turns never became a game: from the opponent's side it is
+    indistinguishable from a handshake that never landed, and they will retry
+    their index while we spend ours. That asymmetry is what opened the drift
+    against imreeyal — the handshake is two independent one-way pushes, so one
+    peer can enter a game the other does not believe exists.
+    """
+    if summary["result"] == "handshake_failed":
+        return False
+    return not (summary["result"] == "timeout" and summary["steps"] == 0)
+
+
 def role_for(natural: str, sub_game_number: int) -> str:
     """Natural role on odd sub-games, swapped on even (both peers agree)."""
     flipped = "thief" if natural == "police" else "police"
@@ -41,8 +57,8 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
         result.game_id = result.game_id or summary["game_id"]
         result.game_uid = result.game_uid or summary["game_uid"]
         result.summaries.append(summary)
-        if summary["result"] == "handshake_failed":
-            burned += 1  # peer not up yet: RETRY the SAME sub-game — advancing the
+        if not settles(summary):
+            burned += 1  # no game happened: RETRY the SAME sub-game — advancing the
             if burned <= retries:  # counter desyncs the two series (both play cop!)
                 continue
             break  # opponent never appeared — no series, don't burn the schedule
