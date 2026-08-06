@@ -45,9 +45,9 @@ def _equivocation(rt: Any, step: int, commit: str) -> dict[str, Any] | None:
     seen = rt.seen_commits.get(step)
     if not seen or not commit or seen == commit:
         return None
-    evidence = {"step": step, "commits": sorted([seen, commit])}
+    evidence = {"at_step": step, "commits": sorted([seen, commit])}
     rt.history.append({"equivocation": evidence})
-    rt.book.seal({"type": "equivocation", **evidence})
+    rt.book.seal_out_of_band({"type": "equivocation", **evidence})
     return evidence
 
 

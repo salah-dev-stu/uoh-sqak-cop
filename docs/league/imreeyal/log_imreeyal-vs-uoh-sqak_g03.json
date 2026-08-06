@@ -1,0 +1,23 @@
+{
+  "_schema": "log",
+  "schema_version": "1.1",
+  "game_id": "imreeyal-vs-uoh-sqak",
+  "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
+  "generated_at": "2026-08-06T18:36:10.198878+00:00",
+  "sub_game": 3,
+  "summary": {
+    "result": "handshake_failed",
+    "winner": "-",
+    "steps": 0,
+    "role": "thief"
+  },
+  "records": [],
+  "mutual_agreement": {
+    "sha256": "3ad3a88a7de81cf4f57031077f6c661bad14cbb058a4df2714bb0d534187d426",
+    "confirmed": false
+  },
+  "links": {
+    "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+    "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+  }
+}

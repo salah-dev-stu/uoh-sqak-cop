@@ -1,15 +1,15 @@
 {
   "_schema": "declaration",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-police-729eaa25",
-  "game_uid": "729eaa253867bac4",
-  "generated_at": "2026-08-06T18:37:10+00:00",
+  "game_id": "imreeyal-vs-uoh-sqak",
+  "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
+  "generated_at": "2026-08-06T18:36:10.198878+00:00",
   "timezone": "Asia/Jerusalem",
   "groups": [
-    "uoh-sqak",
+    "imreeyal",
     "uoh-sqak"
   ],
-  "num_sub_games": 1,
+  "num_sub_games": 33,
   "max_tokens": 200000,
   "links": {
     "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
@@ -22,7 +22,7 @@
       "Salah Qadah:323039974",
       "Andalus Kalash:211435797"
     ],
-    "role": "police",
+    "role": "thief",
     "git_commit": "e889bca97a721f6bb81ac169eead2351581bae13",
     "llm": {
       "provider": "template",
@@ -38,6 +38,6 @@
       "python": "3.13.12"
     },
     "version": "1.00",
-    "signature": "263531480113ea74e0532d3b08859eaed6fd861638c8467befe706f5be78324c"
+    "signature": "9965270fa88d999195849a469abd7063f7090a2699bed75e2e3cac05c21d7cfe"
   }
 }

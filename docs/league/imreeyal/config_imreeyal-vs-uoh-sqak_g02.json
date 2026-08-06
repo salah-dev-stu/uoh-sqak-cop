@@ -1,16 +1,16 @@
 {
   "_schema": "config",
   "schema_version": "1.1",
-  "game_id": "uoh-sqak-thief-729eaa25",
-  "game_uid": "729eaa253867bac4",
-  "generated_at": "2026-08-06T18:37:10+00:00",
-  "sub_game_number": 1,
-  "sub_game": 1,
+  "game_id": "imreeyal-vs-uoh-sqak",
+  "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
+  "generated_at": "2026-08-06T18:36:10.198878+00:00",
+  "sub_game_number": 2,
+  "sub_game": 2,
   "config": {
     "schema_version": "1.2",
     "version": "1.00",
     "agreed_between": [
-      "uoh-sqak",
+      "imreeyal",
       "uoh-sqak"
     ],
     "board_and_agents": {
@@ -100,7 +100,7 @@
       }
     }
   },
-  "config_sha256": "4a129a81a2857a01fedd0b6241283e50d7c51965c3b398566086b46dca833a08",
+  "config_sha256": "9d7a9b934830fc0364321e6a2328e92980b1d033f729ecae2f51cfd1004bafb8",
   "links": {
     "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
     "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"

@@ -21,7 +21,7 @@
 
 The integrity story currently rests on *sampled* evidence: a handful of tamper tests, one tampered replay fixture, an every-commit reference tripwire. P8 upgrades each claim from "tested" to "quantified over the whole space we can enumerate":
 
-- **Tamper sweep** — not "a tampered record is caught" but "**all N mutations of the real committed log are caught, N = 1803 today, 0 escapes**" — a one-line Integrity proof no prose can match.
+- **Tamper sweep** — not "a tampered record is caught" but "**all N mutations of the real committed log are caught, N = 1802 today, 0 escapes**" — a one-line Integrity proof no prose can match.
 - **Property tests** — not "these payloads round-trip" but "**∀ JSON-able payloads** round-trip; ∀ perturbations fail; ∀ op sequences the belief stays a distribution; ∀ hostile dicts the boundary never crashes."
 - **Golden transcripts** — the interop tripwire's deterministic twin: every byte shape we ever emit is frozen on disk and replayed on every commit, with and without the reference repo present.
 - **Truth guards** — the last three unchecked doc/config-honesty tasks land here so P8 closes the "no false claim anywhere" milestone for good.
@@ -48,13 +48,13 @@ Everything in this PRD is test-side. If a property test finds a real production 
 | f | `nonce` | hex char at position `i mod 32` replaced by `hex((int(ch,16)+1) % 16)` — always a different char | 1 |
 | g | `commit` (nibble classes) | for **each distinct hex-digit value** `v` present in the 64-char commit (sorted ascending), the **first occurrence** of `v` is replaced by `hex((v+1) % 16)` | `D_i` (14–16 observed) |
 
-**IC-3 — Count formula and floor.** Expected total `N = Σ_i (9 + D_i) = 10·R + Σ_i (D_i) − R` … stated exactly: `N = R·10 + Σ_i D_i` where `R = len(records)` and `D_i = |{distinct hex digits in commit_i}|` (rows a–e give 9 payload mutations, row f gives 1, row g gives `D_i`). For the committed log: `R = 70`, `Σ D_i = 1103` → **`N = 700 + 1103 = 1803`**. The test asserts `N ≥ 500` (PLAN-PHENOMENAL §2 P8 acceptance floor) so a regenerated shorter sample run still satisfies the gate.
+**IC-3 — Count formula and floor.** Expected total `N = Σ_i (9 + D_i) = 10·R + Σ_i (D_i) − R` … stated exactly: `N = R·10 + Σ_i D_i` where `R = len(records)` and `D_i = |{distinct hex digits in commit_i}|` (rows a–e give 9 payload mutations, row f gives 1, row g gives `D_i`). For the committed log: `R = 70`, `Σ D_i = 1102` → **`N = 700 + 1102 = 1802`**. The test asserts `N ≥ 500` (PLAN-PHENOMENAL §2 P8 acceptance floor) so a regenerated shorter sample run still satisfies the gate.
 
 **IC-4 — Zero escapes, asserted per mutation and in aggregate.** For every yielded mutation: `audit_records(mutated)` must return `passed=False` **and** include exactly `record_index` in `failed_steps` (localisation, not just rejection). Escapes are accumulated and the final assert reads `assert not escapes, …` with a message embedding the tally, and the closing assert emits the headline count: `assert caught == total and total >= 500, f"tamper sweep: {caught}/{total} mutations caught"` — so the number is visible in test output.
 
 **IC-5 — The Replay Viewer path agrees.** One additional test drives a **sample** of the sweep (first mutation of each class per record — `7·R` cases) through `gui/replay_data.verify_records` / `replay_verdict` and asserts the mutated step is `"TAMPERED"` and the verdict is `BAD`. This proves the GUI verdict path (F12) discriminates with the same power as the auditor, without doubling the full sweep's runtime.
 
-**IC-6 — README honesty line, guard-enforced.** README's Integrity section gains the line "**1803 mutations, 1803 caught**" (exact wording contains `<N> mutations, <N> caught`). The sweep test parses that line out of `README.md` and asserts both numbers equal the computed `N` — same self-honesty pattern as the tests-count CI guard (T472). Regenerating the sample log without updating the README fails CI.
+**IC-6 — README honesty line, guard-enforced.** README's Integrity section gains the line "**1802 mutations, 1802 caught**" (exact wording contains `<N> mutations, <N> caught`). The sweep test parses that line out of `README.md` and asserts both numbers equal the computed `N` — same self-honesty pattern as the tests-count CI guard (T472). Regenerating the sample log without updating the README fails CI.
 
 ### 3.2 Property-based tests (`hypothesis`, dev-dep) — `tests/properties/`
 
@@ -94,7 +94,7 @@ The test file carries the comment: `# transcript drift = interop break: if this 
 
 | # | Check |
 |---|---|
-| A1 | Tamper sweep: **≥ 500 mutations, 0 escapes** (current log: 1803/1803), each localised to its record index; pristine log passes (IC-1..4) |
+| A1 | Tamper sweep: **≥ 500 mutations, 0 escapes** (current log: 1802/1802), each localised to its record index; pristine log passes (IC-1..4) |
 | A2 | Replay-viewer sample sweep: all mutated steps `TAMPERED` (IC-5); README "N mutations, N caught" line matches computed N (IC-6) |
 | A3 | All hypothesis suites green in CI at the pinned `ci` profile (`max_examples=100`, `derandomize=True`, `deadline=None`) (IC-7..12) |
 | A4 | Golden transcript: capture script self-checks determinism; replay test green with our parser everywhere and with the reference's strict parser when `../reference-repo` is present (IC-13/14) |

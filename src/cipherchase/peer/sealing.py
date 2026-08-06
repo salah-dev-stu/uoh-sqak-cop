@@ -50,11 +50,24 @@ def move_payload(step: int, state: Any, decision: Any) -> dict[str, Any]:
 class SealBook:
     def __init__(self) -> None:
         self._records: list[dict[str, Any]] = []
+        self._oob = 0
 
     def seal(self, payload: dict[str, Any]) -> tuple[str, str]:
         commit, nonce = CommitReveal.seal(payload)
         self._records.append({"payload": payload, "nonce": nonce, "commit": commit})
         return commit, nonce
+
+    def seal_out_of_band(self, payload: dict[str, Any]) -> tuple[str, str]:
+        """Seal a non-move record, numbered OUTSIDE the game's step chain.
+
+        A counterparty rebuilding the move chain from step numbers excludes a
+        closed set of known types and counts anything unknown as a move — so a
+        record type newer than their exclusion list breaks their continuity
+        check. Descending negative steps make every non-move record unmistakable
+        by NUMBER too, which needs no agreement about types at all.
+        """
+        self._oob -= 1
+        return self.seal({"step": self._oob, **payload})
 
     def records(self) -> list[dict[str, Any]]:
         return list(self._records)

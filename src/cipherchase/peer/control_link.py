@@ -30,22 +30,19 @@ class ControlLink:
         self.opponent_quit = False
         self._pending_restart = False
         self._last_status_key: tuple | None = None
-        self._step = 0
 
     @property
     def active(self) -> bool:
         return self.i_enabled and self.peer_enabled
 
     def _seal(self, direction: str, msg: ControlMessage) -> None:
-        # Control records count DOWN from 0, outside the game's step chain. They
-        # used to count up from 1 alongside moves, so a peer reconstructing the
-        # game from step numbers saw [1,2,1,2,3,…] and refused the audit — it had
-        # no way to know our 1 was not a move. A negative step says so to anyone,
-        # without their validator needing to know our record types.
-        self._step -= 1
-        self.book.seal({"step": self._step, "type": "control", "direction": direction,
-                        "kind": msg.kind, "sender": msg.sender, "status": msg.status,
-                        "sub_game_number": msg.sub_game_number})
+        # Numbered outside the game's step chain (SealBook.seal_out_of_band).
+        # These used to count up from 1 alongside moves, so a peer rebuilding the
+        # game from step numbers saw [1,2,1,2,3,…] and refused the audit.
+        self.book.seal_out_of_band({
+            "type": "control", "direction": direction, "kind": msg.kind,
+            "sender": msg.sender, "status": msg.status,
+            "sub_game_number": msg.sub_game_number})
 
     def _send(self, kind: str, **fields: Any) -> None:
         msg = ControlMessage(kind=kind, sender=self.role, **fields)

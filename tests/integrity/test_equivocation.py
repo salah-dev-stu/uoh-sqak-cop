@@ -52,9 +52,9 @@ def test_two_commits_for_one_step_are_recorded_as_evidence() -> None:
     rt.handle(_turn(1, "aa"))
     out = rt.handle(_turn(1, "bb"))  # same step, a DIFFERENT story
     assert out.duplicate is True, "we still refuse to act on it twice"
-    assert out.equivocation == {"step": 1, "commits": ["aa", "bb"]}
+    assert out.equivocation == {"at_step": 1, "commits": ["aa", "bb"]}
     logged = [h for h in rt.history if h.get("equivocation")]
-    assert logged == [{"equivocation": {"step": 1, "commits": ["aa", "bb"]}}]
+    assert logged == [{"equivocation": {"at_step": 1, "commits": ["aa", "bb"]}}]
 
 
 def test_the_evidence_is_sealed_into_our_own_audit_trail() -> None:
@@ -77,3 +77,36 @@ def test_an_honest_series_records_nothing() -> None:
     for step in (1, 2, 3):
         rt.handle(_turn(step, f"c{step}"))
     assert not [r for r in rt.book.records() if r["payload"].get("type") == "equivocation"]
+
+
+def test_evidence_records_stay_out_of_the_move_chain() -> None:
+    # A counterparty's continuity check excludes a CLOSED set of record types and
+    # counts anything unknown as a move. Our evidence record is newer than any
+    # opponent's exclusion list, so it must also be unmistakable by NUMBER: it
+    # carries an out-of-band step and names the game step it refers to separately.
+    a, _b = make_pair()
+    rt = _cop(a)
+    rt.handle(_turn(1, "aa"))
+    rt.handle(_turn(1, "bb"))
+    record = next(r["payload"] for r in rt.book.records()
+                  if r["payload"].get("type") == "equivocation")
+    assert record["step"] < 1, "evidence must not occupy a game step number"
+    assert record["at_step"] == 1, "but it must still say which step it is about"
+    moves = [r["payload"]["step"] for r in rt.book.records() if "type" not in r["payload"]]
+    assert record["step"] not in moves
+
+
+def test_every_typed_record_we_seal_stays_off_the_move_chain() -> None:
+    # The durable guard: a counterparty's exclusion list can only ever name types
+    # that existed when they wrote it. Whatever we add later must be excludable
+    # by NUMBER, so no future record of ours can break a validator we agreed with.
+    a, _b = make_pair()
+    rt = _cop(a)
+    rt.control.enable()
+    rt.control.broadcast_status("PLAYING", sub_game_number=1, step_budget=30.0)
+    rt.handle(_turn(1, "aa"))
+    rt.handle(_turn(1, "bb"))
+    typed = [r["payload"] for r in rt.book.records() if "type" in r["payload"]]
+    assert len(typed) >= 3, "control + equivocation records present"
+    offenders = [r for r in typed if r.get("step", 0) > 0]
+    assert offenders == [], f"typed records inside the move chain: {offenders}"
