@@ -37,8 +37,8 @@ def test_retries_collapse_to_one_row_per_sub_game() -> None:
         {"sub_game_number": 1, "role": "thief", "result": "capture",
          "winner": "police", "steps": 13, "audit": {"passed": True}, "records": [{"c": 1}]},
         {"sub_game_number": 2, "role": "police", "result": "timeout",
-         "winner": "police", "steps": 0, "audit": {"passed": None}, "records": []},
-    ]}
+         "winner": "police", "steps": 7, "audit": {"passed": None}, "records": []},
+    ]}  # a timeout WITH play in it settles; a zero-turn one is covered separately
     cfg = ConfigManager.load(CONFIG / "police")
     arts = build_series_artifacts(
         cfg, noisy, opponent="imreeyal", generated_at="x",
@@ -82,3 +82,30 @@ def test_the_send_failure_is_reported_not_swallowed(tmp_path, capsys) -> None:
                         opponent="imreeyal", email_backend=_explode)
     out = capsys.readouterr().out
     assert "REPORT NOT SENT" in out and "quota exceeded" in out
+
+
+def test_a_window_that_never_became_a_game_contributes_no_row() -> None:
+    # Our first settled series emitted a `handshake_failed` row for sub-game 3,
+    # which never connected. imreeyal's file has no row for it at all — so our
+    # two mutual signatures would differ over a sub-game that did not happen,
+    # and the one field that must agree would disagree for the second time.
+    from cipherchase.sdk.league_reports import settled_summaries
+    rows = settled_summaries([
+        {"sub_game_number": 1, "role": "thief", "result": "capture", "winner": "police",
+         "steps": 13, "audit": {"passed": True}, "records": []},
+        {"sub_game_number": 2, "role": "police", "result": "timeout", "winner": "police",
+         "steps": 0, "audit": {"passed": None}, "records": []},
+        {"sub_game_number": 2, "role": "police", "result": "capture", "winner": "police",
+         "steps": 14, "audit": {"passed": True}, "records": []},
+        {"sub_game_number": 3, "role": "thief", "result": "handshake_failed", "winner": "-",
+         "steps": 0, "audit": {"passed": None}, "records": []},
+    ])
+    assert [r["sub_game_number"] for r in rows] == [1, 2], "no row for a game never played"
+    assert rows[1]["result"] == "capture", "the retried window's SETTLED outcome"
+
+
+def test_an_unplayed_series_reports_nothing_rather_than_a_row_of_zeroes() -> None:
+    from cipherchase.sdk.league_reports import settled_summaries
+    assert settled_summaries([
+        {"sub_game_number": 1, "role": "thief", "result": "handshake_failed",
+         "winner": "-", "steps": 0, "audit": {"passed": None}, "records": []}]) == []

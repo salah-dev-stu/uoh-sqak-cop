@@ -101,3 +101,18 @@ def test_the_series_converges_on_a_peer_that_is_ahead() -> None:
     played = [s["sub_game_number"] for s in series.summaries]
     assert 3 in played, f"never caught up to the peer's index: {played}"
     assert max(played) == 3 and min(played) == 1, "forward only, no rewind"
+
+
+def test_a_failed_window_reports_why_not_just_that_it_failed() -> None:
+    # 26 refused handshakes told us nothing tonight: "handshake_failed" 26 times,
+    # with the reason captured per-summary and then dropped from everything we
+    # print or persist. "No agreement arrived" and "terms mismatch" are entirely
+    # different bugs, and the opponent cannot see our side either way.
+    from cipherchase.sdk.sdk import SimulationSdk
+    a, _b = make_pair()  # nobody ever answers
+    cfg = _fast(ConfigManager.load(CONFIG / "police"), num_games=1)
+    out = SimulationSdk.run_peer(cfg, natural_role="police", transport=a)
+    failed = [s for s in out["sub_games"] if s["result"] == "handshake_failed"]
+    assert failed, "the window failed"
+    assert failed[0]["note"], "and the reason must survive into what we print"
+    assert "agreement" in failed[0]["note"].lower()

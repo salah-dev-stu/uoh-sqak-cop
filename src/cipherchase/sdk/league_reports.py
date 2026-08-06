@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from cipherchase.report import artifacts, emit, league
+from cipherchase.sdk.series import settles
 from cipherchase.sdk.step0 import step0
 from cipherchase.shared.gatekeeper import ApiGatekeeper
 
@@ -87,11 +88,15 @@ def settled_summaries(summaries: list[Json]) -> list[Json]:
     rows, while the opponent's file carries one: the mutual signature is then
     computed over lists that cannot agree, and the single field both teams must
     match is the one guaranteed to differ.
+
+    A window that never became a game contributes NO row — the opponent has no
+    row for it either, since from their side it never happened. Reporting it as
+    a 0/0 result would put a sub-game in our file that is absent from theirs.
     """
     latest: dict[int, Json] = {}
     for summary in summaries:
         latest[summary["sub_game_number"]] = summary  # last write wins = the settled one
-    return [latest[n] for n in sorted(latest)]
+    return [latest[n] for n in sorted(latest) if settles(latest[n])]
 
 
 def build_series_artifacts(
@@ -122,7 +127,7 @@ def build_series_artifacts(
             config_sha256=cfg.config_sha256))
         out.append(artifacts.build_log(
             **common, sub_game=n,
-            summary={k: summary[k] for k in ("result", "winner", "steps", "role")},
+            summary={k: summary.get(k, "") for k in ("result", "winner", "steps", "role", "note")},
             records=summary.get("records", []), mutual_agreement=agreement))
     result = artifacts.build_result(
         **common, sub_games=rows, final_result=agg, mutual_agreement=agreement,

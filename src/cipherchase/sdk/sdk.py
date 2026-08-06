@@ -76,7 +76,7 @@ class SimulationSdk:
         return {
             "game_id": series.game_id, "game_uid": series.game_uid,
             "sub_games": [
-                {k: s[k] for k in ("sub_game_number", "role", "result", "winner", "steps", "audit")}
+                {k: s.get(k) for k in ("sub_game_number", "role", "result", "winner", "steps", "audit", "note")}
                 for s in series.summaries
             ],
             "summaries": series.summaries,
