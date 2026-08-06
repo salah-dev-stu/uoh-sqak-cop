@@ -3,7 +3,7 @@
   "schema_version": "1.1",
   "game_id": "imreeyal-vs-uoh-sqak",
   "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
-  "generated_at": "2026-08-06T18:36:10.198878+00:00",
+  "generated_at": "2026-08-06T19:33:29.237806+00:00",
   "sub_game": 2,
   "summary": {
     "result": "timeout",
@@ -29,12 +29,12 @@
         "group_name": "uoh-sqak",
         "sub_game_number": 2
       },
-      "nonce": "4afe2eeba5668fee91f931061e0bf012",
-      "commit": "c32f7496374856f3342397cc792c60b8faa9238fd16d5bd78edea56ed9d0ddee"
+      "nonce": "7e0967cb10a8f3f933462468ac38355a",
+      "commit": "2b475f2966d8143fdcfd16e96a826846ba6085da23194799c9a87cd27cfde69a"
     },
     {
       "payload": {
-        "step": 1,
+        "step": -1,
         "type": "control",
         "direction": "sent",
         "kind": "enable",
@@ -42,12 +42,12 @@
         "status": "",
         "sub_game_number": 1
       },
-      "nonce": "3a44fa097fb5da778185c1b008586711",
-      "commit": "8cf88c114406863358469f4045127b53c99547466140953163cecc8ddfbc7afb"
+      "nonce": "820448c0695a082d434b550def3c1094",
+      "commit": "8bca2b0b51643b893b4a5d32bda9e490cb6b0d9ff8e1cf5349da20142d29c581"
     },
     {
       "payload": {
-        "step": 2,
+        "step": -2,
         "type": "control",
         "direction": "sent",
         "kind": "status",
@@ -55,12 +55,12 @@
         "status": "PLAYING",
         "sub_game_number": 2
       },
-      "nonce": "4acdee0c0ef022dd5519dce6c7d852c7",
-      "commit": "ffbbf59203a33e274ed8ef2ea760142e69c1e3e160668bd374d41e4ec5f1bb3d"
+      "nonce": "2a411ecce0d155d2a065cababf3fed6c",
+      "commit": "0d733eb73f8e8925caac73fcffa366e54a586f4f06cbf2594077d3a494ef8b99"
     }
   ],
   "mutual_agreement": {
-    "sha256": "3ad3a88a7de81cf4f57031077f6c661bad14cbb058a4df2714bb0d534187d426",
+    "sha256": "a2ebcc2c8653f9c67f7f82c3a29298a6c4bae1b1be9072041fb47690caf9d54a",
     "confirmed": false
   },
   "links": {

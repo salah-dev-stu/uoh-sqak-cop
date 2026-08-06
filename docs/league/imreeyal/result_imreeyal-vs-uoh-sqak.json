@@ -3,12 +3,12 @@
   "schema_version": "1.1",
   "game_id": "imreeyal-vs-uoh-sqak",
   "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
-  "generated_at": "2026-08-06T18:36:10.198878+00:00",
+  "generated_at": "2026-08-06T19:33:29.237806+00:00",
   "groups": [
     "imreeyal",
     "uoh-sqak"
   ],
-  "num_sub_games": 33,
+  "num_sub_games": 71,
   "sub_games": [
     {
       "sub_game_number": 1,
@@ -81,11 +81,24 @@
         "uoh-sqak": "thief",
         "imreeyal": "police"
       },
-      "result": "survival",
-      "winner_group": "uoh-sqak",
+      "result": "handshake_failed",
+      "winner_group": null,
       "score": {
-        "uoh-sqak": 10,
-        "imreeyal": 5
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 1,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "capture",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 20
       }
     },
     {
@@ -302,6 +315,19 @@
         "uoh-sqak": "thief",
         "imreeyal": "police"
       },
+      "result": "timeout",
+      "winner_group": "uoh-sqak",
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
       "result": "handshake_failed",
       "winner_group": null,
       "score": {
@@ -310,7 +336,267 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "timeout",
+      "winner_group": "uoh-sqak",
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -323,7 +609,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -336,7 +622,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -349,7 +635,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -362,7 +648,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -375,7 +661,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -388,7 +674,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -401,7 +687,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -414,7 +700,7 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -427,7 +713,215 @@
       }
     },
     {
-      "sub_game_number": 3,
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "handshake_failed",
+      "winner_group": null,
+      "score": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      }
+    },
+    {
+      "sub_game_number": 5,
       "roles": {
         "uoh-sqak": "thief",
         "imreeyal": "police"
@@ -442,19 +936,19 @@
   ],
   "final_result": {
     "total_score": {
-      "imreeyal": 5,
-      "uoh-sqak": 10
+      "imreeyal": 20,
+      "uoh-sqak": 5
     },
     "sub_games_won": {
-      "imreeyal": 0,
-      "uoh-sqak": 1
+      "imreeyal": 1,
+      "uoh-sqak": 0
     },
-    "ties": 32,
-    "winner_group": "uoh-sqak",
+    "ties": 70,
+    "winner_group": "imreeyal",
     "series_tie": false
   },
   "mutual_agreement": {
-    "sha256": "3ad3a88a7de81cf4f57031077f6c661bad14cbb058a4df2714bb0d534187d426",
+    "sha256": "a2ebcc2c8653f9c67f7f82c3a29298a6c4bae1b1be9072041fb47690caf9d54a",
     "confirmed": false
   },
   "links": {

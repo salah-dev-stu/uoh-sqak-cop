@@ -13,6 +13,7 @@ symmetric mutual signature the opponent independently recomputes.
 from __future__ import annotations
 
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any
@@ -42,12 +43,55 @@ def write_league_series(
     ledger.write_text(json.dumps(played))
     email = cfg.private["email"]
     if email["enabled"]:
-        from cipherchase.infra.email_sender import GmailSender
-
-        sender = GmailSender(gate, recipient=email["recipient"],
-                             sender=email.get("sender", ""), backend=email_backend)
-        sender.send(email["subject_template"].format(game_id=outcome["game_id"]), paths)
+        _mail(cfg, gate, outcome, paths, email_backend or gmail_backend())
     return paths
+
+
+def gmail_backend() -> Any:  # pragma: no cover — real credentials + network
+    """The live Gmail sender, or None when no token is configured."""
+    token = os.environ.get("CIPHERCHASE_GMAIL_TOKEN", "")
+    if not token or not Path(token).expanduser().exists():
+        return None
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
+
+    creds = Credentials.from_authorized_user_file(str(Path(token).expanduser()))
+    service = build("gmail", "v1", credentials=creds)
+    return lambda raw: service.users().messages().send(
+        userId="me", body={"raw": raw}).execute()
+
+
+def _mail(cfg: Any, gate: ApiGatekeeper, outcome: Json, paths: list[Path], backend: Any) -> None:
+    """Auto-fire the report (rule 32), but never destroy a played series' evidence.
+
+    A credential or quota problem must be loud and must not unwind the run: the
+    artifacts describe a game that really happened, and they are the only copy.
+    """
+    from cipherchase.infra.email_sender import GmailSender
+
+    email = cfg.private["email"]
+    try:
+        GmailSender(gate, recipient=email["recipient"], sender=email.get("sender", ""),
+                    backend=backend).send(
+            email["subject_template"].format(game_id=outcome["game_id"]), paths)
+    except Exception as exc:  # noqa: BLE001 — any send failure, reported not raised
+        print(f"REPORT NOT SENT — {type(exc).__name__}: {exc}\n"
+              f"  artifacts are on disk; re-send with scripts/send_sample_report.py")
+
+
+def settled_summaries(summaries: list[Json]) -> list[Json]:
+    """One row per sub-game — the outcome it settled on, not its retries.
+
+    A live series records every handshake retry, so a window that waited out 25
+    attempts contributes 25 summaries. Reported verbatim they become 25 result
+    rows, while the opponent's file carries one: the mutual signature is then
+    computed over lists that cannot agree, and the single field both teams must
+    match is the one guaranteed to differ.
+    """
+    latest: dict[int, Json] = {}
+    for summary in summaries:
+        latest[summary["sub_game_number"]] = summary  # last write wins = the settled one
+    return [latest[n] for n in sorted(latest)]
 
 
 def build_series_artifacts(
@@ -56,7 +100,7 @@ def build_series_artifacts(
 ) -> list[Json]:
     game = cfg.private["game"]
     own = game["group_id"]
-    summaries = outcome["summaries"]
+    summaries = settled_summaries(outcome["summaries"])
     table = cfg.shared["scoring"]
     rows = league.subgame_rows(summaries, own, opponent, table)
     agg = league.aggregate(rows, table["tie_score"])
