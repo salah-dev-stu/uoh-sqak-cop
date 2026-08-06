@@ -53,9 +53,15 @@ class SmellField:
         for cell in self._window(center):
             dist = max(abs(cell[0] - center[0]), abs(cell[1] - center[1]))
             if self._subtractive:
-                delta = round(max(0.0, peak - step * dist), 3)
-            else:
-                delta = peak * (self.falloff**dist)
+                # Combine by MAX: a fresh deposit REFRESHES a cell rather than
+                # stacking on it. The registration pins neither the combine rule
+                # nor an upper clamp, so adding lets old trail climb past
+                # emit_intensity — two peers declaring one hash, running
+                # different physics. Agreed with imreeyal pending a kit fix.
+                self._field[cell] = max(self._field.get(cell, 0.0),
+                                        round(max(0.0, peak - step * dist), 3))
+                continue
+            delta = peak * (self.falloff**dist)
             self._field[cell] = min(1.0, self._field.get(cell, 0.0) + delta)
 
     def decay_all(self) -> None:

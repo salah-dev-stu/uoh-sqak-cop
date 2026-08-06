@@ -73,14 +73,23 @@ class ScentDecoder:
 
     def fresh_peak(self, snapshot: dict[str, float]) -> Cell | None:
         """League-robust shortcut (najamjad warm-up finding): on fields that never
-        saturate, the unique fresh-emit-intensity cell IS the opponent. Our own
-        physics saturates old trail to 1.0 > emit, which rejects this path and
-        keeps the matched filter in charge exactly where it is needed."""
+        saturate, the unique freshest cell IS the opponent.
+
+        The fresh stamp lands at ``emit`` under decay_then_deposit and one decay
+        lower under the registered deposit_then_decay order, so we accept either
+        — insisting on ``emit`` alone silently drops this path against every
+        conforming peer and hands the matched filter a job it does worse. A peak
+        ABOVE emit means an additive, saturating field, where the shortcut is
+        genuinely unsound and the filter must take over."""
         if not snapshot:
             return None
         peak = max(snapshot.values())
-        if peak >= 1.0 or peak < self.emit - 1e-6:
-            return None  # saturated trail or no fresh stamp → not this field style
+        fresh = (self.emit, round(self.emit - self.decay, 3))
+        if not any(abs(peak - value) <= 1e-6 for value in fresh):
+            # Neither fresh value: a saturating field, or a trail that has decayed
+            # off the stamp. Matching the two EXACT values rather than a band
+            # matters — a band swallows decayed peaks (0.81) that no emit produces.
+            return None
         tops = [k for k, v in snapshot.items() if v >= peak - 1e-6]
         return parse_cell(tops[0]) if len(tops) == 1 else None
 

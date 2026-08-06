@@ -30,8 +30,8 @@ def take_turn(rt: Any, claim_response: dict[str, Any] | None) -> tuple[str, str]
     commit, _nonce = rt.book.seal(move_payload(step, rt.me, decision))
     barrier_placed = _maybe_barrier(rt, decision.barrier_cell, target)
     rt.me = rt.me.moved_to(target)
+    rt.my_smell.deposit(rt.me.position)  # order: deposit_then_decay, as declared
     rt.my_smell.decay_all()
-    rt.my_smell.deposit(rt.me.position)
     win_claim, result = None, None
     if rt.role == "thief" and step >= rt.max_steps:
         win_claim, result = {"type": "survival"}, ("survival", "thief")

@@ -97,3 +97,22 @@ def test_control_wire_carries_exactly_the_reference_key_set() -> None:
     assert len(control_wires) == 4
     for wire in control_wires:
         assert set(wire) == reference_keys, wire
+
+
+def test_control_records_never_share_the_game_step_numbering() -> None:
+    # imreeyal's s1 audit refusal: our sealed control records were numbered 1,2
+    # in the SAME space as moves, so their continuity check read the revealed
+    # chain as [1,2,1,2,3,…] and refused. A counterparty reconstructing the game
+    # from step numbers has no way to know our 1 is not a move — unless the
+    # numbering itself says so. Negative steps are self-evident to a peer that
+    # has never seen our code, and still order the control history.
+    ours, _theirs, _a, _b = _pair()
+    ours.enable()
+    ours.broadcast_status("PLAYING", sub_game_number=1, step_budget=30.0)
+    control = [r["payload"] for r in ours.book.records()
+               if r["payload"].get("type") == "control"]
+    assert control, "control history is still sealed"
+    assert all(r["step"] < 1 for r in control), "control steps must be outside the game chain"
+    game_steps = [r["payload"]["step"] for r in ours.book.records()
+                  if "type" not in r["payload"]]
+    assert not set(game_steps) & {r["step"] for r in control}

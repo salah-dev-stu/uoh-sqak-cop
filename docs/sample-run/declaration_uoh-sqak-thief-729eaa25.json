@@ -3,7 +3,7 @@
   "schema_version": "1.1",
   "game_id": "uoh-sqak-thief-729eaa25",
   "game_uid": "729eaa253867bac4",
-  "generated_at": "2026-08-05T21:00:37+00:00",
+  "generated_at": "2026-08-06T18:31:02+00:00",
   "timezone": "Asia/Jerusalem",
   "groups": [
     "uoh-sqak",
@@ -23,7 +23,7 @@
       "Andalus Kalash:211435797"
     ],
     "role": "thief",
-    "git_commit": "87d817f2a67eaa06451df78ebf344c4a66d9dc6b",
+    "git_commit": "7634d8e09060f0235483818d5f6a3e49b6ebfc90",
     "llm": {
       "provider": "template",
       "model": "template",
@@ -38,6 +38,6 @@
       "python": "3.13.12"
     },
     "version": "1.00",
-    "signature": "3209ce989a320fdbc186b68f1c837da6c13b00892a0583c7c3dce7bd3734379f"
+    "signature": "4c315fbadb14198d5b2e112cd4a6d6854e21a438914743578f324e3ba41be0c6"
   }
 }
