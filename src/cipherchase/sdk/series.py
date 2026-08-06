@@ -34,6 +34,17 @@ def settles(summary: Any) -> bool:
     return not (summary["result"] == "timeout" and summary["steps"] == 0)
 
 
+def catch_up(*, n: int, peer: int) -> int:
+    """Adopt a strictly-higher peer index. Forward only, or two peers ping-pong.
+
+    Holding the index stops drift but introduces deadlock: if an asymmetric
+    failure leaves us on 2 and them on 5, both of us hold and neither moves. The
+    peer that is BEHIND catches up, so the series converges on one number without
+    either side ever rewinding a sub-game that has already been played.
+    """
+    return max(n, peer)
+
+
 def role_for(natural: str, sub_game_number: int) -> str:
     """Natural role on odd sub-games, swapped on even (both peers agree)."""
     flipped = "thief" if natural == "police" else "police"
@@ -58,6 +69,10 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
         result.game_uid = result.game_uid or summary["game_uid"]
         result.summaries.append(summary)
         if not settles(summary):
+            ahead = catch_up(n=n, peer=runtime.peer_sub_game)
+            if ahead != n:  # they are strictly ahead — converge instead of deadlocking
+                n, burned = ahead, 0
+                continue
             burned += 1  # no game happened: RETRY the SAME sub-game — advancing the
             if burned <= retries:  # counter desyncs the two series (both play cop!)
                 continue

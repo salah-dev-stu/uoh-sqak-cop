@@ -69,10 +69,9 @@ class PeerRuntime:
         self.book, self.history = SealBook(), []
         self.barriers: frozenset = frozenset()
         self.step_number, self.last_seen_step, self.seen_commits = 0, 0, {}
-        self.game_id, self.game_uid, self.peer_identity = "", "", {}
+        self.game_id, self.game_uid, self.peer_identity, self.peer_sub_game = "", "", {}, 0
         self.sm = StateMachine(State.HANDSHAKE)
-        self.now = now or time.monotonic
-        self.listener = listener  # spectate stream (SH-1); None = zero behaviour change
+        self.now, self.listener = now or time.monotonic, listener  # listener: spectate (SH-1)
         self.control = ControlLink(role, transport, self.book)  # signed control channel
 
     def talk_for(self, step: int, direction: Any = None) -> tuple[str, str]:
@@ -118,6 +117,7 @@ class PeerRuntime:
         try:
             handshake.negotiate(self)
         except Exception as exc:
+            self.peer_sub_game = getattr(exc, "peer_sub_game", 0)  # for series catch-up
             return summary.finish(self, ("handshake_failed", "-"), note=str(exc))
         self.sm.transition(State.WAITING)
         sealed_spec_record(self.book, self.cfg, self.sub_game_number)

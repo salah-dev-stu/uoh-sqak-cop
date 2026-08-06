@@ -58,3 +58,46 @@ def test_a_timeout_with_play_in_it_still_settles() -> None:
     assert settles({"result": "capture", "steps": 13}) is True
     assert settles({"result": "handshake_failed", "steps": 0}) is False
     assert settles({"result": "tamper_forfeit", "steps": 0}) is True
+
+
+def test_a_peer_strictly_ahead_pulls_us_forward_never_backward() -> None:
+    # imreeyal's point 2: if BOTH peers only hold, an asymmetric failure deadlocks
+    # them on different indices instead of drifting — nobody moves. The refusal
+    # itself carries the only evidence of who is out of step, so a peer that is
+    # behind catches up. Forward only, or two peers ping-pong forever.
+    from cipherchase.sdk.series import catch_up
+    assert catch_up(n=2, peer=5) == 5, "behind → adopt their index"
+    assert catch_up(n=5, peer=2) == 5, "ahead → never rewind"
+    assert catch_up(n=3, peer=3) == 3
+    assert catch_up(n=3, peer=0) == 3, "no declaration → nothing to learn"
+
+
+def test_the_refusal_reports_which_index_the_peer_declared() -> None:
+    from cipherchase.domain.negotiation import Negotiation
+    from cipherchase.exceptions import HandshakeError
+    terms, ident = {"board_size": 7}, {"group_id": "them"}
+    ours = Negotiation(terms, ident, sub_game_number=2, role="police")
+    theirs = Negotiation(terms, ident, sub_game_number=5, role="thief").signed()
+    try:
+        ours.verify_peer(theirs)
+    except HandshakeError as exc:
+        assert exc.peer_sub_game == 5, "the refusal must say where THEY are"
+    else:
+        raise AssertionError("a sub-game disagreement must refuse")
+
+
+def test_the_series_converges_on_a_peer_that_is_ahead() -> None:
+    # End to end: a peer stuck declaring sub-game 3 while we open at 1. Holding
+    # alone would deadlock us at 1 forever; we adopt their index and play on.
+    from cipherchase.domain.negotiation import Negotiation
+    from cipherchase.peer.terms import identity_from_config, terms_from_config
+    a, b = make_pair()
+    cfg = _fast(ConfigManager.load(CONFIG / "police"), num_games=3)
+    for _ in range(8):
+        b.exchange_agreement_push(Negotiation(
+            terms_from_config(cfg), identity_from_config(cfg),
+            sub_game_number=3, role="thief").signed())
+    series = run_series(cfg, "police", a)
+    played = [s["sub_game_number"] for s in series.summaries]
+    assert 3 in played, f"never caught up to the peer's index: {played}"
+    assert max(played) == 3 and min(played) == 1, "forward only, no rewind"

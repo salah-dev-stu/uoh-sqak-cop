@@ -64,7 +64,12 @@ class Negotiation:
         for key, label in (("sub_game_number", "sub-game"), ("game_uid", "game_uid")):
             ours, peer = mine.get(key), message.get(key)
             if ours is not None and peer is not None and ours != peer:
-                raise HandshakeError(f"{label} disagreement: ours {ours!r} vs theirs {peer!r}")
+                error = HandshakeError(f"{label} disagreement: ours {ours!r} vs theirs {peer!r}")
+                # The refusal is the ONLY evidence of who is out of step: if both
+                # peers merely hold their index, an asymmetric failure deadlocks
+                # them on different numbers instead of drifting. Carry theirs.
+                error.peer_sub_game = message.get("sub_game_number") or 0
+                raise error
         for key in _MODELS:
             ours, peer = mine.get(key), message.get(key)
             if ours and peer and ours != peer:

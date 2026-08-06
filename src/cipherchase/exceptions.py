@@ -36,7 +36,14 @@ class ProtocolError(CipherChaseError):
 
 
 class HandshakeError(CipherChaseError):
-    """Peers failed to agree on a byte-identical signed config (FR-I1, F14)."""
+    """Peers failed to agree on a byte-identical signed config (FR-I1, F14).
+
+    ``peer_sub_game`` carries the index the opponent declared when the refusal
+    was a sub-game disagreement — the only evidence either side gets about who
+    is out of step, and what a peer that is behind uses to catch up.
+    """
+
+    peer_sub_game: int = 0
 
 
 class ProviderUnavailableError(CipherChaseError):
