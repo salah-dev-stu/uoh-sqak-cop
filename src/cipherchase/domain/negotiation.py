@@ -58,8 +58,13 @@ class Negotiation:
 
     @staticmethod
     def _refusal(reason: str, message: dict[str, Any]) -> HandshakeError:
-        """A refusal carries the peer's index — the only evidence of who is behind."""
-        error = HandshakeError(reason)
+        """A refusal names WHO it refused and carries the peer's index.
+
+        Twelve anonymous refusals cost a live series and could not afterwards be
+        attributed to any team — "role collision" said what, never who.
+        """
+        error = HandshakeError(f"{reason} [from {message['_who']}]"
+                               if message.get("_who") else reason)
         error.peer_sub_game = message.get("sub_game_number") or 0
         return error
 

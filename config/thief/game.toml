@@ -7,6 +7,9 @@ role = "thief"
 sub_game_number = 1
 # Counted league series played so far (friendlies never count).
 counted_games_played = 0
+# Only this group's agreements may consume a handshake window. Empty =
+# accept whoever answers. Set per match by `peer --opponent <id>`.
+opponent_group_id = ""
 members = ["Salah Qadah:323039974", "Andalus Kalash:211435797"]
 repos = { cop = "https://github.com/salah-dev-stu/uoh-sqak-cop", thief = "https://github.com/salah-dev-stu/uoh-sqak-thief" }
 

@@ -16,6 +16,44 @@ from cipherchase.exceptions import HandshakeError
 from cipherchase.peer.terms import identity_from_config, terms_from_config
 
 
+def _who(message: dict[str, Any]) -> str:
+    """Name the sender of an agreement — group, declared role, declared index."""
+    ident = message.get("identity") or {}
+    return (f"{ident.get('group_id', '?')} (role {message.get('role', '?')}, "
+            f"sub-game {message.get('sub_game_number', '?')})")
+
+
+def _attributed(message: dict[str, Any]) -> dict[str, Any]:
+    """Tag the message so any refusal downstream can say WHO it refused."""
+    return {**message, "_who": _who(message)}
+
+
+def _await_opponent(rt: Any) -> dict[str, Any]:
+    """Read agreements until the EXPECTED opponent answers, or the budget ends.
+
+    Our endpoint is public and unauthenticated, so anyone still holding the URL
+    can push an agreement — a peer we once practised against, with a stale config,
+    is enough. Consuming a stranger's agreement costs a whole window and teaches
+    us nothing, so we discard it and keep listening inside the same budget. That
+    turns third-party traffic into noise instead of a denial of service.
+    """
+    expected = str(rt.cfg.private["game"].get("opponent_group_id", "") or "")
+    deadline = rt.now() + float(rt.cfg.network["connect_timeout_seconds"])
+    strangers: list[str] = []
+    while (remaining := deadline - rt.now()) > 0:
+        message = rt.transport.poll_agreement_or_none(min(remaining, 0.5))
+        if message is None:
+            continue
+        sender = str((message.get("identity") or {}).get("group_id", ""))
+        if expected and sender and sender != expected:
+            strangers.append(_who(message))  # not ours — discard, keep the window
+            continue
+        return message
+    seen = f"; discarded {len(strangers)} from {sorted(set(strangers))}" if strangers else ""
+    raise HandshakeError(
+        f"no agreement received from {expected or 'the peer'} before the deadline{seen}")
+
+
 def negotiate(rt: Any) -> dict[str, Any]:
     scent = rt.cfg.private.get("scent", {}).get("model", "multiplicative_cheb")
     neg = Negotiation(
@@ -30,10 +68,8 @@ def negotiate(rt: Any) -> dict[str, Any]:
         # one side is playing, and the other spends its whole budget pushing at a
         # peer that is already waiting on a turn. (imreeyal's g03, both ways.)
         raise HandshakeError(f"our agreement could not be delivered: {exc}") from exc
-    theirs = rt.transport.poll_agreement_or_none(rt.cfg.network["connect_timeout_seconds"])
-    if theirs is None:
-        raise HandshakeError("no agreement received from the peer before the deadline")
-    identity = neg.verify_peer(theirs)
+    theirs = _await_opponent(rt)
+    identity = neg.verify_peer(_attributed(theirs))
     rt.peer_identity = identity
     mine = rt.cfg.private["game"]["group_id"]
     peer_gid = str(identity.get("group_id", "peer"))

@@ -48,6 +48,8 @@ def main(argv: list[str] | None = None) -> int:
 
         from cipherchase.sdk.league_reports import write_league_series
 
+        if args.opponent:  # only this group's agreements may consume a window
+            cfg.private["game"]["opponent_group_id"] = args.opponent
         outcome = SimulationSdk.run_peer(cfg, natural_role=args.role)
         print(json.dumps({k: outcome[k] for k in ("game_id", "game_uid", "sub_games")}))
         if args.opponent:  # a counted league series reports the game it PLAYED
