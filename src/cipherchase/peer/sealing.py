@@ -11,6 +11,7 @@ from typing import Any
 
 from cipherchase.domain.crypto import CommitReveal
 from cipherchase.domain.protocol import AuditPayload
+from cipherchase.shared.gitinfo import git_commit
 from cipherchase.shared.sysinfo import system_info
 from cipherchase.shared.version import VERSION
 
@@ -23,11 +24,18 @@ def trim_words(text: str, max_words: int) -> str:
     return " ".join(text.split()[:max_words])
 
 
-def sealed_spec_record(book: SealBook, cfg: Any, sub_game_number: int) -> None:
-    """Step-0 sealed declaration record (F5, PRD_league_runtime §2.2)."""
+def sealed_spec_record(book: SealBook, cfg: Any, sub_game_number: int,
+                       gate: Any = None) -> None:
+    """Step-0 sealed declaration record (F5, PRD_league_runtime §2.2).
+
+    Carries `github_commit` — their spelling, so neither side needs a tolerance.
+    Without it the audit trail never pins the code that played, and an opponent
+    replaying our records has nothing to check the repo against.
+    """
     book.seal({
         "step": 0,
         "type": "system_spec",
+        "github_commit": git_commit(gate) if gate else "",
         "spec": system_info(),
         "model": cfg.private.get("llm", {}).get("model", "template"),
         "code_version": VERSION,

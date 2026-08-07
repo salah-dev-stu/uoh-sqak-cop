@@ -38,6 +38,15 @@ class SmellField:
         self.model = model
         self._field: dict[Cell, float] = {}
 
+    @classmethod
+    def from_config(cls, board_size: int, pheromones: dict, model: str) -> SmellField:
+        """Build from the shared pheromone block — the mapping lives with the object."""
+        return cls(
+            board_size, pheromones["grid_size"], pheromones["center_intensity"],
+            pheromones["decay"], pheromones["falloff"],
+            min_center=pheromones["min_center_intensity"],
+            absorb_gain=pheromones["absorb_gain"], model=model)
+
     @property
     def _subtractive(self) -> bool:
         return self.model == "subtractive_chebyshev_v1"

@@ -91,3 +91,26 @@ def test_on_the_wire_a_walling_cop_does_not_move() -> None:
             walled = True
             assert rt.me.position == before, "a wall costs the step — the cop must not move"
     assert walled, "this fixture must produce at least one barrier"
+
+
+def test_the_sealed_step_zero_record_pins_the_code_that_played() -> None:
+    # imreeyal read our step-0 seal and found no commit field at all: the hash
+    # lived only in the declaration artifact, so the AUDIT trail never pinned the
+    # code. `github_commit` — their spelling, so neither side needs a tolerance —
+    # is what lets a grader check the repo against the play.
+    from pathlib import Path
+
+    from fakes.fake_transport import make_pair
+
+    from cipherchase.peer.runtime import PeerRuntime
+    from cipherchase.peer.sealing import sealed_spec_record
+    from cipherchase.shared.config import ConfigManager
+
+    cfg = ConfigManager.load(Path(__file__).resolve().parents[2] / "config" / "police")
+    a, _b = make_pair()
+    rt = PeerRuntime(role="police", cfg=cfg, transport=a, sub_game_number=1)
+    sealed_spec_record(rt.book, cfg, 1, gate=rt.gate)
+    spec = next(r["payload"] for r in rt.book.records()
+                if r["payload"].get("type") == "system_spec")
+    assert spec["github_commit"], "the seal must name the commit that played"
+    assert len(spec["github_commit"]) == 40, "a full sha, as the reference emits"

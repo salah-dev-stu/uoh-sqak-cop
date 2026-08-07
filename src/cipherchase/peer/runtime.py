@@ -24,6 +24,7 @@ from cipherchase.peer.deadline import Deadline
 from cipherchase.peer.sealing import SealBook, now_iso, sealed_spec_record
 from cipherchase.peer.state_machine import State, StateMachine
 from cipherchase.peer.watchdog import Watchdog
+from cipherchase.shared.gatekeeper import ApiGatekeeper
 from cipherchase.strategy.deception import choose_intent
 from cipherchase.strategy.factory import load_brain
 from cipherchase.strategy.trash_talk import TrashTalk
@@ -53,25 +54,23 @@ class PeerRuntime:
         self.last_claim: Any = None
         self.deception_mode = strat.get("deception", "random")  # "strategic" → rule-based (F8)
         self.gap_threshold = int(strat.get("bluff_gap_threshold", 3))
-        self.my_smell = SmellField(
-            self.board.size, ph["grid_size"], ph["center_intensity"], ph["decay"],
-            ph["falloff"], min_center=ph["min_center_intensity"],
-            absorb_gain=ph["absorb_gain"],
-            model=cfg.private.get("scent", {}).get("model", "multiplicative_cheb"))
+        self.my_smell = SmellField.from_config(
+            self.board.size, ph,
+            cfg.private.get("scent", {}).get("model", "multiplicative_cheb"))
         tt = cfg.private["trash_talk"]
         self.talk = TrashTalk(
             build_provider({**cfg.private.get("llm", {}), **tt}, gate=gate), TemplateProvider(),
-            every_n_steps=tt["every_n_steps"], lie_probability=tt["lie_probability"], rng=rng,
-        )
+            every_n_steps=tt["every_n_steps"], lie_probability=tt["lie_probability"], rng=rng)
         self.max_steps, self.barriers_max = mb["survival_threshold"], mb["max_barriers"]
         self.hint_max_words = cfg.shared["world"]["hint_max_words"]
-        self.landmarks = list(tt.get("landmarks", []))
-        self.book, self.history, self.started_at = SealBook(), [], now_iso()
+        self.landmarks, self.started_at = list(tt.get("landmarks", [])), now_iso()
+        self.book, self.history = SealBook(), []
         self.barriers: frozenset = frozenset()
         self.step_number, self.last_seen_step, self.seen_commits = 0, 0, {}
         self.game_id, self.game_uid, self.peer_identity, self.peer_sub_game = "", "", {}, 0
-        self.sm = StateMachine(State.HANDSHAKE)
-        self.now, self.listener = now or time.monotonic, listener  # listener: spectate (SH-1)
+        self.sm, self.now = StateMachine(State.HANDSHAKE), now or time.monotonic
+        self.listener = listener  # spectate stream (SH-1); None = no behaviour change
+        self.gate = gate or ApiGatekeeper.from_config(cfg, now=time.monotonic)  # R3: always gated
         self.control = ControlLink(role, transport, self.book)  # signed control channel
 
     def talk_for(self, step: int, direction: Any = None) -> tuple[str, str]:
@@ -120,7 +119,7 @@ class PeerRuntime:
             self.peer_sub_game = getattr(exc, "peer_sub_game", 0)  # for series catch-up
             return summary.finish(self, ("handshake_failed", "-"), note=str(exc))
         self.sm.transition(State.WAITING)
-        sealed_spec_record(self.book, self.cfg, self.sub_game_number)
+        sealed_spec_record(self.book, self.cfg, self.sub_game_number, gate=self.gate)
         self.control.enable()  # signed control channel: announce, seal, share status
         self.control.broadcast_status("PLAYING", sub_game_number=self.sub_game_number,
                                       step_budget=net["turn_timeout_seconds"])
