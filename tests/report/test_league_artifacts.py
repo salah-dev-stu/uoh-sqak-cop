@@ -65,15 +65,15 @@ def test_the_result_carries_the_symmetric_signature_the_opponent_will_recompute(
 def test_the_result_declares_the_league_counters_truthfully() -> None:
     result = next(a for a in _build(games_played=3, first_meeting=True, counted=True)
                    if a["_schema"] == "result")
-    league_fields = result["league"]
-    assert league_fields["games_played_including_this"] == 3
+    league_fields = result["final_result"]
+    assert league_fields["games_played_including_this"]["uoh-sqak"] == 3
     assert league_fields["first_meeting_between_groups"] is True
     assert league_fields["diversity_reward_applied"] is True
     # A false "first meeting" is a rule-38 disqualification, so a repeat pairing
     # must never carry the bonus.
     again = next(a for a in _build(games_played=4, first_meeting=False, counted=True)
                   if a["_schema"] == "result")
-    assert again["league"]["diversity_reward_applied"] is False
+    assert again["final_result"]["diversity_reward_applied"] is False
 
 
 def test_filenames_are_the_sorted_pair_both_teams_derive() -> None:
@@ -118,9 +118,9 @@ def test_the_first_meeting_is_claimed_once_and_never_again(tmp_path) -> None:
     kw = {"generated_at": "x", "opponent": "imreeyal", "counted": True}
     write_league_series(cfg, OUTCOME, tmp_path, **kw)
     first = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert first["league"]["first_meeting_between_groups"] is True
-    assert first["league"]["games_played_including_this"] == 1
+    assert first["final_result"]["first_meeting_between_groups"] is True
+    assert first["final_result"]["games_played_including_this"]["uoh-sqak"] == 1
     write_league_series(cfg, OUTCOME, tmp_path, **kw)
     again = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert again["league"]["first_meeting_between_groups"] is False
-    assert again["league"]["games_played_including_this"] == 2
+    assert again["final_result"]["first_meeting_between_groups"] is False
+    assert again["final_result"]["games_played_including_this"]["uoh-sqak"] == 2

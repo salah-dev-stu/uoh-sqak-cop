@@ -68,11 +68,12 @@ def test_a_friendly_moves_no_counter_and_claims_no_reward(tmp_path) -> None:
     write_league_series(cfg, FULL, tmp_path, generated_at="x",
                         opponent="imreeyal", counted=False)
     res = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert res["league"]["diversity_reward_applied"] is False
-    assert res["league"]["first_meeting_between_groups"] is True, (
+    assert res["final_result"]["diversity_reward_applied"] is False
+    assert res["final_result"]["first_meeting_between_groups"] is True, (
         "the groups have still never met — the FACT is mode-independent")
-    assert res["league"]["counted_games_played"] == 0, "a friendly is not a counted game"
-    assert res["league"]["counted"] is False
+    assert res["final_result"]["games_played_including_this"]["uoh-sqak"] == 0, (
+        "a friendly is not a counted game")
+    assert res["final_result"]["counted"] is False
     assert not (tmp_path / "opponents.json").exists(), "no counted opponent recorded"
 
 
@@ -86,11 +87,11 @@ def test_a_counted_series_moves_the_counter_once(tmp_path) -> None:
     write_league_series(cfg, FULL, tmp_path, generated_at="x",
                         opponent="imreeyal", counted=True)
     res = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert res["league"]["counted_games_played"] == 1
-    assert res["league"]["first_meeting_between_groups"] is True
-    assert res["league"]["diversity_reward_applied"] is True
+    assert res["final_result"]["games_played_including_this"]["uoh-sqak"] == 1
+    assert res["final_result"]["first_meeting_between_groups"] is True
+    assert res["final_result"]["diversity_reward_applied"] is True
     write_league_series(cfg, FULL, tmp_path, generated_at="x",
                         opponent="imreeyal", counted=True)
     again = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert again["league"]["first_meeting_between_groups"] is False
-    assert again["league"]["diversity_reward_applied"] is False
+    assert again["final_result"]["first_meeting_between_groups"] is False
+    assert again["final_result"]["diversity_reward_applied"] is False

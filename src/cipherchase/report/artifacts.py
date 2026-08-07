@@ -67,6 +67,7 @@ def build_result(
 ) -> Json:
     return {
         **_base(schemas.RESULT, game_id, game_uid, generated_at),
+        "report_type": "final_game_result", "timezone": schemas.DEFAULT_TIMEZONE,
         "groups": list(groups or []), "num_sub_games": len(sub_games),
         "sub_games": sub_games, "final_result": final_result,
         "mutual_agreement": mutual_agreement, "links": links,

@@ -22,9 +22,19 @@ Json = dict[str, Any]
 _CAPTURE, _SURVIVAL = "capture", "survival"
 
 
+SYMMETRIC = ("sub_game_number", "roles", "result", "winner_group", "score")
+
+
 def series_signature(game_id: str, aggregate: Json, rows: list[Json]) -> str:
-    """SHA-256 over the symmetric series outcome, reference byte-for-byte."""
-    doc = {"game_id": game_id, "aggregate": aggregate, "sub_games": rows}
+    """SHA-256 over the symmetric series outcome, reference byte-for-byte.
+
+    Rows are TRIMMED here rather than by the caller, so no per-side field —
+    our commit, our token count, our wall clock — can ever reach the one value
+    both teams must produce identically. A row may carry anything; the signature
+    sees five keys.
+    """
+    doc = {"game_id": game_id, "aggregate": aggregate,
+           "sub_games": [{k: row[k] for k in SYMMETRIC} for row in rows]}
     return hashlib.sha256(
         json.dumps(doc, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
@@ -42,9 +52,15 @@ def _score(result: str, roles: dict[str, str], table: Json) -> dict[str, int]:
 
 
 def subgame_rows(
-    summaries: list[Json], own_gid: str, opp_gid: str, table: Json
+    summaries: list[Json], own_gid: str, opp_gid: str, table: Json, *,
+    commits: Json | None = None, tokens: Json | None = None, game_id: str = "",
 ) -> list[Json]:
-    """One symmetric row per sub-game — identical from either peer's view."""
+    """One row per sub-game: the symmetric five, plus the reference's evidence.
+
+    `github_commit` is what makes a result checkable rather than merely readable
+    — it is how a grader reaches the code that played each sub-game. None of the
+    added fields reach the signature (see SYMMETRIC).
+    """
     rows: list[Json] = []
     for summary in summaries:
         own_role = summary["role"]
@@ -52,12 +68,23 @@ def subgame_rows(
         score = _score(summary["result"], roles, table)
         winner_role = summary.get("winner")
         winner = next((g for g, r in roles.items() if r == winner_role), None)
+        n = summary["sub_game_number"]
+        passed = bool((summary.get("audit") or {}).get("passed"))
         rows.append({
-            "sub_game_number": summary["sub_game_number"],
+            "sub_game_number": n,
             "roles": roles,
             "result": summary["result"],
             "winner_group": winner,
             "score": score,
+            "tie": winner is None,
+            "github_commit": dict(commits or {own_gid: "unknown", opp_gid: "unknown"}),
+            "tokens": dict(tokens or {own_gid: 0, opp_gid: 0}),
+            "log_files": {gid: f"{gid}/log_{game_id}_g{n:02d}.json"
+                          for gid in (own_gid, opp_gid)},
+            # Unverified is not tampered: a window with no audit exchange failed
+            # to prove itself, which is a different claim from failing the proof.
+            "audit": {"log_verified": passed,
+                      "tampered": (summary.get("audit") or {}).get("passed") is False},
         })
     return rows
 

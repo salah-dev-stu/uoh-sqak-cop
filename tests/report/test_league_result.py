@@ -34,7 +34,8 @@ def _summaries(perspective: str) -> list[dict]:
 def test_series_signature_uses_the_reference_spaced_separator_form() -> None:
     rows = league.subgame_rows(_summaries("us"), US, THEM, TABLE)
     agg = league.aggregate(rows, TABLE["tie_score"])
-    doc = {"game_id": "imreeyal-vs-uoh-sqak", "aggregate": agg, "sub_games": rows}
+    trimmed = [{k: r[k] for k in league.SYMMETRIC} for r in rows]
+    doc = {"game_id": "imreeyal-vs-uoh-sqak", "aggregate": agg, "sub_games": trimmed}
     expected = hashlib.sha256(
         json.dumps(doc, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
     assert league.series_signature("imreeyal-vs-uoh-sqak", agg, rows) == expected
@@ -49,9 +50,10 @@ def test_both_peers_compute_an_identical_signature_from_mirrored_views() -> None
     assert a == b, "the two peers' result files must carry the SAME mutual sha256"
 
 
-def test_rows_carry_only_symmetric_fields() -> None:
+def test_rows_carry_the_symmetric_fields_and_the_signature_sees_only_those() -> None:
     rows = league.subgame_rows(_summaries("us"), US, THEM, TABLE)
-    assert set(rows[0]) == {"sub_game_number", "roles", "result", "winner_group", "score"}
+    assert set(rows[0]) >= set(league.SYMMETRIC)
+    assert league.SYMMETRIC == ("sub_game_number", "roles", "result", "winner_group", "score")
     assert rows[0]["roles"] == {US: "police", THEM: "thief"}
     assert rows[0]["score"] == {US: 20, THEM: 5}
     assert rows[0]["winner_group"] == US
