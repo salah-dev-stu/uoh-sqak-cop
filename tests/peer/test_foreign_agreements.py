@@ -31,7 +31,7 @@ CONFIG = Path(__file__).resolve().parents[2] / "config"
 def _rt(transport, expect: str = "imreeyal", n: int = 1) -> PeerRuntime:
     cfg = ConfigManager.load(CONFIG / "police")
     cfg.private["game"] = {**cfg.private["game"], "opponent_group_id": expect}
-    cfg.private["network"] = {**cfg.private["network"], "connect_timeout_seconds": 2}
+    cfg.private["network"] = {**cfg.private["network"], "connect_timeout_seconds": 2, "index_patience_seconds": 3}
     return PeerRuntime(role="police", cfg=cfg, transport=transport, sub_game_number=n)
 
 

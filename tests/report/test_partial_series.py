@@ -68,7 +68,7 @@ def test_a_friendly_moves_no_counter_and_claims_no_reward(tmp_path) -> None:
     write_league_series(cfg, FULL, tmp_path, generated_at="x",
                         opponent="imreeyal", counted=False)
     res = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert res["final_result"]["diversity_reward_applied"] is False
+    assert res["final_result"]["diversity_reward_applied"] == dict.fromkeys(("uoh-sqak", "imreeyal"), False)
     assert res["final_result"]["first_meeting_between_groups"] is True, (
         "the groups have still never met — the FACT is mode-independent")
     assert res["final_result"]["games_played_including_this"]["uoh-sqak"] == 0, (
@@ -89,9 +89,9 @@ def test_a_counted_series_moves_the_counter_once(tmp_path) -> None:
     res = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert res["final_result"]["games_played_including_this"]["uoh-sqak"] == 1
     assert res["final_result"]["first_meeting_between_groups"] is True
-    assert res["final_result"]["diversity_reward_applied"] is True
+    assert res["final_result"]["diversity_reward_applied"] == dict.fromkeys(("uoh-sqak", "imreeyal"), True)
     write_league_series(cfg, FULL, tmp_path, generated_at="x",
                         opponent="imreeyal", counted=True)
     again = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert again["final_result"]["first_meeting_between_groups"] is False
-    assert again["final_result"]["diversity_reward_applied"] is False
+    assert again["final_result"]["diversity_reward_applied"] == dict.fromkeys(("uoh-sqak", "imreeyal"), False)

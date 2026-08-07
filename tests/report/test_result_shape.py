@@ -77,4 +77,37 @@ def test_the_result_carries_timezone_report_type_and_per_group_counters() -> Non
     assert final["games_played_including_this"] == {US: 1, THEM: 1}, (
         "per-group and inside final_result, where the book's example carries them")
     assert final["first_meeting_between_groups"] is True
-    assert final["diversity_reward_applied"] is True
+    assert final["diversity_reward_applied"] == {US: True, THEM: True}
+
+
+def test_the_opponents_declared_count_reaches_the_artifact(tmp_path) -> None:
+    # The regression imreeyal caught: they declare counted_games_played on the
+    # wire, we read it correctly at the handshake, and then dropped it before
+    # the report — filing a counted match that says they have played none.
+    # Rules 37-38 make the count a MUTUAL declaration and a false first-meeting
+    # is a project-level disqualification.
+    from pathlib import Path
+
+    from cipherchase.sdk.league_reports import write_league_series
+    from cipherchase.shared.config import ConfigManager
+
+    cfg = ConfigManager.load(Path(__file__).resolve().parents[2] / "config" / "police")
+    outcome = {
+        "game_id": "imreeyal-vs-uoh-sqak", "game_uid": "u",
+        "summaries": [{"sub_game_number": n, "role": "police", "result": "capture",
+                       "winner": "police", "steps": 12, "audit": {"passed": True},
+                       "records": [], "started_at": "2026-08-08T00:45:00+00:00",
+                       "ended_at": "2026-08-08T00:47:00+00:00",
+                       # what they put on the wire, read at negotiate time
+                       "peer_identity": {"group_id": THEM, "counted_games_played": 1}}
+                      for n in range(1, 7)]}
+    write_league_series(cfg, outcome, tmp_path, generated_at="x", opponent=THEM)
+    import json
+    result = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
+    final = result["final_result"]
+    assert final["games_played_including_this"][THEM] == 1, (
+        "their declared count, not a zero we invented for them")
+    assert final["diversity_reward_applied"] == {US: False, THEM: False}, "per-group"
+    assert final["tokens_total_series"] == {US: 0, THEM: 0}, "per-group, never null"
+    row = result["sub_games"][0]
+    assert row["started_at"] and row["ended_at"], "timestamps, not null"

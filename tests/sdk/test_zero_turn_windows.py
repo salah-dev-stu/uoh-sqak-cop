@@ -26,7 +26,7 @@ CONFIG = Path(__file__).resolve().parents[2] / "config"
 
 def _fast(cfg, num_games=2):
     cfg.private["network"] = {**cfg.private["network"], "turn_timeout_seconds": 0.3,
-        "poll_interval_seconds": 0.02, "connect_timeout_seconds": 0.2,
+        "poll_interval_seconds": 0.02, "connect_timeout_seconds": 0.2, "index_patience_seconds": 3,
         "retry_interval_seconds": 0.02, "audit_send_timeout_seconds": 0.2,
         "handshake_retries": 3}
     cfg.shared["network_and_league"]["num_games"] = num_games

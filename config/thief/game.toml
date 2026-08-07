@@ -65,7 +65,7 @@ landmarks = ["Harlem", "Central Park", "the waterfront", "Brooklyn Bridge", "Wal
 # Named emit model (SPEC §7), declared to the opponent as `scent_model_sha256`.
 # "subtractive_chebyshev_v1" = the league CORE registration; "multiplicative_cheb"
 # = our own profile. Both peers must name the same one or the physics differ.
-model = "subtractive_chebyshev_v1"
+model = "multiplicative_cheb"
 
 [play]
 seed = 2
@@ -74,15 +74,15 @@ seed = 2
 host = "127.0.0.1"
 my_port = 8002
 # Public tunnel URL advertised in the Step-0 declaration (rule 49); empty = local.
-public_url = "https://d87d-176-229-170-175.ngrok-free.app/mcp"
-opponent_url = "https://cop.imreeyal.com/mcp"
+public_url = ""
+opponent_url = "http://127.0.0.1:8001/mcp"
 turn_timeout_seconds = 180
 poll_interval_seconds = 0.5
 connect_timeout_seconds = 60
 retry_interval_seconds = 1.0
 # Patience at ONE sub-game index, in SECONDS. Must exceed one turn timeout so we
 # can outwait a peer stuck in a zero-turn window; attempts are not a unit of patience.
-index_patience_seconds = 1800
+index_patience_seconds = 240
 handshake_retries = 5
 audit_send_timeout_seconds = 10
 queue_maxsize = 100
@@ -94,7 +94,7 @@ executable = "claude"
 step_deadline_seconds = 8.0
 
 [email]
-recipient = "imreeyal.copthief@gmail.com, imree.c@gmail.com, skadah324@gmail.com"
+recipient = "rmisegal+uoh26finalgame@gmail.com"
 sender = "skadah324@gmail.com"
-enabled = true
+enabled = false
 subject_template = "CipherChase report {game_id}"

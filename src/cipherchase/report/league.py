@@ -54,6 +54,7 @@ def _score(result: str, roles: dict[str, str], table: Json) -> dict[str, int]:
 def subgame_rows(
     summaries: list[Json], own_gid: str, opp_gid: str, table: Json, *,
     commits: Json | None = None, tokens: Json | None = None, game_id: str = "",
+    clocks: dict[int, tuple[str, str]] | None = None,
 ) -> list[Json]:
     """One row per sub-game: the symmetric five, plus the reference's evidence.
 
@@ -76,6 +77,8 @@ def subgame_rows(
             "result": summary["result"],
             "winner_group": winner,
             "score": score,
+            "started_at": (clocks or {}).get(n, ("", ""))[0],
+            "ended_at": (clocks or {}).get(n, ("", ""))[1],
             "tie": winner is None,
             "github_commit": dict(commits or {own_gid: "unknown", opp_gid: "unknown"}),
             "tokens": dict(tokens or {own_gid: 0, opp_gid: 0}),

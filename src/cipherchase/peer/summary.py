@@ -14,6 +14,7 @@ from cipherchase.domain.board import Board
 from cipherchase.domain.crypto import audit_records
 from cipherchase.domain.physical_audit import physical_audit
 from cipherchase.domain.protocol import AuditPayload
+from cipherchase.peer.sealing import now_iso
 
 NO_AUDIT_RESULTS = {"timeout", "stopped", "error", "quit", "opponent_quit",
                     "handshake_failed", "restart"}
@@ -53,6 +54,11 @@ def finish(rt: Any, result: tuple[str, str], note: str = "") -> dict[str, Any]:
         "sub_game_number": rt.sub_game_number, "role": rt.role,
         "game_id": rt.game_id, "game_uid": rt.game_uid, "audit": audit,
         "records": rt.book.records(), "history": rt.history, "note": note,
+        # The opponent's own declaration, carried through to the report: rules
+        # 37-38 make the game count a MUTUAL declaration, so we must file THEIR
+        # number rather than a zero we invented on their behalf.
+        "peer_identity": dict(getattr(rt, "peer_identity", {}) or {}),
+        "started_at": getattr(rt, "started_at", ""), "ended_at": now_iso(),
         "fsm": getattr(rt, "sm", None).state.name if getattr(rt, "sm", None) else "",
     }
 

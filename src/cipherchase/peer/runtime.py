@@ -21,7 +21,7 @@ from cipherchase.infra.llm_provider import TalkContext, TemplateProvider, build_
 from cipherchase.peer import handshake, summary, turn_handler, turn_sender
 from cipherchase.peer.control_link import ControlLink
 from cipherchase.peer.deadline import Deadline
-from cipherchase.peer.sealing import SealBook, sealed_spec_record
+from cipherchase.peer.sealing import SealBook, now_iso, sealed_spec_record
 from cipherchase.peer.state_machine import State, StateMachine
 from cipherchase.peer.watchdog import Watchdog
 from cipherchase.strategy.deception import choose_intent
@@ -66,7 +66,7 @@ class PeerRuntime:
         self.max_steps, self.barriers_max = mb["survival_threshold"], mb["max_barriers"]
         self.hint_max_words = cfg.shared["world"]["hint_max_words"]
         self.landmarks = list(tt.get("landmarks", []))
-        self.book, self.history = SealBook(), []
+        self.book, self.history, self.started_at = SealBook(), [], now_iso()
         self.barriers: frozenset = frozenset()
         self.step_number, self.last_seen_step, self.seen_commits = 0, 0, {}
         self.game_id, self.game_uid, self.peer_identity, self.peer_sub_game = "", "", {}, 0

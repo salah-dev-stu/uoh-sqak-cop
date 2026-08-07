@@ -68,12 +68,12 @@ def test_the_result_declares_the_league_counters_truthfully() -> None:
     league_fields = result["final_result"]
     assert league_fields["games_played_including_this"]["uoh-sqak"] == 3
     assert league_fields["first_meeting_between_groups"] is True
-    assert league_fields["diversity_reward_applied"] is True
+    assert league_fields["diversity_reward_applied"] == dict.fromkeys(("uoh-sqak", "imreeyal"), True)
     # A false "first meeting" is a rule-38 disqualification, so a repeat pairing
     # must never carry the bonus.
     again = next(a for a in _build(games_played=4, first_meeting=False, counted=True)
                   if a["_schema"] == "result")
-    assert again["final_result"]["diversity_reward_applied"] is False
+    assert again["final_result"]["diversity_reward_applied"] == dict.fromkeys(("uoh-sqak", "imreeyal"), False)
 
 
 def test_filenames_are_the_sorted_pair_both_teams_derive() -> None:

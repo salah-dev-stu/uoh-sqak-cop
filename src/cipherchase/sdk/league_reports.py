@@ -19,7 +19,7 @@ from typing import Any
 
 from cipherchase.report import artifacts, emit, league
 from cipherchase.sdk.league_mail import gmail_backend, mail_report
-from cipherchase.sdk.series import settles
+from cipherchase.sdk.settled import settled_summaries
 from cipherchase.sdk.step0 import git_commit, step0
 from cipherchase.shared.gatekeeper import ApiGatekeeper
 
@@ -53,10 +53,13 @@ def write_league_series(
     history: list[str] = json.loads(ledger.read_text()) if ledger.exists() else []
     first_meeting = opponent != cfg.private["game"]["group_id"] and opponent not in history
     played = [*history, opponent] if counted else history
+    # Their declared count, from the identity block they put on the wire.
+    declared = next((int((s.get("peer_identity") or {}).get("counted_games_played", 0))
+                     for s in outcome["summaries"] if s.get("peer_identity")), 0)
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
         games_played=played.count(opponent), first_meeting=first_meeting,
-        counted=counted)
+        counted=counted, opponent_counted=declared)
     paths = emit.write_all(directory, arts)
     if counted:
         ledger.parent.mkdir(parents=True, exist_ok=True)
@@ -66,25 +69,6 @@ def write_league_series(
         result = next(a for a in arts if a["_schema"] == "result")
         mail_report(cfg, gate, result, email_backend or gmail_backend())
     return paths
-
-
-def settled_summaries(summaries: list[Json]) -> list[Json]:
-    """One row per sub-game — the outcome it settled on, not its retries.
-
-    A live series records every handshake retry, so a window that waited out 25
-    attempts contributes 25 summaries. Reported verbatim they become 25 result
-    rows, while the opponent's file carries one: the mutual signature is then
-    computed over lists that cannot agree, and the single field both teams must
-    match is the one guaranteed to differ.
-
-    A window that never became a game contributes NO row — the opponent has no
-    row for it either, since from their side it never happened. Reporting it as
-    a 0/0 result would put a sub-game in our file that is absent from theirs.
-    """
-    latest: dict[int, Json] = {}
-    for summary in summaries:
-        latest[summary["sub_game_number"]] = summary  # last write wins = the settled one
-    return [latest[n] for n in sorted(latest) if settles(latest[n])]
 
 
 def build_series_artifacts(
@@ -103,7 +87,9 @@ def build_series_artifacts(
         # Ours is the hash the step-0 seal names; theirs is whatever they declare,
         # which we never invent on their behalf.
         commits={own: commit, opponent: "unknown"},
-        tokens={own: sum(e.get("tokens", 0) for e in gate.ledger), opponent: 0})
+        tokens={own: sum(e.get("tokens", 0) for e in gate.ledger), opponent: 0},
+        clocks={s["sub_game_number"]: (s.get("started_at", ""), s.get("ended_at", ""))
+                for s in summaries})
     agg = league.aggregate(rows, table["tie_score"])
     gid, uid = outcome["game_id"], outcome["game_uid"]
     common = {"game_id": gid, "game_uid": uid, "generated_at": generated_at,
@@ -138,7 +124,12 @@ def build_series_artifacts(
         # friendly as on a counted series. The reward, unlike the fact, is earned
         # only by a counted first meeting.
         "first_meeting_between_groups": first_meeting,
-        "diversity_reward_applied": first_meeting and counted,
+        # Per-group, like every other counter in this block: a reward is a thing
+        # a GROUP earns, so a scalar cannot say who earned it.
+        "diversity_reward_applied": dict.fromkeys(
+            (own, opponent), bool(first_meeting and counted)),
+        "tokens_total_series": {own: sum(e.get("tokens", 0) for e in gate.ledger),
+                                opponent: 0},
     }
     out.append(artifacts.build_result(
         **common, sub_games=rows, final_result=final, mutual_agreement=agreement,

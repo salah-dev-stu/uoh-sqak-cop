@@ -50,7 +50,7 @@ def test_a_raising_listener_never_breaks_the_match() -> None:
 
 def _fast(cfg):
     cfg.private["network"] = {**cfg.private["network"], "turn_timeout_seconds": 15,
-        "poll_interval_seconds": 0.02, "connect_timeout_seconds": 5,
+        "poll_interval_seconds": 0.02, "connect_timeout_seconds": 5, "index_patience_seconds": 3,
         "retry_interval_seconds": 0.05, "audit_send_timeout_seconds": 2}
     cfg.shared["network_and_league"]["num_games"] = 1
     return cfg
