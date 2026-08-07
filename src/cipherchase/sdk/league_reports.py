@@ -13,12 +13,12 @@ symmetric mutual signature the opponent independently recomputes.
 from __future__ import annotations
 
 import json
-import os
 import time
 from pathlib import Path
 from typing import Any
 
 from cipherchase.report import artifacts, emit, league
+from cipherchase.sdk.league_mail import gmail_backend, mail_report
 from cipherchase.sdk.series import settles
 from cipherchase.sdk.step0 import step0
 from cipherchase.shared.gatekeeper import ApiGatekeeper
@@ -28,56 +28,31 @@ Json = dict[str, Any]
 
 def write_league_series(
     cfg: Any, outcome: Json, directory: str | Path, *, generated_at: str,
-    opponent: str, email_backend: Any = None,
+    opponent: str, email_backend: Any = None, counted: bool = False,
 ) -> list[Path]:
-    """Build, persist and (rule 32) auto-email one played series' reports."""
+    """Build, persist and (rule 32) auto-email one played series' reports.
+
+    League fields key on COUNTED series only. A friendly exercises the whole
+    rulebook and moves nothing: claiming a diversity reward for one is a false
+    claim, and a false first meeting is a rule-38 disqualification.
+    """
     gate = ApiGatekeeper.from_config(cfg, now=time.monotonic)
     ledger = Path(directory) / "opponents.json"
     history: list[str] = json.loads(ledger.read_text()) if ledger.exists() else []
     first_meeting = opponent != cfg.private["game"]["group_id"] and opponent not in history
-    played = [*history, opponent]
+    played = [*history, opponent] if counted else history
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
-        games_played=played.count(opponent), first_meeting=first_meeting)
+        games_played=played.count(opponent), first_meeting=first_meeting and counted,
+        counted=counted)
     paths = emit.write_all(directory, arts)
-    ledger.parent.mkdir(parents=True, exist_ok=True)
-    ledger.write_text(json.dumps(played))
+    if counted:
+        ledger.parent.mkdir(parents=True, exist_ok=True)
+        ledger.write_text(json.dumps(played))
     email = cfg.private["email"]
     if email["enabled"]:
-        _mail(cfg, gate, outcome, paths, email_backend or gmail_backend())
+        mail_report(cfg, gate, outcome, paths, email_backend or gmail_backend())
     return paths
-
-
-def gmail_backend() -> Any:  # pragma: no cover — real credentials + network
-    """The live Gmail sender, or None when no token is configured."""
-    token = os.environ.get("CIPHERCHASE_GMAIL_TOKEN", "")
-    if not token or not Path(token).expanduser().exists():
-        return None
-    from google.oauth2.credentials import Credentials
-    from googleapiclient.discovery import build
-
-    creds = Credentials.from_authorized_user_file(str(Path(token).expanduser()))
-    service = build("gmail", "v1", credentials=creds)
-    return lambda raw: service.users().messages().send(
-        userId="me", body={"raw": raw}).execute()
-
-
-def _mail(cfg: Any, gate: ApiGatekeeper, outcome: Json, paths: list[Path], backend: Any) -> None:
-    """Auto-fire the report (rule 32), but never destroy a played series' evidence.
-
-    A credential or quota problem must be loud and must not unwind the run: the
-    artifacts describe a game that really happened, and they are the only copy.
-    """
-    from cipherchase.infra.email_sender import GmailSender
-
-    email = cfg.private["email"]
-    try:
-        GmailSender(gate, recipient=email["recipient"], sender=email.get("sender", ""),
-                    backend=backend).send(
-            email["subject_template"].format(game_id=outcome["game_id"]), paths)
-    except Exception as exc:  # noqa: BLE001 — any send failure, reported not raised
-        print(f"REPORT NOT SENT — {type(exc).__name__}: {exc}\n"
-              f"  artifacts are on disk; re-send with scripts/send_sample_report.py")
 
 
 def settled_summaries(summaries: list[Json]) -> list[Json]:
@@ -102,6 +77,7 @@ def settled_summaries(summaries: list[Json]) -> list[Json]:
 def build_series_artifacts(
     cfg: Any, outcome: Json, *, opponent: str, generated_at: str,
     gate: ApiGatekeeper, games_played: int = 1, first_meeting: bool = False,
+    counted: bool = False,
 ) -> list[Json]:
     game = cfg.private["game"]
     own = game["group_id"]
@@ -135,6 +111,8 @@ def build_series_artifacts(
     # Truthful and mutually consistent, or it is a rule-38 project-level
     # disqualification — the bonus rides on the first meeting, never a repeat.
     result["league"] = {
+        "counted": counted,
+        "counted_games_played": games_played,
         "games_played_including_this": games_played,
         "first_meeting_between_groups": first_meeting,
         "diversity_reward_applied": first_meeting,

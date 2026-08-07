@@ -57,5 +57,8 @@ def identity_from_config(cfg: Any) -> dict[str, Any]:
         "repos": dict(game.get("repos", {})),
         "mcp_servers": {cfg.role: url},
         "llm_model": cfg.private.get("llm", {}).get("model", "template"),
+        # Declared in plaintext so the opponent's artifact never guesses our count
+        # and floors it to zero. Counted series only — a friendly moves nothing.
+        "counted_games_played": int(game.get("counted_games_played", 0)),
         "spec": system_info(),
     }

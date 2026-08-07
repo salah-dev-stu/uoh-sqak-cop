@@ -23,6 +23,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--at", default="")
     # Naming the opponent group turns a peer run into a reported league series.
     parser.add_argument("--opponent", default="")
+    # A counted league series; without it the run reports as a friendly
+    # and moves no league counter.
+    parser.add_argument("--counted", action="store_true")
     return parser
 
 
@@ -50,7 +53,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.opponent:  # a counted league series reports the game it PLAYED
             stamp = args.at or datetime.now(UTC).isoformat()
             for path in write_league_series(cfg, outcome, args.out, generated_at=stamp,
-                                            opponent=args.opponent):
+                                            opponent=args.opponent, counted=args.counted):
                 print(path)
         return 0
     stamp = args.at or datetime.now(UTC).isoformat()

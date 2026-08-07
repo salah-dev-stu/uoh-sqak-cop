@@ -93,7 +93,8 @@ def test_writing_a_league_series_persists_files_ledger_and_mails_them(tmp_path) 
     sent: list = []
     paths = write_league_series(
         cfg, OUTCOME, tmp_path, generated_at="2026-08-05T00:00:00+00:00",
-        opponent="imreeyal", email_backend=lambda raw: sent.append(raw) or {"id": "1"})
+        opponent="imreeyal", counted=True,
+        email_backend=lambda raw: sent.append(raw) or {"id": "1"})
     names = sorted(p.name for p in paths)
     assert names == ["config_imreeyal-vs-uoh-sqak_g01.json",
                      "config_imreeyal-vs-uoh-sqak_g02.json",
@@ -109,7 +110,7 @@ def test_the_first_meeting_is_claimed_once_and_never_again(tmp_path) -> None:
     from cipherchase.sdk.league_reports import write_league_series
 
     cfg = ConfigManager.load(CONFIG / "police")
-    kw = {"generated_at": "x", "opponent": "imreeyal"}
+    kw = {"generated_at": "x", "opponent": "imreeyal", "counted": True}
     write_league_series(cfg, OUTCOME, tmp_path, **kw)
     first = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert first["league"]["first_meeting_between_groups"] is True
