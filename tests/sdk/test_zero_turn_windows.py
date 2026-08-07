@@ -116,3 +116,17 @@ def test_a_failed_window_reports_why_not_just_that_it_failed() -> None:
     assert failed, "the window failed"
     assert failed[0]["note"], "and the reason must survive into what we print"
     assert "agreement" in failed[0]["note"].lower()
+
+
+def test_patience_at_one_index_is_measured_in_time_not_attempts() -> None:
+    # imreeyal's offset: a zero-turn timeout costs the peer that suffers it a full
+    # turn budget (180s), so the other side must be able to outwait one of those.
+    # Our budget was 20 ATTEMPTS — and a refused agreement fails a window in
+    # milliseconds, so 21 attempts burned in seconds. We gave up 5 seconds before
+    # they arrived. Attempts are not a unit of patience; seconds are.
+    from cipherchase.sdk.series import keep_waiting
+    p = {"patience": 240.0, "max_attempts": 500}
+    assert keep_waiting(elapsed=0.4, attempts=21, **p), "21 instant refusals is not patience"
+    assert keep_waiting(elapsed=200.0, attempts=400, **p), "still inside one turn budget"
+    assert not keep_waiting(elapsed=241.0, attempts=3, **p), "time is what runs out"
+    assert not keep_waiting(elapsed=1.0, attempts=501, **p), "but a hot loop is still capped"

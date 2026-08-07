@@ -76,6 +76,9 @@ turn_timeout_seconds = 180
 poll_interval_seconds = 0.5
 connect_timeout_seconds = 60
 retry_interval_seconds = 1.0
+# Patience at ONE sub-game index, in SECONDS. Must exceed one turn timeout so we
+# can outwait a peer stuck in a zero-turn window; attempts are not a unit of patience.
+index_patience_seconds = 240
 handshake_retries = 5
 audit_send_timeout_seconds = 10
 queue_maxsize = 100
