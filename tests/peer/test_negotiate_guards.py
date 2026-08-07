@@ -94,3 +94,26 @@ def test_a_uid_the_peer_derived_differently_is_caught_at_the_handshake() -> None
     rt = PeerRuntime(role="police", cfg=cfg, transport=a, sub_game_number=1)
     with pytest.raises(HandshakeError, match="never join"):
         negotiate(rt)
+
+
+def test_an_index_disagreement_is_diagnosed_before_its_symptom() -> None:
+    # Live finding: 12 windows refused as "role collision — both peers declared
+    # thief". True, but a symptom — roles alternate BY index, so a peer one index
+    # ahead necessarily declares the same role. Reporting the collision first
+    # named the effect and, worse, threw away the peer's index, so catch-up never
+    # fired and the series could not converge.
+    ours = _neg(sub_game_number=3, role="thief")
+    theirs = _neg(sub_game_number=4, role="thief").signed()
+    with pytest.raises(HandshakeError, match="sub-game") as caught:
+        ours.verify_peer(theirs)
+    assert caught.value.peer_sub_game == 4, "the index must survive to drive catch-up"
+
+
+def test_a_true_role_collision_on_the_same_index_still_refuses() -> None:
+    # Same index, same role: a genuine collision, not a desync. It must still
+    # refuse, and still carry what it knows.
+    ours = _neg(sub_game_number=3, role="thief")
+    theirs = _neg(sub_game_number=3, role="thief").signed()
+    with pytest.raises(HandshakeError, match="role collision") as caught:
+        ours.verify_peer(theirs)
+    assert caught.value.peer_sub_game == 3

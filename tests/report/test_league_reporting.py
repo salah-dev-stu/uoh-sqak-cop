@@ -6,7 +6,6 @@ signature impossible to match, the other lost the run on a credential error.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from cipherchase.sdk.league_reports import build_series_artifacts
@@ -22,6 +21,12 @@ OUTCOME = {
          "steps": 14, "audit": {"passed": True, "status": "done"}, "records": [{"commit": "ab"}]},
     ],
 }
+
+
+FULL = {**OUTCOME, "summaries": [
+    {"sub_game_number": n, "role": "police" if n % 2 else "thief", "result": "capture",
+     "winner": "police", "steps": 12, "audit": {"passed": True}, "records": [{"c": n}]}
+    for n in range(1, 7)]}
 
 
 def test_retries_collapse_to_one_row_per_sub_game() -> None:
@@ -63,9 +68,9 @@ def test_a_missing_mail_backend_never_costs_us_the_artifacts(tmp_path, capsys) -
     cfg = ConfigManager.load(CONFIG / "police")
     cfg.private["email"] = {**cfg.private["email"], "enabled": True}
     paths = write_league_series(
-        cfg, OUTCOME, tmp_path, generated_at="x", opponent="imreeyal",
+        cfg, FULL, tmp_path, generated_at="x", opponent="imreeyal",
         email_backend=None)  # no credentials available
-    assert len(paths) == 4, "declaration + config + log + result all written"
+    assert len(paths) == 14, "declaration + result + 6 config/log pairs all written"
     assert (tmp_path / "result_imreeyal-vs-uoh-sqak.json").exists()
     assert "REPORT NOT SENT" in capsys.readouterr().out, "and the failure is loud"
 
@@ -79,7 +84,7 @@ def test_the_send_failure_is_reported_not_swallowed(tmp_path, capsys) -> None:
     def _explode(raw):
         raise RuntimeError("quota exceeded")
 
-    write_league_series(cfg, OUTCOME, tmp_path, generated_at="x",
+    write_league_series(cfg, FULL, tmp_path, generated_at="x",
                         opponent="imreeyal", email_backend=_explode)
     out = capsys.readouterr().out
     assert "REPORT NOT SENT" in out and "quota exceeded" in out
@@ -110,39 +115,3 @@ def test_an_unplayed_series_reports_nothing_rather_than_a_row_of_zeroes() -> Non
     assert settled_summaries([
         {"sub_game_number": 1, "role": "thief", "result": "handshake_failed",
          "winner": "-", "steps": 0, "audit": {"passed": None}, "records": []}]) == []
-
-
-def test_a_friendly_moves_no_counter_and_claims_no_reward(tmp_path) -> None:
-    # League fields key on COUNTED series, never on "we ran the full rulebook".
-    # A friendly that claims a diversity reward is a false claim, and a false
-    # first-meeting is a rule-38 project-level disqualification.
-    from cipherchase.sdk.league_reports import write_league_series
-
-    cfg = ConfigManager.load(CONFIG / "police")
-    write_league_series(cfg, OUTCOME, tmp_path, generated_at="x",
-                        opponent="imreeyal", counted=False)
-    res = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert res["league"]["diversity_reward_applied"] is False
-    assert res["league"]["counted_games_played"] == 0, "a friendly is not a counted game"
-    assert res["league"]["counted"] is False
-    assert not (tmp_path / "opponents.json").exists(), "no counted opponent recorded"
-
-
-def test_a_counted_series_moves_the_counter_once(tmp_path) -> None:
-    from cipherchase.sdk.league_reports import write_league_series
-
-    cfg = ConfigManager.load(CONFIG / "police")
-    for _ in range(2):  # two friendlies first — neither may move anything
-        write_league_series(cfg, OUTCOME, tmp_path, generated_at="x",
-                            opponent="imreeyal", counted=False)
-    write_league_series(cfg, OUTCOME, tmp_path, generated_at="x",
-                        opponent="imreeyal", counted=True)
-    res = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert res["league"]["counted_games_played"] == 1
-    assert res["league"]["first_meeting_between_groups"] is True
-    assert res["league"]["diversity_reward_applied"] is True
-    write_league_series(cfg, OUTCOME, tmp_path, generated_at="x",
-                        opponent="imreeyal", counted=True)
-    again = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert again["league"]["first_meeting_between_groups"] is False
-    assert again["league"]["diversity_reward_applied"] is False

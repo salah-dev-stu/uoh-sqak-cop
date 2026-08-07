@@ -19,11 +19,18 @@ CONFIG = Path(__file__).resolve().parents[2] / "config"
 OUTCOME = {
     "game_id": "imreeyal-vs-uoh-sqak",
     "game_uid": "a59583ca-0700-085e-ba79-64976ecdc0ac",
+    # A COMPLETE series: a partial one is refused outright (see
+    # tests/report/test_league_reporting.py), so anything asserting on emitted
+    # artifacts must supply all six settled sub-games.
     "summaries": [
         {"sub_game_number": 1, "role": "police", "result": "capture", "winner": "police",
          "steps": 14, "audit": {"passed": True, "status": "done"}, "records": [{"commit": "ab"}]},
         {"sub_game_number": 2, "role": "thief", "result": "survival", "winner": "thief",
          "steps": 35, "audit": {"passed": True, "status": "done"}, "records": [{"commit": "cd"}]},
+        *({"sub_game_number": n, "role": "police" if n % 2 else "thief",
+           "result": "capture", "winner": "police", "steps": 12,
+           "audit": {"passed": True, "status": "done"}, "records": [{"commit": "ef"}]}
+          for n in range(3, 7)),
     ],
 }
 
@@ -40,8 +47,8 @@ def test_a_series_emits_one_declaration_one_result_and_a_pair_per_sub_game() -> 
     arts = _build()
     kinds = [a["_schema"] for a in arts]
     assert kinds.count("declaration") == 1 and kinds.count("result") == 1
-    assert kinds.count("config") == 2 and kinds.count("log") == 2
-    assert [a["sub_game"] for a in arts if a["_schema"] == "log"] == [1, 2]
+    assert kinds.count("config") == 6 and kinds.count("log") == 6
+    assert [a["sub_game"] for a in arts if a["_schema"] == "log"] == [1, 2, 3, 4, 5, 6]
 
 
 def test_the_result_carries_the_symmetric_signature_the_opponent_will_recompute() -> None:
@@ -56,14 +63,16 @@ def test_the_result_carries_the_symmetric_signature_the_opponent_will_recompute(
 
 
 def test_the_result_declares_the_league_counters_truthfully() -> None:
-    result = next(a for a in _build(games_played=3, first_meeting=True) if a["_schema"] == "result")
+    result = next(a for a in _build(games_played=3, first_meeting=True, counted=True)
+                   if a["_schema"] == "result")
     league_fields = result["league"]
     assert league_fields["games_played_including_this"] == 3
     assert league_fields["first_meeting_between_groups"] is True
     assert league_fields["diversity_reward_applied"] is True
     # A false "first meeting" is a rule-38 disqualification, so a repeat pairing
     # must never carry the bonus.
-    again = next(a for a in _build(games_played=4, first_meeting=False) if a["_schema"] == "result")
+    again = next(a for a in _build(games_played=4, first_meeting=False, counted=True)
+                  if a["_schema"] == "result")
     assert again["league"]["diversity_reward_applied"] is False
 
 
@@ -96,12 +105,8 @@ def test_writing_a_league_series_persists_files_ledger_and_mails_them(tmp_path) 
         opponent="imreeyal", counted=True,
         email_backend=lambda raw: sent.append(raw) or {"id": "1"})
     names = sorted(p.name for p in paths)
-    assert names == ["config_imreeyal-vs-uoh-sqak_g01.json",
-                     "config_imreeyal-vs-uoh-sqak_g02.json",
-                     "declaration_imreeyal-vs-uoh-sqak.json",
-                     "log_imreeyal-vs-uoh-sqak_g01.json",
-                     "log_imreeyal-vs-uoh-sqak_g02.json",
-                     "result_imreeyal-vs-uoh-sqak.json"]
+    assert len(names) == 14 and names[0] == "config_imreeyal-vs-uoh-sqak_g01.json"
+    assert "result_imreeyal-vs-uoh-sqak.json" in names
     assert sent, "a counted series must auto-report (rule 32) — never a human sending it"
     assert (tmp_path / "opponents.json").exists()
 

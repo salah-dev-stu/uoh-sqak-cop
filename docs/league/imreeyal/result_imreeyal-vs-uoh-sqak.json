@@ -3,7 +3,7 @@
   "schema_version": "1.1",
   "game_id": "imreeyal-vs-uoh-sqak",
   "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
-  "generated_at": "2026-08-06T20:59:21.410651+00:00",
+  "generated_at": "2026-08-07T08:54:15.898683+00:00",
   "groups": [
     "imreeyal",
     "uoh-sqak"
@@ -52,15 +52,17 @@
   },
   "mutual_agreement": {
     "sha256": "8ac68d14ae590c2af9e06a58a2748bad54f457cb0f2087380d39345bc14eb9fa",
-    "confirmed": false
+    "confirmed": true
   },
   "links": {
     "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
     "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
   },
   "league": {
-    "games_played_including_this": 1,
+    "counted": false,
+    "counted_games_played": 0,
+    "games_played_including_this": 0,
     "first_meeting_between_groups": true,
-    "diversity_reward_applied": true
+    "diversity_reward_applied": false
   }
 }

@@ -36,6 +36,18 @@ def write_league_series(
     rulebook and moves nothing: claiming a diversity reward for one is a false
     claim, and a false first meeting is a rule-38 disqualification.
     """
+    # A series that did not finish has no honest report. Checked against the
+    # SIGNED num_games directly, never inferred from how the loop terminated:
+    # dropping unplayed windows from a report is a different fix, and having
+    # shipped only that one we mailed a two-game "series tie" mid-series.
+    required = int(cfg.shared["network_and_league"]["num_games"])
+    settled = settled_summaries(outcome["summaries"])
+    if len(settled) < required:
+        missing = sorted(set(range(1, required + 1))
+                         - {s["sub_game_number"] for s in settled})
+        print(f"NO REPORT — {len(settled)} of {required} sub-games settled; "
+              f"a partial series has no honest report (missing: {missing})")
+        return []
     gate = ApiGatekeeper.from_config(cfg, now=time.monotonic)
     ledger = Path(directory) / "opponents.json"
     history: list[str] = json.loads(ledger.read_text()) if ledger.exists() else []
@@ -43,7 +55,7 @@ def write_league_series(
     played = [*history, opponent] if counted else history
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
-        games_played=played.count(opponent), first_meeting=first_meeting and counted,
+        games_played=played.count(opponent), first_meeting=first_meeting,
         counted=counted)
     paths = emit.write_all(directory, arts)
     if counted:
@@ -51,7 +63,8 @@ def write_league_series(
         ledger.write_text(json.dumps(played))
     email = cfg.private["email"]
     if email["enabled"]:
-        mail_report(cfg, gate, outcome, paths, email_backend or gmail_backend())
+        result = next(a for a in arts if a["_schema"] == "result")
+        mail_report(cfg, gate, result, email_backend or gmail_backend())
     return paths
 
 
@@ -114,8 +127,12 @@ def build_series_artifacts(
         "counted": counted,
         "counted_games_played": games_played,
         "games_played_including_this": games_played,
+        # Mode-independent, per imreeyal: "is this pairing in our COUNTED ledger?"
+        # One derivation for both run modes — the field means the same thing on a
+        # friendly as on a counted series. The reward, unlike the fact, is earned
+        # only by a counted first meeting.
         "first_meeting_between_groups": first_meeting,
-        "diversity_reward_applied": first_meeting,
+        "diversity_reward_applied": first_meeting and counted,
     }
     out.append(result)
     return out

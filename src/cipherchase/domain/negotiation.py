@@ -56,20 +56,28 @@ class Negotiation:
         self._check_context(message)
         return message.get("identity", {})
 
+    @staticmethod
+    def _refusal(reason: str, message: dict[str, Any]) -> HandshakeError:
+        """A refusal carries the peer's index — the only evidence of who is behind."""
+        error = HandshakeError(reason)
+        error.peer_sub_game = message.get("sub_game_number") or 0
+        return error
+
     def _check_context(self, message: dict[str, Any]) -> None:
         """Refuse a declared contradiction; an omission is never a refusal."""
         mine, role = self.context, self.context.get("role")
-        if role and (theirs := message.get("role")) and theirs == role:
-            raise HandshakeError(f"role collision — both peers declared {role}")
+        # Index disagreements are diagnosed FIRST. Roles alternate by index, so a
+        # peer one index ahead necessarily declares the same role as us — report
+        # the collision and you name the symptom and lose the number that would
+        # have let us converge. Twelve live windows were refused that way.
         for key, label in (("sub_game_number", "sub-game"), ("game_uid", "game_uid")):
             ours, peer = mine.get(key), message.get(key)
             if ours is not None and peer is not None and ours != peer:
-                error = HandshakeError(f"{label} disagreement: ours {ours!r} vs theirs {peer!r}")
-                # The refusal is the ONLY evidence of who is out of step: if both
-                # peers merely hold their index, an asymmetric failure deadlocks
-                # them on different numbers instead of drifting. Carry theirs.
-                error.peer_sub_game = message.get("sub_game_number") or 0
-                raise error
+                raise self._refusal(
+                    f"{label} disagreement: ours {ours!r} vs theirs {peer!r}", message)
+        if role and (theirs := message.get("role")) and theirs == role:
+            # Same index AND same role: a genuine collision, not a desync.
+            raise self._refusal(f"role collision — both peers declared {role}", message)
         for key in _MODELS:
             ours, peer = mine.get(key), message.get(key)
             if ours and peer and ours != peer:
