@@ -57,25 +57,31 @@ class ApexCop(PoliceBrain):
         scored = []
         for q in self._candidates(cop, barriers):
             gain = reach0 - len(reachable_cells(self.board, thief, barriers | {q}))
-            if gain >= self.param("min_gain", 1.0):
+            # A wall costs a turn, so it must do more than delete one cell.
+            if gain >= self.param("min_gain", 2.0):
                 scored.append((gain, q))
         scored.sort(key=lambda gq: (-gq[0], gq[1]))
         return [q for _, q in scored[:k]]
 
     def _best_response(self, cop, thief, barriers) -> tuple[Direction, Cell | None]:
-        options: list[Cell | None] = [None, *self._topk_barriers(cop, thief, barriers)]
+        """Best legal action: EITHER a step OR a wall, never both (ch.3).
+
+        The Barrier Law prices the wall in tempo, so the two are genuinely
+        alternatives and the search has to compare them as such. Evaluating
+        move-and-wall together searched a game we were not entitled to play, and
+        chose a wall on almost every turn because it never cost anything.
+        """
         best: tuple[Direction, Cell | None] = (Direction.STAY, None)
         best_val = float("inf")
         cost = self.param("apex_barrier_cost", 0.0)
-        for move in self.board.legal_moves(cop, barriers):
-            new_cop = self.board.target_of(cop, move)
-            for q in options:
-                if q == new_cop:
-                    continue
-                b2 = barriers | ({q} if q else frozenset())
-                val = self._worst_escape(new_cop, thief, b2) + (cost if q else 0.0)
-                if val < best_val:
-                    best_val, best = val, (move, q)
+        for move in self.board.legal_moves(cop, barriers):  # step, no wall
+            val = self._worst_escape(self.board.target_of(cop, move), thief, barriers)
+            if val < best_val:
+                best_val, best = val, (move, None)
+        for q in self._topk_barriers(cop, thief, barriers):  # wall, forgoing the step
+            val = self._worst_escape(cop, thief, barriers | {q}) + cost
+            if val < best_val:
+                best_val, best = val, (Direction.STAY, q)
         return best
 
     def _decide_move(

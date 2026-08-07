@@ -56,13 +56,15 @@ class EndgameSolver:
         return best if best and best.value > 0 else None
 
     def _cop_actions(self, cop: Cell, barriers: frozenset[Cell]):
-        adjacent = self.board.neighbors(cop, frozenset())
-        walls = [q for q in sorted(adjacent) if can_place_barrier(self.board, cop, q, barriers, 14)]
-        for move in self.board.legal_moves(cop, barriers):
-            yield move, None
-            for q in walls:
-                if self.board.target_of(cop, move) != q:
-                    yield move, q
+        """Legal cop actions: a step, OR a wall with the step forgone (ch.3).
+
+        Searching move-and-wall together proved lines the Barrier Law does not
+        allow, so a "forced" capture could rest on an action we may not take.
+        """
+        yield from ((move, None) for move in self.board.legal_moves(cop, barriers))
+        for q in sorted(self.board.neighbors(cop, frozenset())):
+            if can_place_barrier(self.board, cop, q, barriers, 14):
+                yield Direction.STAY, q
 
     def _max_cop(self, cop, thief, barriers, ply, alpha, beta):
         if self.nodes_used >= self.node_cap or ply >= self.depth:

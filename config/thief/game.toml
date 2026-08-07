@@ -26,7 +26,7 @@ w_dist = 1.0
 w_exits = 1.0
 w_risk = 1.0
 lambda_barrier = 0.2
-min_gain = 1
+min_gain = 2
 # Claim "are you here?" only when belief mass on our own cell reaches this.
 # A claim names our cop's cell exactly, so an unconditional one donates our
 # position every turn; 0 restores unconditional claiming.
@@ -39,6 +39,10 @@ apex_lock_mass = 0.5
 apex_w_reach = 1.0
 apex_w_dist = 0.6
 apex_w_wall = 0.8
+# A wall costs the cop its step (ch.3 Barrier Law), so it must beat the best
+# move by this margin to be worth the tempo. At 0 the cop walls every turn and
+# never closes — it caught nothing at all in 40 seeded games.
+apex_barrier_cost = 1.0
 apex_barrier_topk = 3
 apex_endgame_depth = 8
 apex_endgame_nodes = 50000

@@ -52,6 +52,7 @@ class PoliceBrain(BrainBase):
         for q in sorted(self._candidates(state.position, barriers)):
             gain = reach0 - len(reachable_cells(self.board, thief, barriers | {q}))
             score = gain - self.param("lambda_barrier", 0.2) * self.board.distance(q, thief)
-            if gain >= self.param("min_gain", 1.0) and score > best:
+            # A wall costs a turn, so it must do more than delete one cell.
+            if gain >= self.param("min_gain", 2.0) and score > best:
                 best_q, best = q, score
         return best_q

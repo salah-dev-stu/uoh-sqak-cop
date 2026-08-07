@@ -66,9 +66,12 @@ def test_node_cap_short_circuits_to_unproven() -> None:
 
 def test_stay_is_a_legal_cop_action_and_ignored_when_useless() -> None:
     # A cornered thief with ONE exit left: the winning line completes the box
-    # (rule 47) rather than dithering. Under the spec the cop's own body is not
-    # a wall, so the capture has to be built out of barriers, not standing there.
+    # (rule 47). Under the Barrier Law a wall FORGOES the step, so the winning
+    # action is STAY-and-wall — idling is only dithering when nothing is placed.
     solver = EndgameSolver(B, depth=4, nodes=50_000, survival_threshold=35)
     line = solver.solve(cop=(1, 1), thief=(0, 0), barriers=frozenset({(0, 1)}), ply=0)
-    assert line is not None and line.action[0] is not Direction.STAY  # progress, not dithering
+    assert line is not None
+    move, wall = line.action
+    assert wall is not None, "the capture is built from barriers, not from standing there"
+    assert move is Direction.STAY, "and the wall costs the step (ch.3)"
     assert line.value > 0, "walling in the last exit is a forced capture"

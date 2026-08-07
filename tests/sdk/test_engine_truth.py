@@ -17,8 +17,14 @@ def _cfg() -> ConfigManager:
 
 
 def test_sealed_payloads_carry_the_real_barrier_view() -> None:
+    # About payload fidelity, not barrier policy: under the Barrier Law a wall
+    # costs the cop its turn, so the shipped cop walls only when it seals a real
+    # pocket. Lower the bar here so this game contains walls to check.
+    cfg = _cfg()
+    cfg.private["strategy"] = {**cfg.private["strategy"],
+                           "min_gain": 1, "apex_barrier_cost": 0.0}
     frames: list[dict] = []
-    result = run_game(_cfg(), on_frame=frames.append)
+    result = run_game(cfg, on_frame=frames.append)
     by_step = {f["turn"]: f for f in frames}
     placed_any = any(f["barriers"] for f in frames)
     assert placed_any, "test needs a game where barriers are placed"
