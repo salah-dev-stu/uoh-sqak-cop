@@ -3,7 +3,9 @@
   "schema_version": "1.1",
   "game_id": "imreeyal-vs-uoh-sqak",
   "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
-  "generated_at": "2026-08-07T17:17:57.707996+00:00",
+  "generated_at": "2026-08-07T21:11:48.157194+00:00",
+  "report_type": "final_game_result",
+  "timezone": "Asia/Jerusalem",
   "groups": [
     "imreeyal",
     "uoh-sqak"
@@ -21,6 +23,23 @@
       "score": {
         "uoh-sqak": 5,
         "imreeyal": 20
+      },
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "617b3c982647b640460e331476fb9af8e7ccefa5",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g01.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g01.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
       }
     },
     {
@@ -34,6 +53,23 @@
       "score": {
         "uoh-sqak": 20,
         "imreeyal": 5
+      },
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "617b3c982647b640460e331476fb9af8e7ccefa5",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g02.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g02.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
       }
     },
     {
@@ -47,6 +83,23 @@
       "score": {
         "uoh-sqak": 5,
         "imreeyal": 20
+      },
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "617b3c982647b640460e331476fb9af8e7ccefa5",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g03.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g03.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
       }
     },
     {
@@ -60,6 +113,23 @@
       "score": {
         "uoh-sqak": 20,
         "imreeyal": 5
+      },
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "617b3c982647b640460e331476fb9af8e7ccefa5",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g04.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g04.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
       }
     },
     {
@@ -73,6 +143,23 @@
       "score": {
         "uoh-sqak": 5,
         "imreeyal": 20
+      },
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "617b3c982647b640460e331476fb9af8e7ccefa5",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g05.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g05.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
       }
     },
     {
@@ -86,6 +173,23 @@
       "score": {
         "uoh-sqak": 20,
         "imreeyal": 5
+      },
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "617b3c982647b640460e331476fb9af8e7ccefa5",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g06.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g06.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
       }
     }
   ],
@@ -100,7 +204,14 @@
     },
     "ties": 0,
     "winner_group": null,
-    "series_tie": true
+    "series_tie": true,
+    "counted": false,
+    "games_played_including_this": {
+      "uoh-sqak": 0,
+      "imreeyal": 1
+    },
+    "first_meeting_between_groups": true,
+    "diversity_reward_applied": false
   },
   "mutual_agreement": {
     "sha256": "28d73023ecbed4fd60060ed951a5376fe167d39caa2ad8566aabf52b88d8b228",
@@ -109,12 +220,5 @@
   "links": {
     "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
     "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
-  },
-  "league": {
-    "counted": false,
-    "counted_games_played": 0,
-    "games_played_including_this": 0,
-    "first_meeting_between_groups": true,
-    "diversity_reward_applied": false
   }
 }

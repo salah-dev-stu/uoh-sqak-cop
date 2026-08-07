@@ -90,13 +90,14 @@ def settled_summaries(summaries: list[Json]) -> list[Json]:
 def build_series_artifacts(
     cfg: Any, outcome: Json, *, opponent: str, generated_at: str,
     gate: ApiGatekeeper, games_played: int = 1, first_meeting: bool = False,
-    counted: bool = False, opponent_counted: int = 0,
+    counted: bool = False, opponent_counted: int = 0, commit: str = "",
 ) -> list[Json]:
     game = cfg.private["game"]
     own = game["group_id"]
     summaries = settled_summaries(outcome["summaries"])
     table = cfg.shared["scoring"]
-    commit = git_commit(gate)
+    # A regenerated report names the commit that PLAYED, not today's HEAD.
+    commit = commit or git_commit(gate)
     rows = league.subgame_rows(
         summaries, own, opponent, table, game_id=outcome["game_id"],
         # Ours is the hash the step-0 seal names; theirs is whatever they declare,
