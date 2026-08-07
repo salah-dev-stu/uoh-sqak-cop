@@ -3,7 +3,7 @@
   "schema_version": "1.1",
   "game_id": "imreeyal-vs-uoh-sqak",
   "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
-  "generated_at": "2026-08-07T21:59:36.378966+00:00",
+  "generated_at": "2026-08-07T22:23:21.723870+00:00",
   "report_type": "final_game_result",
   "timezone": "Asia/Jerusalem",
   "groups": [
@@ -24,6 +24,8 @@
         "uoh-sqak": 10,
         "imreeyal": 5
       },
+      "started_at": "",
+      "ended_at": "",
       "tie": false,
       "github_commit": {
         "uoh-sqak": "65d3d7113f275338a3e2899e77a326c0cfc31fda",
@@ -54,6 +56,8 @@
         "uoh-sqak": 20,
         "imreeyal": 5
       },
+      "started_at": "",
+      "ended_at": "",
       "tie": false,
       "github_commit": {
         "uoh-sqak": "65d3d7113f275338a3e2899e77a326c0cfc31fda",
@@ -84,6 +88,8 @@
         "uoh-sqak": 10,
         "imreeyal": 5
       },
+      "started_at": "",
+      "ended_at": "",
       "tie": false,
       "github_commit": {
         "uoh-sqak": "65d3d7113f275338a3e2899e77a326c0cfc31fda",
@@ -114,6 +120,8 @@
         "uoh-sqak": 20,
         "imreeyal": 5
       },
+      "started_at": "",
+      "ended_at": "",
       "tie": false,
       "github_commit": {
         "uoh-sqak": "65d3d7113f275338a3e2899e77a326c0cfc31fda",
@@ -144,6 +152,8 @@
         "uoh-sqak": 5,
         "imreeyal": 20
       },
+      "started_at": "",
+      "ended_at": "",
       "tie": false,
       "github_commit": {
         "uoh-sqak": "65d3d7113f275338a3e2899e77a326c0cfc31fda",
@@ -174,6 +184,8 @@
         "uoh-sqak": 20,
         "imreeyal": 5
       },
+      "started_at": "",
+      "ended_at": "",
       "tie": false,
       "github_commit": {
         "uoh-sqak": "65d3d7113f275338a3e2899e77a326c0cfc31fda",
@@ -208,10 +220,17 @@
     "counted": false,
     "games_played_including_this": {
       "uoh-sqak": 0,
-      "imreeyal": 0
+      "imreeyal": 1
     },
     "first_meeting_between_groups": true,
-    "diversity_reward_applied": false
+    "diversity_reward_applied": {
+      "uoh-sqak": false,
+      "imreeyal": false
+    },
+    "tokens_total_series": {
+      "uoh-sqak": 0,
+      "imreeyal": 0
+    }
   },
   "mutual_agreement": {
     "sha256": "9b775686188000854557a323e8f36c21a8a9369317fd4ada115d54f0408aaf99",
