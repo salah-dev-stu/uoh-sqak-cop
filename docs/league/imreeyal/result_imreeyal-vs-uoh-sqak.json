@@ -1,0 +1,120 @@
+{
+  "_schema": "result",
+  "schema_version": "1.1",
+  "game_id": "imreeyal-vs-uoh-sqak",
+  "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
+  "generated_at": "2026-08-07T17:17:57.707996+00:00",
+  "groups": [
+    "imreeyal",
+    "uoh-sqak"
+  ],
+  "num_sub_games": 6,
+  "sub_games": [
+    {
+      "sub_game_number": 1,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "capture",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 20
+      }
+    },
+    {
+      "sub_game_number": 2,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "capture",
+      "winner_group": "uoh-sqak",
+      "score": {
+        "uoh-sqak": 20,
+        "imreeyal": 5
+      }
+    },
+    {
+      "sub_game_number": 3,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "capture",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 20
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "capture",
+      "winner_group": "uoh-sqak",
+      "score": {
+        "uoh-sqak": 20,
+        "imreeyal": 5
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "capture",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 20
+      }
+    },
+    {
+      "sub_game_number": 6,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "capture",
+      "winner_group": "uoh-sqak",
+      "score": {
+        "uoh-sqak": 20,
+        "imreeyal": 5
+      }
+    }
+  ],
+  "final_result": {
+    "total_score": {
+      "imreeyal": 77,
+      "uoh-sqak": 77
+    },
+    "sub_games_won": {
+      "imreeyal": 3,
+      "uoh-sqak": 3
+    },
+    "ties": 0,
+    "winner_group": null,
+    "series_tie": true
+  },
+  "mutual_agreement": {
+    "sha256": "28d73023ecbed4fd60060ed951a5376fe167d39caa2ad8566aabf52b88d8b228",
+    "confirmed": true
+  },
+  "links": {
+    "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+    "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+  },
+  "league": {
+    "counted": false,
+    "counted_games_played": 0,
+    "games_played_including_this": 0,
+    "first_meeting_between_groups": true,
+    "diversity_reward_applied": false
+  }
+}

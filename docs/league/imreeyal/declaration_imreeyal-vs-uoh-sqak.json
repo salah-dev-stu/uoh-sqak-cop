@@ -1,0 +1,43 @@
+{
+  "_schema": "declaration",
+  "schema_version": "1.1",
+  "game_id": "imreeyal-vs-uoh-sqak",
+  "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
+  "generated_at": "2026-08-07T17:17:57.707996+00:00",
+  "timezone": "Asia/Jerusalem",
+  "groups": [
+    "imreeyal",
+    "uoh-sqak"
+  ],
+  "num_sub_games": 6,
+  "max_tokens": 200000,
+  "links": {
+    "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+    "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+  },
+  "step0": {
+    "schema": "declaration/1.0",
+    "team": "uoh-sqak",
+    "players": [
+      "Salah Qadah:323039974",
+      "Andalus Kalash:211435797"
+    ],
+    "role": "thief",
+    "git_commit": "617b3c982647b640460e331476fb9af8e7ccefa5",
+    "llm": {
+      "provider": "template",
+      "model": "template",
+      "version": "n/a"
+    },
+    "system": {
+      "os": "Darwin 25.2.0",
+      "cpu": "arm",
+      "cpu_count": 8,
+      "ram_gb": 8.6,
+      "gpu": "Apple Silicon",
+      "python": "3.13.12"
+    },
+    "version": "1.00",
+    "signature": "4beac9056439085d817da8734e546919f886abd32b2e9f42d3bd8b62e2b0a8e2"
+  }
+}
