@@ -55,5 +55,8 @@ class BaseTransport(ABC):
     def drain_inboxes(self) -> None:
         self.inboxes.drain_all()
 
+    def drain_backlog(self, opening: int) -> None:
+        self.inboxes.drain_backlog(opening)
+
     def drain_stale(self) -> None:
         self.inboxes.drain_stale()

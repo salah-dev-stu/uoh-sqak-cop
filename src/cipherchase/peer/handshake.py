@@ -40,6 +40,8 @@ def _await_opponent(rt: Any) -> dict[str, Any]:
     expected = str(rt.cfg.private["game"].get("opponent_group_id", "") or "")
     deadline = rt.now() + float(rt.cfg.network["connect_timeout_seconds"])
     strangers: list[str] = []
+    drained: list[str] = []
+    ahead = 0
     while (remaining := deadline - rt.now()) > 0:
         message = rt.transport.poll_agreement_or_none(min(remaining, 0.5))
         if message is None:
@@ -48,10 +50,23 @@ def _await_opponent(rt: Any) -> dict[str, Any]:
         if expected and sender and sender != expected:
             strangers.append(_who(message))  # not ours — discard, keep the window
             continue
+        theirs = message.get("sub_game_number")
+        if theirs is not None and theirs != rt.sub_game_number:
+            # Their OTHER window, re-pushing. Consuming one of these per window
+            # drains slower than a peer pushes, so a bounded inbox fills and then
+            # refuses everyone — the correct counterpart included. Drain at poll
+            # speed instead, but keep the highest index so catch-up still fires.
+            ahead = max(ahead, int(theirs))
+            drained.append(_who(message))
+            continue
         return message
     seen = f"; discarded {len(strangers)} from {sorted(set(strangers))}" if strangers else ""
-    raise HandshakeError(
+    if drained:  # their OTHER windows, drained so they cannot fill our inbox
+        seen += f"; drained {len(drained)} from {sorted(set(drained))}"
+    error = HandshakeError(
         f"no agreement received from {expected or 'the peer'} before the deadline{seen}")
+    error.peer_sub_game = ahead
+    raise error
 
 
 def negotiate(rt: Any) -> dict[str, Any]:

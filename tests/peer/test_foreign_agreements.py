@@ -67,6 +67,9 @@ def test_with_no_expected_opponent_we_accept_whoever_answers() -> None:
 
 
 def test_a_refusal_names_the_peer_its_role_and_its_index() -> None:
+    # A drained agreement must still be reported by name. Draining stops their
+    # other windows filling our inbox; it must not also make them invisible, or
+    # we are back to arguing about counts with no evidence.
     a, b = make_pair()
     rt = _rt(a, n=3)
     b.exchange_agreement_push(_agreement(rt, "imreeyal", role="police", n=5))
@@ -74,3 +77,51 @@ def test_a_refusal_names_the_peer_its_role_and_its_index() -> None:
         negotiate(rt)
     note = str(caught.value)
     assert "imreeyal" in note and "police" in note and "5" in note, note
+    assert "drained" in note
+
+
+def test_a_wrong_index_agreement_is_drained_not_returned() -> None:
+    # anrbj666's finding, and the mechanism is joint: their next window re-pushed
+    # its agreement every 7s while ours played the current one. We consumed ONE
+    # per window and refused it, so their pushes outran our draining, the bounded
+    # inbox hit capacity, and `negotiate` then failed for EVERYONE — including the
+    # correct counterpart. A full inbox looks "up" to every probe while being
+    # unable to start any game.
+    a, b = make_pair()
+    rt = _rt(a, n=1)
+    for _ in range(20):                      # their g02 runner, re-pushing
+        b.exchange_agreement_push(_agreement(rt, "imreeyal", role="thief", n=2))
+    b.exchange_agreement_push(_agreement(rt, "imreeyal", role="thief", n=1))
+    assert negotiate(rt)["group_id"] == "imreeyal", (
+        "the correct window must survive a backlog of the peer's other windows")
+
+
+def test_draining_still_reports_how_far_ahead_the_peer_was() -> None:
+    # Draining must not swallow the catch-up signal: if every agreement in the
+    # window declares a higher index, we are behind and need to converge.
+    a, b = make_pair()
+    rt = _rt(a, n=2)
+    for _ in range(4):
+        b.exchange_agreement_push(_agreement(rt, "imreeyal", role="thief", n=5))
+    with pytest.raises(HandshakeError) as caught:
+        negotiate(rt)
+    assert caught.value.peer_sub_game == 5, "the highest index seen must survive"
+
+
+def test_a_full_inbox_says_which_channel_and_how_deep() -> None:
+    # Their second point: at capacity our negotiate failed for everyone with
+    # "agreement inbox at capacity" and no indication of the channel's depth or
+    # that a backlog was the cause. A peer in that state answers every probe
+    # while being unable to start any game — the worst diagnostic shape there is.
+    from cipherchase.exceptions import QueueFullError
+    from cipherchase.infra.inboxes import Inboxes
+
+    boxes = Inboxes(2)
+    boxes.put_agreement({"a": 1})
+    boxes.put_agreement({"a": 2})
+    with pytest.raises(QueueFullError) as caught:
+        boxes.put_agreement({"a": 3})
+    note = str(caught.value)
+    assert "agreement" in note and "2" in note, note
+    assert "drain" in note.lower() or "backlog" in note.lower(), (
+        "the message must point at the cause, not just the symptom")
