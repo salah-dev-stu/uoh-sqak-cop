@@ -1,0 +1,243 @@
+{
+  "_schema": "result",
+  "schema_version": "1.1",
+  "game_id": "imreeyal-vs-uoh-sqak",
+  "game_uid": "639db017-607b-1bce-9fae-f5948766a795",
+  "generated_at": "2026-08-08T08:06:15.493056+00:00",
+  "report_type": "final_game_result",
+  "timezone": "Asia/Jerusalem",
+  "groups": [
+    "imreeyal",
+    "uoh-sqak"
+  ],
+  "num_sub_games": 6,
+  "sub_games": [
+    {
+      "sub_game_number": 1,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "survival",
+      "winner_group": "uoh-sqak",
+      "score": {
+        "uoh-sqak": 10,
+        "imreeyal": 5
+      },
+      "started_at": "2026-08-08T07:53:15.843936+00:00",
+      "ended_at": "2026-08-08T07:55:57.333603+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "0ae1adf004ed5a3a72f5bf9d0638ff622437c5ac",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g01.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g01.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 2,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "survival",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 10
+      },
+      "started_at": "2026-08-08T07:55:57.341129+00:00",
+      "ended_at": "2026-08-08T07:57:50.927402+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "0ae1adf004ed5a3a72f5bf9d0638ff622437c5ac",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g02.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g02.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 3,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "survival",
+      "winner_group": "uoh-sqak",
+      "score": {
+        "uoh-sqak": 10,
+        "imreeyal": 5
+      },
+      "started_at": "2026-08-08T07:57:50.927820+00:00",
+      "ended_at": "2026-08-08T07:59:45.395933+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "0ae1adf004ed5a3a72f5bf9d0638ff622437c5ac",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g03.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g03.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "survival",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 10
+      },
+      "started_at": "2026-08-08T07:59:45.396411+00:00",
+      "ended_at": "2026-08-08T08:01:38.559697+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "0ae1adf004ed5a3a72f5bf9d0638ff622437c5ac",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g04.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g04.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "thief",
+        "imreeyal": "police"
+      },
+      "result": "capture",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 20
+      },
+      "started_at": "2026-08-08T08:01:38.560123+00:00",
+      "ended_at": "2026-08-08T08:03:23.367121+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "0ae1adf004ed5a3a72f5bf9d0638ff622437c5ac",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g05.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g05.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 6,
+      "roles": {
+        "uoh-sqak": "police",
+        "imreeyal": "thief"
+      },
+      "result": "survival",
+      "winner_group": "imreeyal",
+      "score": {
+        "uoh-sqak": 5,
+        "imreeyal": 10
+      },
+      "started_at": "2026-08-08T08:03:23.367782+00:00",
+      "ended_at": "2026-08-08T08:06:15.490885+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "0ae1adf004ed5a3a72f5bf9d0638ff622437c5ac",
+        "imreeyal": "unknown"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "imreeyal": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_imreeyal-vs-uoh-sqak_g06.json",
+        "imreeyal": "imreeyal/log_imreeyal-vs-uoh-sqak_g06.json"
+      },
+      "audit": {
+        "log_verified": false,
+        "tampered": false
+      }
+    }
+  ],
+  "final_result": {
+    "total_score": {
+      "imreeyal": 60,
+      "uoh-sqak": 40
+    },
+    "sub_games_won": {
+      "imreeyal": 4,
+      "uoh-sqak": 2
+    },
+    "ties": 0,
+    "winner_group": "imreeyal",
+    "series_tie": false,
+    "counted": true,
+    "games_played_including_this": {
+      "uoh-sqak": 1,
+      "imreeyal": 1
+    },
+    "first_meeting_between_groups": true,
+    "diversity_reward_applied": {
+      "uoh-sqak": true,
+      "imreeyal": true
+    },
+    "tokens_total_series": {
+      "uoh-sqak": 0,
+      "imreeyal": 0
+    }
+  },
+  "mutual_agreement": {
+    "sha256": "206274bc0e2c55a13e8f2840efde08d3316a6c3d3654888c0c7f85caa8e6b367",
+    "confirmed": false
+  },
+  "links": {
+    "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+    "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+  }
+}

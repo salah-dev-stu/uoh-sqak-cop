@@ -59,7 +59,10 @@ def write_league_series(
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
         games_played=played.count(opponent), first_meeting=first_meeting,
-        counted=counted, opponent_counted=declared)
+        # "including this": their DECLARED prior plus this game, exactly as ours
+        # counts this game for us. Filing their prior unchanged puts our two
+        # honest files one apart on the opponent's column.
+        counted=counted, opponent_counted=declared + (1 if counted else 0))
     paths = emit.write_all(directory, arts)
     if counted:
         ledger.parent.mkdir(parents=True, exist_ok=True)

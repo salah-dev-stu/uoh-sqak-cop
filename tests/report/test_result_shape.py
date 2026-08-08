@@ -111,3 +111,28 @@ def test_the_opponents_declared_count_reaches_the_artifact(tmp_path) -> None:
     assert final["tokens_total_series"] == {US: 0, THEM: 0}, "per-group, never null"
     row = result["sub_games"][0]
     assert row["started_at"] and row["ended_at"], "timestamps, not null"
+
+
+def test_including_this_means_including_this_for_both_groups() -> None:
+    # The field is games_played_including_this. Ours counts this game; theirs is
+    # their DECLARED prior, which must also have this game added — or two honest
+    # files disagree by exactly one on the opponent's column.
+    import json as _json
+    from pathlib import Path
+
+    from cipherchase.sdk.league_reports import write_league_series
+    from cipherchase.shared.config import ConfigManager
+
+    cfg = ConfigManager.load(Path(__file__).resolve().parents[2] / "config" / "police")
+    outcome = {"game_id": "imreeyal-vs-uoh-sqak", "game_uid": "u",
+               "summaries": [{"sub_game_number": n, "role": "police", "result": "capture",
+                              "winner": "police", "steps": 12, "audit": {"passed": True},
+                              "records": [],
+                              "peer_identity": {"group_id": THEM, "counted_games_played": 1}}
+                             for n in range(1, 7)]}
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        write_league_series(cfg, outcome, tmp, generated_at="x", opponent=THEM, counted=True)
+        r = _json.loads((Path(tmp) / "result_imreeyal-vs-uoh-sqak.json").read_text())
+    assert r["final_result"]["games_played_including_this"] == {US: 1, THEM: 2}, (
+        "their declared 1 plus this game = 2; ours 0 plus this game = 1")
