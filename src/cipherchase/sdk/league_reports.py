@@ -19,7 +19,7 @@ from typing import Any
 
 from cipherchase.report import artifacts, emit, league
 from cipherchase.sdk.league_mail import gmail_backend, mail_report
-from cipherchase.sdk.settled import settled_summaries
+from cipherchase.sdk.settled import declared_commit, settled_summaries
 from cipherchase.sdk.step0 import git_commit, step0
 from cipherchase.shared.gatekeeper import ApiGatekeeper
 
@@ -62,7 +62,10 @@ def write_league_series(
         # "including this": their DECLARED prior plus this game, exactly as ours
         # counts this game for us. Filing their prior unchanged puts our two
         # honest files one apart on the opponent's column.
-        counted=counted, opponent_counted=declared + (1 if counted else 0))
+        counted=counted, opponent_counted=declared + (1 if counted else 0),
+        # Verified at every audit and dropped before the file: six sub-games
+        # shipped as "unknown" while their hash was on the wire throughout.
+        opponent_commits=declared_commit(settled))
     paths = emit.write_all(directory, arts)
     if counted:
         ledger.parent.mkdir(parents=True, exist_ok=True)

@@ -27,12 +27,27 @@ def _fsm_step(rt: Any, target: Any) -> None:
         machine.transition(target)
 
 
+def peer_commit(payload: dict[str, Any] | None) -> str:
+    """The revision named by THEIR step-0 seal, or "" if they declared none.
+
+    We already re-hash every record they reveal, so this hash arrives verified
+    and is then thrown away — our result file said "unknown" for six sub-games
+    whose commits had been on the wire throughout. Never invented on their
+    behalf: an opponent who declares nothing is recorded as declaring nothing.
+    """
+    for record in (payload or {}).get("records", []):
+        spec = record.get("payload", {})
+        if spec.get("type") == "system_spec" and spec.get("github_commit"):
+            return str(spec["github_commit"])
+    return ""
+
+
 def finish(rt: Any, result: tuple[str, str], note: str = "") -> dict[str, Any]:
     from cipherchase.peer.state_machine import State
 
     _fsm_step(rt, State.TECHNICAL_LOSS if result[0] in NO_AUDIT_RESULTS else State.AUDIT)
     audit: dict[str, Any] = {"status": "skipped", "passed": None}
-    final = result
+    final, their_commit = result, ""
     if result[0] not in NO_AUDIT_RESULTS:
         payload = AuditPayload(
             sender=rt.role, records=rt.book.records(), result_claim=result[0]
@@ -43,6 +58,7 @@ def finish(rt: Any, result: tuple[str, str], note: str = "") -> dict[str, Any]:
             rt.transport.send_audit(payload)
         theirs = rt.transport.poll_audit_or_none(rt.cfg.network["connect_timeout_seconds"])
         if theirs is not None:
+            their_commit = peer_commit(theirs)
             verdict = audit_records(list(theirs.get("records", [])))
             audit = {"status": "done", "passed": verdict["passed"],
                      "failed_steps": verdict["failed_steps"]}
@@ -58,6 +74,9 @@ def finish(rt: Any, result: tuple[str, str], note: str = "") -> dict[str, Any]:
         # 37-38 make the game count a MUTUAL declaration, so we must file THEIR
         # number rather than a zero we invented on their behalf.
         "peer_identity": dict(getattr(rt, "peer_identity", {}) or {}),
+        # Verified at the audit and carried to the report, so the result names
+        # the revision that actually played on BOTH sides (anrbj666, instance 5).
+        "peer_commit": their_commit,
         "started_at": getattr(rt, "started_at", ""), "ended_at": now_iso(),
         "fsm": getattr(rt, "sm", None).state.name if getattr(rt, "sm", None) else "",
     }

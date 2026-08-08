@@ -31,3 +31,14 @@ def settled_summaries(summaries: list[Json]) -> list[Json]:
     for summary in summaries:
         latest[summary["sub_game_number"]] = summary  # last write wins = the settled one
     return [latest[n] for n in sorted(latest) if settles(latest[n])]
+
+
+def declared_commit(summaries: list[Json]) -> str:
+    """The opponent's step-0 revision, taken from whichever sub-game revealed it.
+
+    A peer that crashes before one audit still declares the same hash in the
+    others, so the first non-empty answer is the series' answer. "unknown" is
+    reserved for an opponent who genuinely never told us — it is a record of
+    their silence, not a placeholder for our own dropped value.
+    """
+    return next((s["peer_commit"] for s in summaries if s.get("peer_commit")), "unknown")
