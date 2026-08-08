@@ -40,7 +40,12 @@ def main() -> int:
         print(f"no logs in {out}")
         return 1
     result_path = next(out.glob("result_*.json"))
-    before = json.loads(result_path.read_text())["mutual_agreement"]["sha256"]
+    prior = json.loads(result_path.read_text())
+    before = prior["mutual_agreement"]["sha256"]
+    # A regeneration fixes SHAPE. Whether the game counted is a fact about the
+    # game, so it is carried over rather than re-decided — dropping it silently
+    # wiped the diversity reward on the first attempt at this.
+    was_counted = bool(prior["final_result"].get("counted", False))
     declaration = json.loads(next(out.glob("declaration_*.json")).read_text())
     played_at = declaration["step0"]["git_commit"]
     summaries = []
@@ -55,9 +60,16 @@ def main() -> int:
                json.loads(logs[0].read_text())["game_uid"], "summaries": summaries}
     cfg = ConfigManager.load(role_cfg)
     gate = ApiGatekeeper.from_config(cfg, now=time.monotonic)
+    # Opponent commits as DECLARED by them (argv[6] "odd:even"), not as read
+    # from their sealed record — we verify their audit payload and discard it,
+    # so we cannot read the field. Filed as-declared and labelled as such.
+    declared = sys.argv[6].split(":") if len(sys.argv) > 6 else []
+    opp_commits = ({n: declared[0] if n % 2 else declared[1] for n in range(1, 7)}
+                   if len(declared) == 2 else "unknown")
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, gate=gate, commit=played_at,
-        generated_at=datetime.now(UTC).isoformat(), counted=False, first_meeting=True,
+        opponent_commits=opp_commits,
+        generated_at=datetime.now(UTC).isoformat(), counted=was_counted, first_meeting=True,
         games_played=int(sys.argv[4]) if len(sys.argv) > 4 else 0,
         opponent_counted=int(sys.argv[5]) if len(sys.argv) > 5 else 0)
     result = next(a for a in arts if a["_schema"] == "result")

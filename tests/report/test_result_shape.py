@@ -136,3 +136,17 @@ def test_including_this_means_including_this_for_both_groups() -> None:
         r = _json.loads((Path(tmp) / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert r["final_result"]["games_played_including_this"] == {US: 1, THEM: 2}, (
         "their declared 1 plus this game = 2; ours 0 plus this game = 1")
+
+
+def test_a_role_aware_opponent_commit_can_be_filed_per_sub_game() -> None:
+    # imreeyal's cop and thief live in different repos, so their commit differs
+    # by sub-game parity. Ours is one tree, one hash. The column has to carry
+    # both shapes or we cannot file what they actually declared.
+    rows = league.subgame_rows(
+        [{"sub_game_number": n, "role": "thief" if n % 2 else "police",
+          "result": "survival", "winner": "thief", "audit": {"passed": True}}
+         for n in (1, 2)],
+        US, THEM, TABLE, game_id="imreeyal-vs-uoh-sqak",
+        commits={US: "aaaa111", THEM: {1: "27568a1", 2: "24e4687"}})
+    assert rows[0]["github_commit"] == {US: "aaaa111", THEM: "27568a1"}
+    assert rows[1]["github_commit"] == {US: "aaaa111", THEM: "24e4687"}

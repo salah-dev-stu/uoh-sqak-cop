@@ -80,7 +80,12 @@ def subgame_rows(
             "started_at": (clocks or {}).get(n, ("", ""))[0],
             "ended_at": (clocks or {}).get(n, ("", ""))[1],
             "tie": winner is None,
-            "github_commit": dict(commits or {own_gid: "unknown", opp_gid: "unknown"}),
+            # A group whose cop and thief live in different repos declares a
+            # different commit per sub-game, so a value may be a hash or a
+            # {sub_game: hash} map. One tree, one hash, is just the flat case.
+            "github_commit": {g: (v.get(n, "unknown") if isinstance(v, dict) else v)
+                              for g, v in (commits or {own_gid: "unknown",
+                                                       opp_gid: "unknown"}).items()},
             "tokens": dict(tokens or {own_gid: 0, opp_gid: 0}),
             "log_files": {gid: f"{gid}/log_{game_id}_g{n:02d}.json"
                           for gid in (own_gid, opp_gid)},

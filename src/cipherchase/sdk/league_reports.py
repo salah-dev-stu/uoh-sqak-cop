@@ -78,6 +78,7 @@ def build_series_artifacts(
     cfg: Any, outcome: Json, *, opponent: str, generated_at: str,
     gate: ApiGatekeeper, games_played: int = 1, first_meeting: bool = False,
     counted: bool = False, opponent_counted: int = 0, commit: str = "",
+    opponent_commits: Any = "unknown",
 ) -> list[Json]:
     game = cfg.private["game"]
     own = game["group_id"]
@@ -89,7 +90,7 @@ def build_series_artifacts(
         summaries, own, opponent, table, game_id=outcome["game_id"],
         # Ours is the hash the step-0 seal names; theirs is whatever they declare,
         # which we never invent on their behalf.
-        commits={own: commit, opponent: "unknown"},
+        commits={own: commit, opponent: opponent_commits},
         tokens={own: sum(e.get("tokens", 0) for e in gate.ledger), opponent: 0},
         clocks={s["sub_game_number"]: (s.get("started_at", ""), s.get("ended_at", ""))
                 for s in summaries})
