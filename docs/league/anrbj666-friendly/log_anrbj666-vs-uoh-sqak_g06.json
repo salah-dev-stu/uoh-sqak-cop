@@ -1,0 +1,616 @@
+{
+  "_schema": "log",
+  "schema_version": "1.1",
+  "game_id": "anrbj666-vs-uoh-sqak",
+  "game_uid": "f2765c2f-604d-5a53-b42a-6e5e7245c222",
+  "generated_at": "2026-08-08T12:02:42.774956+00:00",
+  "sub_game": 6,
+  "summary": {
+    "result": "survival",
+    "winner": "thief",
+    "steps": 34,
+    "role": "police",
+    "note": ""
+  },
+  "records": [
+    {
+      "payload": {
+        "step": 0,
+        "type": "system_spec",
+        "github_commit": "d0bb80f7ada703722b614cab4e96d848ad1b4212",
+        "spec": {
+          "os": "Darwin 25.2.0",
+          "cpu": "arm",
+          "cpu_count": 8,
+          "ram_gb": 8.6,
+          "gpu": "Apple Silicon",
+          "python": "3.13.12"
+        },
+        "model": "template",
+        "code_version": "1.00",
+        "group_name": "uoh-sqak",
+        "sub_game_number": 6
+      },
+      "nonce": "e2c58ae982d80b97c1fadfc1b88b29a7",
+      "commit": "98b5d78ec8ffaf0aabcf541ac3ea429ec6f9894a3ba08f40caf4ed54590edf00"
+    },
+    {
+      "payload": {
+        "step": -1,
+        "type": "control",
+        "direction": "sent",
+        "kind": "enable",
+        "sender": "police",
+        "status": "",
+        "sub_game_number": 1
+      },
+      "nonce": "d115a64c887c6954398c2ebdca120d5a",
+      "commit": "1561d12bec843f75bb992839802537c464a5b0e6943d3abdd53c4b5addea1d44"
+    },
+    {
+      "payload": {
+        "step": -2,
+        "type": "control",
+        "direction": "sent",
+        "kind": "status",
+        "sender": "police",
+        "status": "PLAYING",
+        "sub_game_number": 6
+      },
+      "nonce": "71e95d7f0404de075888585d553f8d4a",
+      "commit": "07c0cc35f818caa5e7330c1e668e94d51a44b2ff38b09ef17272ebd7eac7c212"
+    },
+    {
+      "payload": {
+        "step": 1,
+        "state": {
+          "pos": [
+            0,
+            0
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "8cc6ed5a926bd26531a8257999fb13ab",
+      "commit": "855a710af66a256209aaf9eb19bcf7218919a478245efba9497040e372731ca9"
+    },
+    {
+      "payload": {
+        "step": 2,
+        "state": {
+          "pos": [
+            1,
+            0
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "4c134998c0b582b938c32475bf4f8f39",
+      "commit": "87708287bce00df1307dde6c0dd3333580c6281f99b95a9e74f55c299353e54f"
+    },
+    {
+      "payload": {
+        "step": 3,
+        "state": {
+          "pos": [
+            2,
+            0
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "lie"
+      },
+      "nonce": "5c120595a26abafe628a13255f78fc67",
+      "commit": "568824744f0eb685cae65a6eeb67be8e94f5c03ae61acf2d8f9c3d9807297a5e"
+    },
+    {
+      "payload": {
+        "step": 4,
+        "state": {
+          "pos": [
+            3,
+            0
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "da9eaee8049196d6e84c87f0f95fc427",
+      "commit": "57a4a0fd17f745358618e2f49b1ec113e8fcb28f05c113446522680d3e528018"
+    },
+    {
+      "payload": {
+        "step": 5,
+        "state": {
+          "pos": [
+            3,
+            1
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "0a043c06e9176e9d560370480ce0e4da",
+      "commit": "c84fdbf97d32a2e12133cf88a243e267f16087dc0d1aa16579fff75849e38ee6"
+    },
+    {
+      "payload": {
+        "step": 6,
+        "state": {
+          "pos": [
+            3,
+            2
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "lie"
+      },
+      "nonce": "d1dcb5e4cabf5e201a342df6bb2961b0",
+      "commit": "96dcce65f4589dd3753ffd9f6ddba3e5ea1f95d137da19d7c707b6d7216b9e6b"
+    },
+    {
+      "payload": {
+        "step": 7,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "3ecc8503d2eb6a0a7e50ed4705c0354c",
+      "commit": "96c9d3afb586ee2803b7c55c117c260ec73fe3d15658ebf3578367506c788d9b"
+    },
+    {
+      "payload": {
+        "step": 8,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "7ee3949526cfb8b11fe958fa153c34d7",
+      "commit": "cacb232707394e744d8af87f18d6060b8680139fda3b6279ff50efc365894c8d"
+    },
+    {
+      "payload": {
+        "step": 9,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "f8c019977fe3c729e55f8a94e9a4a6f7",
+      "commit": "19fb8641c836b856a948078eaca45a318e6ddd19384eedd6c9eb49846182169c"
+    },
+    {
+      "payload": {
+        "step": 10,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "70fc5db04f03c71c2b38395ff4fad95e",
+      "commit": "039ea5435c1f6b5acfc67ceb975deee8a0f83e239e74a0f8f73c95931dfbd15c"
+    },
+    {
+      "payload": {
+        "step": 11,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "6c192279c98592108dd7451b9ab22183",
+      "commit": "61c0e79b4d76c5dd0d5434f0080dc7138826ab7c871f595df18ef6d8420b40b7"
+    },
+    {
+      "payload": {
+        "step": 12,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "758da3c0500c05b03d3017931f43024d",
+      "commit": "6672b3441f026f546772748d74eed3d5be0b24e10a8272921830d53c0aa9d778"
+    },
+    {
+      "payload": {
+        "step": 13,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "e4f5351358ec418ba0b8fc760a0feb47",
+      "commit": "dea9769697c771a080e807d564ca555760d7b03657ba55b5aca58d19aba4dcf5"
+    },
+    {
+      "payload": {
+        "step": 14,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "002d35adefa2db206ec4517dbeb17b50",
+      "commit": "139b3c01accb1ede577df359b2a968c1ca341c4f561181d5717d8c06fb768c56"
+    },
+    {
+      "payload": {
+        "step": 15,
+        "state": {
+          "pos": [
+            3,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "lie"
+      },
+      "nonce": "78684d1cc73028f4ab0bae4ea0ddf56d",
+      "commit": "b4fe6fe7be2958d18b759cd55201d0298fd124d91f3d410f8b3b45706fc9ae53"
+    },
+    {
+      "payload": {
+        "step": 16,
+        "state": {
+          "pos": [
+            3,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "8ee6b066aebe8d178c5fb0d18d391a0a",
+      "commit": "234b054b0dcc9df111fca157839e8710f1f339cfc072453d2d879027a3207138"
+    },
+    {
+      "payload": {
+        "step": 17,
+        "state": {
+          "pos": [
+            3,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "4bc7a745e947b69e2894aaf32e8bef1d",
+      "commit": "3c4f5f358ee279995c52d0230f9451d9d13d216999f84407b715bed5fb62e5fa"
+    },
+    {
+      "payload": {
+        "step": 18,
+        "state": {
+          "pos": [
+            4,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "N",
+        "intent": "lie"
+      },
+      "nonce": "07caed027b04d8d3cfde70331de3129e",
+      "commit": "7ab8022988c8b3e027f3880befad52d976e9709b0a543101949f167188c914af"
+    },
+    {
+      "payload": {
+        "step": 19,
+        "state": {
+          "pos": [
+            3,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "721900c8731a8935d44d216c559d7413",
+      "commit": "7902e24ef1f1747311867e1290172cb66c4bb96f565acc063d6df100f496af61"
+    },
+    {
+      "payload": {
+        "step": 20,
+        "state": {
+          "pos": [
+            4,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "b860f35df78d8011b035b9afb1c2743a",
+      "commit": "89c0694f217bbe922d6a24b11879e3532a63e356f8594e84cf9097a9355a01c7"
+    },
+    {
+      "payload": {
+        "step": 21,
+        "state": {
+          "pos": [
+            3,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "lie"
+      },
+      "nonce": "79f4ec2d428e80ad25cfb701ddd3f74f",
+      "commit": "f26f0b1ef0af0db9341a4baf4171fe8674b4b1b7c7a12fb0d939ddc71e5132b2"
+    },
+    {
+      "payload": {
+        "step": 22,
+        "state": {
+          "pos": [
+            4,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "23337474f0092a3a26bde5445c5420af",
+      "commit": "cf8e1c08196cd43031b5e780e7b7f025735521a1f4b72caebe7496a16a1127bc"
+    },
+    {
+      "payload": {
+        "step": 23,
+        "state": {
+          "pos": [
+            3,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "1d81901649f16f167c417c8f2f9dd1d1",
+      "commit": "22cc2d84a05290ea7005cdb80d37a8a25e8d8a44101aa6c7072df149854de854"
+    },
+    {
+      "payload": {
+        "step": 24,
+        "state": {
+          "pos": [
+            4,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "6358a4507349485b0825b94d01a65613",
+      "commit": "749d8e94f27eae37f91816497ede2fb54dc3b377f8ae053eb065d21bc7cbddde"
+    },
+    {
+      "payload": {
+        "step": 25,
+        "state": {
+          "pos": [
+            3,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "21b59eaff7dfd0e63348eb4e9577ca6f",
+      "commit": "65b7d6db2c4b548b66736e578eaa2ecf70acf49fb0f95a239783cb5382105721"
+    },
+    {
+      "payload": {
+        "step": 26,
+        "state": {
+          "pos": [
+            4,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "d003c356303dbf24529c7d58a0243411",
+      "commit": "4f59570b082291c93f7b2a339af980c922d516c4f16d560d5150fa16b11b9e98"
+    },
+    {
+      "payload": {
+        "step": 27,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "lie"
+      },
+      "nonce": "0676036daa875192675499c3eac9fbd5",
+      "commit": "571c9c2470ff428cc7bf0bdc2b46ce1f93967101e34c90cd2df48334129240ba"
+    },
+    {
+      "payload": {
+        "step": 28,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "2fe8d79c4044784c3bfd55521595dc2c",
+      "commit": "e82f9a6a7a80bf1a242c3540f5f260e5f87e6536e55ba362626b258ef9fea1c4"
+    },
+    {
+      "payload": {
+        "step": 29,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "6f6ab42b7e7f3853685ade9e0feb0654",
+      "commit": "0828f8560194586a64e0641aef6f2c95295af18c1cf38d1f8be8d4f1c24a9ca4"
+    },
+    {
+      "payload": {
+        "step": 30,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "83907c4ef20359532239a6419f75fafd",
+      "commit": "724ce64d3389bc0e79ef2f949463ba6403d9924bcd4817d4a1158a2066b8d0b1"
+    },
+    {
+      "payload": {
+        "step": 31,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "1d88d64523d7033cd02306c07fb3ddfb",
+      "commit": "2ee6f424e3ea0c1d173d13776b892127ae70e7c35a992fa30ac17efba2a52169"
+    },
+    {
+      "payload": {
+        "step": 32,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "5cbe7e82b57392bd21b4573801e45387",
+      "commit": "7eb42fe65b0e0919479c792cae5159389692048d9215cc9c25dacb759c432718"
+    },
+    {
+      "payload": {
+        "step": 33,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "55a3a7c5a7f4c1913786ec81f5e88afb",
+      "commit": "ad0dd0e7f187e7ad5359c9618ebafd938bef605c2a038b0133072c2e7417194e"
+    },
+    {
+      "payload": {
+        "step": 34,
+        "state": {
+          "pos": [
+            4,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "046aa9aaa4abb51bbdb74e6f6d66cf05",
+      "commit": "b5f9f31cdc69742af1156d0782e784c4cbb8c1b604f565b9bbd2e28c6c282714"
+    }
+  ],
+  "mutual_agreement": {
+    "sha256": "61fc6715a2321c94d3d60499f979082c434d6861721eb8efec31b5e5065a1ee5",
+    "confirmed": true
+  },
+  "links": {
+    "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+    "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+  }
+}
