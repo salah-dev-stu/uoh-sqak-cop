@@ -60,6 +60,16 @@ def test_the_identity_declares_our_counted_game_count() -> None:
     # Two-channel principle: the handshake says in plaintext what the sealed
     # step-0 proves, so the opponent's artifact never has to guess our count and
     # floor it to zero. Ours was simply absent from the wire.
+    #
+    # Derive the expected number from the artifact set on disk rather than
+    # pinning a literal. This test HELD at 0 through the imreeyal counted
+    # series, so anrbj666's aggregate recorded uoh-sqak: 0 from our own
+    # declaration and both teams' files agreed on a false value. A number
+    # asserted against itself proves nothing; asserted against the games we
+    # can show, it fails the build the moment the two drift apart.
+    played = sorted(p.name for p in (CONFIG.parent / "docs/league").glob("*-counted"))
     cfg = ConfigManager.load(CONFIG / "police")
     ident = identity_from_config(cfg)
-    assert ident["counted_games_played"] == 0, "we have played no counted series yet"
+    assert ident["counted_games_played"] == len(played), (
+        f"we declare {ident['counted_games_played']} counted series but ship "
+        f"artifacts for {len(played)}: {played}")
