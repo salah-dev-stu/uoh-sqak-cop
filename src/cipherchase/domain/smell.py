@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from cipherchase.constants import Cell
 from cipherchase.domain.cells import cell_key, parse_cell
+from cipherchase.domain.scent_book import book_turn
 
 
 class SmellField:
@@ -50,6 +51,28 @@ class SmellField:
     @property
     def _subtractive(self) -> bool:
         return self.model == "subtractive_chebyshev_v1"
+
+    def advance(self, center: Cell) -> None:
+        """One full turn of whichever model is locked for this pairing.
+
+        The two locks disagree about what a turn IS: the subtractive model
+        deposits and then decays as separate steps, while the book model folds
+        both into a single clamped expression. Sequencing them here keeps the
+        difference where the physics lives instead of in the turn loop.
+        """
+        if self.model == "multiplicative_book_v1":
+            book_turn(self, center)
+            return
+        self.deposit(center)
+        self.decay_all()
+
+    def cells(self):
+        """The cells currently holding scent."""
+        return self._field.keys()
+
+    def replace(self, field: dict[Cell, float]) -> None:
+        """Swap the whole field (a model's turn update computes it wholesale)."""
+        self._field = field
 
     def load(self, field: dict[str, float]) -> None:
         """Replace the field wholesale (fixtures and restarts)."""
