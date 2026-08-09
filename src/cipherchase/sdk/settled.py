@@ -42,3 +42,13 @@ def declared_commit(summaries: list[Json]) -> str:
     their silence, not a placeholder for our own dropped value.
     """
     return next((s["peer_commit"] for s in summaries if s.get("peer_commit")), "unknown")
+
+
+def peer_declaration(summaries: list[Json]) -> Json:
+    """The identity block the opponent signed at the handshake.
+
+    Everything we file ABOUT them comes from here — their counted-games count,
+    their repositories — so that our report never invents a fact on their
+    behalf. An opponent who declared nothing yields an empty mapping.
+    """
+    return next((s["peer_identity"] for s in summaries if s.get("peer_identity")), {})

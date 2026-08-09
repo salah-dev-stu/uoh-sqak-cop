@@ -73,7 +73,11 @@ def test_a_friendly_moves_no_counter_and_claims_no_reward(tmp_path) -> None:
         "the groups have still never met — the FACT is mode-independent")
     assert res["final_result"]["games_played_including_this"]["uoh-sqak"] == 0, (
         "a friendly is not a counted game")
-    assert res["final_result"]["counted"] is False
+    # `counted` is NOT a result field: counted-ness lives in how the series was
+    # armed and in the counters it moved, and a three-team diff showed ours was
+    # the only file carrying it.
+    assert "counted" not in res["final_result"]
+    assert res["final_result"]["games_played_including_this"]["uoh-sqak"] == 0
     assert not (tmp_path / "opponents.json").exists(), "no counted opponent recorded"
 
 
@@ -89,9 +93,12 @@ def test_a_counted_series_moves_the_counter_once(tmp_path) -> None:
     res = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert res["final_result"]["games_played_including_this"]["uoh-sqak"] == 1
     assert res["final_result"]["first_meeting_between_groups"] is True
-    assert res["final_result"]["diversity_reward_applied"] == dict.fromkeys(("uoh-sqak", "imreeyal"), True)
+    winner = res["final_result"]["winner_group"]
+    assert res["final_result"]["diversity_reward_applied"] == {
+        g: g == winner for g in ("uoh-sqak", "imreeyal")}
     write_league_series(cfg, FULL, tmp_path, generated_at="x",
                         opponent="imreeyal", counted=True)
     again = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert again["final_result"]["first_meeting_between_groups"] is False
-    assert again["final_result"]["diversity_reward_applied"] == dict.fromkeys(("uoh-sqak", "imreeyal"), False)
+    assert again["final_result"]["diversity_reward_applied"] == dict.fromkeys(
+        ("uoh-sqak", "imreeyal"), False)

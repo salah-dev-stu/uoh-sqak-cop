@@ -77,4 +77,5 @@ def test_the_result_carries_timezone_report_type_and_per_group_counters() -> Non
     assert final["games_played_including_this"] == {US: 1, THEM: 1}, (
         "per-group and inside final_result, where the book's example carries them")
     assert final["first_meeting_between_groups"] is True
-    assert final["diversity_reward_applied"] == {US: True, THEM: True}
+    assert final["diversity_reward_applied"] == {
+        g: g == final["winner_group"] for g in (US, THEM)}

@@ -17,9 +17,9 @@ import time
 from pathlib import Path
 from typing import Any
 
-from cipherchase.report import artifacts, emit, league
+from cipherchase.report import artifacts, emit, league, links
 from cipherchase.sdk.league_mail import gmail_backend, mail_report
-from cipherchase.sdk.settled import declared_commit, settled_summaries
+from cipherchase.sdk.settled import declared_commit, peer_declaration, settled_summaries
 from cipherchase.sdk.step0 import git_commit, step0
 from cipherchase.shared.gatekeeper import ApiGatekeeper
 
@@ -54,8 +54,9 @@ def write_league_series(
     first_meeting = opponent != cfg.private["game"]["group_id"] and opponent not in history
     played = [*history, opponent] if counted else history
     # Their declared count, from the identity block they put on the wire.
-    declared = next((int((s.get("peer_identity") or {}).get("counted_games_played", 0))
-                     for s in outcome["summaries"] if s.get("peer_identity")), 0)
+    ident = peer_declaration(outcome["summaries"])
+    declared = int(ident.get("counted_games_played", 0))
+    peer_repos = dict(ident.get("repos", {}))
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
         games_played=played.count(opponent), first_meeting=first_meeting,
@@ -65,7 +66,7 @@ def write_league_series(
         counted=counted, opponent_counted=declared + (1 if counted else 0),
         # Verified at every audit and dropped before the file: six sub-games
         # shipped as "unknown" while their hash was on the wire throughout.
-        opponent_commits=declared_commit(settled))
+        opponent_commits=declared_commit(settled), peer_repos=peer_repos)
     paths = emit.write_all(directory, arts)
     if counted:
         ledger.parent.mkdir(parents=True, exist_ok=True)
@@ -81,7 +82,7 @@ def build_series_artifacts(
     cfg: Any, outcome: Json, *, opponent: str, generated_at: str,
     gate: ApiGatekeeper, games_played: int = 1, first_meeting: bool = False,
     counted: bool = False, opponent_counted: int = 0, commit: str = "",
-    opponent_commits: Any = "unknown",
+    opponent_commits: Any = "unknown", peer_repos: Json | None = None,
 ) -> list[Json]:
     game = cfg.private["game"]
     own = game["group_id"]
@@ -100,7 +101,11 @@ def build_series_artifacts(
     agg = league.aggregate(rows, table["tie_score"])
     gid, uid = outcome["game_id"], outcome["game_uid"]
     common = {"game_id": gid, "game_uid": uid, "generated_at": generated_at,
-              "links": game.get("repos", {})}
+              # Sibling filenames + BOTH teams' repos (rule 49). Theirs is what
+              # they signed at the handshake, never a guess on their behalf.
+              "links": links.links_block(
+                  game_id=gid, own=own, opponent=opponent,
+                  own_repos=game.get("repos", {}), peer_repos=peer_repos or {})}
     confirmed = all(s.get("audit", {}).get("passed") for s in summaries)
     agreement = {"sha256": league.series_signature(gid, agg, rows), "confirmed": confirmed}
 
@@ -124,7 +129,6 @@ def build_series_artifacts(
     # one location and one shape, so two honest files cannot look contradictory.
     final = {
         **agg,
-        "counted": counted,
         "games_played_including_this": {own: games_played, opponent: opponent_counted},
         # Mode-independent, per imreeyal: "is this pairing in our COUNTED ledger?"
         # One derivation for both run modes — the field means the same thing on a
@@ -132,9 +136,11 @@ def build_series_artifacts(
         # only by a counted first meeting.
         "first_meeting_between_groups": first_meeting,
         # Per-group, like every other counter in this block: a reward is a thing
-        # a GROUP earns, so a scalar cannot say who earned it.
-        "diversity_reward_applied": dict.fromkeys(
-            (own, opponent), bool(first_meeting and counted)),
+        # a GROUP earns, so a scalar cannot say who earned it — and it is earned
+        # by WINNING a counted first meeting, so the loser's column is False.
+        "diversity_reward_applied": links.diversity(
+            (own, opponent), winner=agg["winner_group"],
+            first_meeting=first_meeting, counted=counted),
         "tokens_total_series": {own: sum(e.get("tokens", 0) for e in gate.ledger),
                                 opponent: 0},
     }
