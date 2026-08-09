@@ -51,19 +51,41 @@ def _equivocation(rt: Any, step: int, commit: str) -> dict[str, Any] | None:
     return evidence
 
 
+def _say_ignored(rt: Any, wire: dict[str, Any], why: str) -> None:
+    """Name a turn we drop, with BOTH indices, as it happens.
+
+    A turn we ignore and a peer that never sent one are identical in silence,
+    and the opponent cannot see our side at all. ahk-yosi asked "did our step-1
+    arrive, and what index were you on?" — our logs could answer neither half,
+    so the only team able to complete the picture was the one holding records we
+    had already discarded.
+    """
+    # A malformed wire need not be a mapping at all — reporting it must never
+    # be the thing that crashes the peer receiving it.
+    fields = wire if isinstance(wire, dict) else {}
+    print(f"  ignored {why} turn from {fields.get('sender', '?')} "
+          f"step {fields.get('step', '?')} while we are on "
+          f"sub-game {rt.sub_game_number} at step {rt.last_seen_step}")
+
+
 def process(rt: Any, wire: dict[str, Any]) -> Incoming:
     try:
         msg = TurnMessage.from_dict(dict(wire))
         step = int(msg.step)
     except (TypeError, ValueError, AttributeError):
         rt.history.append({"malformed": True})
+        _say_ignored(rt, wire, "malformed")
         return Incoming(malformed=True)
     if step <= rt.last_seen_step:
+        _say_ignored(rt, wire, "duplicate/stale")
         return Incoming(duplicate=True, equivocation=_equivocation(rt, step, msg.commit))
     if rt.last_seen_step == 0 and step != 1:
         # Strict alternation: a fresh game's first inbound step is ALWAYS 1. Anything
         # later is a stale echo of an aborted game (series restart) — never let it
-        # poison last_seen_step or real turns become "duplicates".
+        # poison last_seen_step or real turns become "duplicates". This is the
+        # branch that swallowed ahk-yosi's opening turn while we sat on another
+        # index, so it is the one that most needed a voice.
+        _say_ignored(rt, wire, "out-of-sequence (a fresh game opens at step 1)")
         return Incoming(duplicate=True)
     rt.last_seen_step = step
     rt.seen_commits[step] = msg.commit

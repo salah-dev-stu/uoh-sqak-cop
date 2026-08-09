@@ -71,3 +71,24 @@ def test_the_refusal_reports_which_index_the_peer_declared() -> None:
         assert exc.peer_sub_game == 5, "the refusal must say where THEY are"
     else:
         raise AssertionError("a sub-game disagreement must refuse")
+
+
+def test_no_turns_means_no_game_whatever_the_label_says() -> None:
+    # Tonight, twice, against ahk-yosi. The rule "a window with no turns never
+    # became a game" was written as a test for result == "timeout", so every
+    # OTHER zero-turn outcome settled and spent the index. Their peer died
+    # before play; we recorded a zero-turn opponent_quit, scored it, advanced —
+    # and then correctly refused to replay the index they were still sitting on.
+    # Four dead sub-games from a predicate that was narrower than its own docstring.
+    for label in ("timeout", "opponent_quit", "quit", "error", "stopped"):
+        assert settles({"result": label, "steps": 0}) is False, label
+        assert settles({"result": label, "steps": 4}) is True, label
+
+
+def test_a_real_result_settles_even_at_step_zero() -> None:
+    # A terminal verdict is a game whatever the step count: an audit forfeit can
+    # land before either side moves, and it must never be replayed.
+    assert settles({"result": "tamper_forfeit", "steps": 0}) is True
+    assert settles({"result": "capture", "steps": 0}) is True
+    assert settles({"result": "survival", "steps": 0}) is True
+    assert settles({"result": "handshake_failed", "steps": 9}) is False
