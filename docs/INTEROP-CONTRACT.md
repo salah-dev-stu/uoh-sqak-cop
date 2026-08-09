@@ -20,16 +20,22 @@
 Both peers push, then read their own inbox. Payload:
 ```json
 {"terms": { "board_size": 7, "smell_grid_size": 5, "decay_per_step": 0.1,
-            "emit_intensity": 0.9, "min_center_intensity": 0.001, "max_steps": 35,
-            "barriers_max": 14, "setting": "7x7", "hint_max_words": 30,
-            "axis_origin_corner": "top_left", "axis_start_index": 0,
-            "thief_start": [3, 3], "cop_start": [0, 0], "num_games": 2 },
+            "emit_intensity": 0.9, "min_center_intensity": 0.5, "max_steps": 35,
+            "barriers_max": 14, "setting": "New York", "hint_max_words": 15,
+            "axis_origin_corner": "top-left", "axis_start_index": 0,
+            "thief_start": [3, 3], "cop_start": [0, 0], "num_games": 6 },
  "nonce": "<secrets.token_hex(16)>",
  "signature": "<commit formula over terms — §4>",
  "identity": { "group_id": "...", "group_name": "...", "members": [...], "repos": {},
                "mcp_servers": {}, "llm_model": "...", "spec": {} }}
 ```
-- **`terms` must be value-equal on both sides** (agree the numbers before the match — the table above shows OUR defaults; we're flexible, tell us yours). `identity` is informational, never compared.
+- **`terms` must be value-equal on both sides** — most peers compare by exact dict equality, so a
+  spelling difference (`top-left` vs `top_left`) fails the handshake as surely as a wrong number.
+  The block above is generated from our config and CHECKED BY A TEST against the bytes we actually
+  send (`tests/test_interop_contract_matches_the_wire.py`); an earlier hand-maintained version had
+  drifted on five values and would have talked an opponent out of terms that already matched ours.
+  We are flexible on all of them — tell us yours and we adopt. `identity` is informational, never
+  compared, but FILE it: repos and counted-game counts arrive there and nowhere else.
 - Both sides then derive identical ids: `game_id = "<min-gid>-vs-<max-gid>"`,
   `game_uid = UUID(bytes=sha256(canonical(terms) + "|" + lo_gid + "|" + hi_gid).digest()[:16])`.
 
@@ -69,7 +75,7 @@ Re-hash every record; **any mismatch ⇒ the forger loses (0/0 tamper forfeit)**
 survival (`win_claim`) → `submit_audit ⇄` → both emit + email their reports.
 
 ## 7. Match checklist (with us)
-1. Agree the `terms` values + `num_games` (we propose 2 — roles swap each sub-game: odd = your natural role).
+1. Agree the `terms` values + `num_games` (we propose 6 — roles swap each sub-game: odd = your natural role).
 2. Exchange public URLs (ngrok: `ngrok http <port>` → `https://….ngrok-free.app/mcp`).
 3. Set each side's `opponent_url`; start both peers (order doesn't matter); play; both email reports to
    `rmisegal+uoh26finalgame@gmail.com`.
