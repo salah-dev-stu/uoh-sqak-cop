@@ -70,6 +70,39 @@ Each side (except on timeout) sends its full record book and reads the peer's:
 ```
 Re-hash every record; **any mismatch ⇒ the forger loses (0/0 tamper forfeit)** — the iron rule.
 
+## 5b. The mutual series signature (league play — THE value both teams must match)
+
+Both peers must produce this identically, or the series cannot be filed. Note it
+uses `json.dumps` **DEFAULT separators** (spaced `", "` / `": "`), NOT the compact ones of §4 —
+two encodings in one protocol, and the likeliest place for a byte mismatch.
+
+```python
+SYMMETRIC = ("sub_game_number", "roles", "result", "winner_group", "score")
+
+doc = {"game_id":   game_id,                       # "<min-gid>-vs-<max-gid>"
+       "aggregate": {"total_score": {...}, "sub_games_won": {...}, "ties": int,
+                     "winner_group": str | None, "series_tie": bool},
+       "sub_games": [{k: row[k] for k in SYMMETRIC} for row in rows]}
+sha256 = hashlib.sha256(json.dumps(doc, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+```
+
+Only those FIVE keys per row are signed; a row may carry anything else (commits,
+tokens, clocks) without disturbing it. `roles` is `{<group_id>: "police"|"thief"}` —
+the vocabulary is **"police"**, never "cop". Scores are keyed by GROUP ID, never by role.
+
+**Golden vector** — our filed series vs `anrbj666`, reproducible from the artifact in
+`docs/league/anrbj666-friendly/result_anrbj666-vs-uoh-sqak.json`:
+
+```
+game_id   anrbj666-vs-uoh-sqak     6 sub-games     preimage 1240 chars
+sha256    61fc6715a2321c94d3d60499f979082c434d6861721eb8efec31b5e5065a1ee5
+```
+
+> **Not to be confused with** `mutual_agreement.signature` in `docs/sample-run/`
+> (schema 1.1, self-match path): a different function over a different document,
+> with compact separators and a `config_sha256` term. It is an offline single-game
+> demo, not league play. For a series, the rule above is authoritative.
+
 ## 6. Sequence
 `negotiate ⇄` → thief turn → police turn → … → claims → capture (`caught:true` + "You got me.") **or**
 survival (`win_claim`) → `submit_audit ⇄` → both emit + email their reports.
