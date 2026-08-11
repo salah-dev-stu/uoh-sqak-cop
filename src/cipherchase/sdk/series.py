@@ -73,6 +73,14 @@ def run_series(cfg: Any, natural_role: str, transport: Any, *, gate: Any = None,
         result.game_id = result.game_id or summary["game_id"]
         result.game_uid = result.game_uid or summary["game_uid"]
         result.summaries.append(summary)
+        if settles(summary):
+            # Say it. A failure-only log makes a healthy series and a dead one
+            # look identical, and we killed a live peer mid-series on the
+            # strength of that silence — four settled games, audits verified
+            # both sides, gone.
+            audit = (summary.get("audit") or {}).get("passed")
+            print(f"  sub-game {n}: {summary['result']} ({summary['steps']} steps), "
+                  f"winner {summary['winner']}, audit {audit}")
         if not settles(summary):
             # Surface it NOW. A stalled series never reaches its summary, so a
             # reason held until the end is unreachable exactly when both teams

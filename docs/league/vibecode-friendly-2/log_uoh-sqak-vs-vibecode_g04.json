@@ -1,0 +1,305 @@
+{
+  "_schema": "log",
+  "schema_version": "1.1",
+  "game_id": "uoh-sqak-vs-vibecode",
+  "game_uid": "e294ea6e-31c6-e5bf-0a27-1bc8e6dad89f",
+  "generated_at": "2026-08-11T22:30:36.527769+00:00",
+  "sub_game": 4,
+  "summary": {
+    "result": "capture",
+    "winner": "police",
+    "steps": 13,
+    "role": "thief",
+    "note": ""
+  },
+  "records": [
+    {
+      "payload": {
+        "step": 0,
+        "type": "system_spec",
+        "github_commit": "0ce69577cc9681526be590b891bc3bb748ddf641",
+        "spec": {
+          "os": "Darwin 25.2.0",
+          "cpu": "arm",
+          "cpu_count": 8,
+          "ram_gb": 8.6,
+          "gpu": "Apple Silicon",
+          "python": "3.13.12"
+        },
+        "model": "template",
+        "code_version": "1.00",
+        "group_name": "uoh-sqak",
+        "sub_game_number": 4
+      },
+      "nonce": "6140f116681c050f9862cc009d9d04ac",
+      "commit": "87e990210450b21556eae83161408ce2be4dd1dfacb2af40685e88c50cedb7b7"
+    },
+    {
+      "payload": {
+        "step": -1,
+        "type": "control",
+        "direction": "sent",
+        "kind": "enable",
+        "sender": "thief",
+        "status": "",
+        "sub_game_number": 1
+      },
+      "nonce": "2737dfbddd791ae572917acf6329e5b1",
+      "commit": "eeea6af2298583b031317d2797facceb282f7ba8cd41e4d22fcbfc7bad712209"
+    },
+    {
+      "payload": {
+        "step": -2,
+        "type": "control",
+        "direction": "sent",
+        "kind": "status",
+        "sender": "thief",
+        "status": "PLAYING",
+        "sub_game_number": 4
+      },
+      "nonce": "4ebb09ca92fdb81d2ecf99866d02d864",
+      "commit": "07e821af6b7236bc36c8fdaeaa5816e9abd887252220d21fd9f8aea8a7b3423f"
+    },
+    {
+      "payload": {
+        "step": 1,
+        "state": {
+          "pos": [
+            3,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "4cfffe67fac970491349a9d4f68e2f6f",
+      "commit": "ccac9f2dc1a5e09610204dec73837a7c5086cb6fc7d955ae38c0cc0974421f65"
+    },
+    {
+      "payload": {
+        "step": -3,
+        "type": "control",
+        "direction": "received",
+        "kind": "done",
+        "sender": "thief",
+        "status": "complete",
+        "sub_game_number": 3
+      },
+      "nonce": "d57ec4581b61aeafef30b94f01a65878",
+      "commit": "92f690ef67569045d1e42341fd7ca5a81f2432029e8691b5ac08dcc65438a2bc"
+    },
+    {
+      "payload": {
+        "step": 2,
+        "state": {
+          "pos": [
+            4,
+            3
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "7e19c2e29cc128e7fa5b1bc1bbe5c4f6",
+      "commit": "63aaf3a3b8046a9cc6a3efb7f4fa1a4a3acfe55679b08bf6d721e0a69ffc1e4c"
+    },
+    {
+      "payload": {
+        "step": 3,
+        "state": {
+          "pos": [
+            4,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "truth"
+      },
+      "nonce": "78ab389007e0e8da02d7ceb077f8c1b5",
+      "commit": "4f3d50c0a415872032d97c5a1d38f35ae662d3a62dec7215de7c9189fc79fdaa"
+    },
+    {
+      "payload": {
+        "step": 4,
+        "state": {
+          "pos": [
+            5,
+            4
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "5a31647908cd4882e631d42e2683f892",
+      "commit": "82255178f0179a3f60575d69135338984ce93c3951d3c823eed9f65500385322"
+    },
+    {
+      "payload": {
+        "step": 5,
+        "state": {
+          "pos": [
+            5,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "3bfef7806d9cf9cb9ecffdf55879bcbe",
+      "commit": "fdbf0517a72d18aa8d69b4f53ec948ee0ca740576053bd39e174aafbd362e8dc"
+    },
+    {
+      "payload": {
+        "step": 6,
+        "state": {
+          "pos": [
+            5,
+            6
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "lie"
+      },
+      "nonce": "f995adf439688e62f7f0eb9a857d4960",
+      "commit": "aec3296788b6ac5f7120532ba58931f90897eb55467c272d430ac5550c41d578"
+    },
+    {
+      "payload": {
+        "step": 7,
+        "state": {
+          "pos": [
+            6,
+            6
+          ],
+          "barriers": []
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "3441a09bf09161518338ecceb8dcb62f",
+      "commit": "9c100fcea7b41b50904f476b2ee241611f02f1a935eddb0ae18aed60abcacdfb"
+    },
+    {
+      "payload": {
+        "step": 8,
+        "state": {
+          "pos": [
+            5,
+            6
+          ],
+          "barriers": []
+        },
+        "move": "W",
+        "intent": "truth"
+      },
+      "nonce": "fdd05901ab6ce818e913b4c6a5f5b121",
+      "commit": "888a0b6b773535087ddd017f83b4880d314d7d8ddb3ce11ec03731c3a8416bf8"
+    },
+    {
+      "payload": {
+        "step": 9,
+        "state": {
+          "pos": [
+            5,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "S",
+        "intent": "lie"
+      },
+      "nonce": "a9b6cf7d673bf41d17e3642eafe7e928",
+      "commit": "b981b68b8549bffb58afcd0fb2e49c523fb22fd9eba67d132344a35ef451a0b3"
+    },
+    {
+      "payload": {
+        "step": 10,
+        "state": {
+          "pos": [
+            6,
+            5
+          ],
+          "barriers": []
+        },
+        "move": "E",
+        "intent": "truth"
+      },
+      "nonce": "3e8fd0f382b96b285e4e4d3324cb6edb",
+      "commit": "a4ffbcd837d7248fecccabbe7d38dc255da74908c7e4a392d4480380f108d2e8"
+    },
+    {
+      "payload": {
+        "step": 11,
+        "state": {
+          "pos": [
+            6,
+            6
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "9b18e9a01848a0e065f9026cd3375d09",
+      "commit": "91c8fae148cdb268eb4ef57d0152b4e7546ad3799a7a10a153666e07645e4593"
+    },
+    {
+      "payload": {
+        "step": 12,
+        "state": {
+          "pos": [
+            6,
+            6
+          ],
+          "barriers": []
+        },
+        "move": "N",
+        "intent": "truth"
+      },
+      "nonce": "536cc11126cb3b300b8141fabab9ad91",
+      "commit": "594d70f759c4e2695eb008c0644afa58beb6398f872ce678875f9365ee29e005"
+    },
+    {
+      "payload": {
+        "step": 13,
+        "state": {
+          "pos": [
+            5,
+            6
+          ],
+          "barriers": []
+        },
+        "move": "STAY",
+        "intent": "truth"
+      },
+      "nonce": "a1d413a6c98bfb90fd2d0e7e34c1de3f",
+      "commit": "5c0a9c8540abc27afe0f548b1aedbb2ddd6d76e217b67e3b2fdc92017dc70e24"
+    }
+  ],
+  "mutual_agreement": {
+    "sha256": "dfb41c7da5efc0b66d668f4a935ea04a403359ea697e21a9d2e5cad934645834",
+    "confirmed": true
+  },
+  "links": {
+    "config": "config_uoh-sqak-vs-vibecode_g<NN>.json",
+    "declaration": "declaration_uoh-sqak-vs-vibecode.json",
+    "log": "log_uoh-sqak-vs-vibecode_g<NN>.json",
+    "result": "result_uoh-sqak-vs-vibecode.json",
+    "github": {
+      "uoh-sqak": {
+        "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+        "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+      },
+      "vibecode": {
+        "cop": "https://github.com/AmitKuper/vibecode-cop",
+        "thief": "https://github.com/AmitKuper/vibecode-thief"
+      }
+    }
+  }
+}

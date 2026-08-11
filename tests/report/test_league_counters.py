@@ -68,8 +68,9 @@ def test_including_this_means_including_this_for_both_groups() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         write_league_series(cfg, outcome, tmp, generated_at="x", opponent=THEM, counted=True)
         r = _json.loads((Path(tmp) / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert r["final_result"]["games_played_including_this"] == {US: 2, THEM: 2}, (
-        "their declared 1 plus this game = 2; ours 0 plus this game = 1")
+    declared = int(cfg.private["game"]["counted_games_played"])
+    assert r["final_result"]["games_played_including_this"] == {US: declared + 1, THEM: 2}, (
+        "each side's DECLARED total plus this counted game — never a pinned literal")
 
 
 def test_a_role_aware_opponent_commit_can_be_filed_per_sub_game() -> None:

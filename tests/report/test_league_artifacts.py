@@ -125,8 +125,13 @@ def test_the_first_meeting_is_claimed_once_and_never_again(tmp_path) -> None:
     write_league_series(cfg, OUTCOME, tmp_path, **kw)
     first = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert first["final_result"]["first_meeting_between_groups"] is True
-    assert first["final_result"]["games_played_including_this"]["uoh-sqak"] == 2  # declared 1 + this counted series
+    assert (first["final_result"]["games_played_including_this"]["uoh-sqak"]
+            == int(cfg.private["game"]["counted_games_played"]) + 1)  # declared + this
     write_league_series(cfg, OUTCOME, tmp_path, **kw)
     again = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert again["final_result"]["first_meeting_between_groups"] is False
-    assert again["final_result"]["games_played_including_this"]["uoh-sqak"] == 2
+    # The SECOND filing counts this game too: "including this" is about the
+    # series being filed, not about whether the pairing is new. Only the
+    # first_meeting FACT and its bonus are once-only.
+    assert (again["final_result"]["games_played_including_this"]["uoh-sqak"]
+            == int(cfg.private["game"]["counted_games_played"]) + 1)
