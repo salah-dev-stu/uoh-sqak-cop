@@ -22,6 +22,21 @@ def config_sha256(game_json: dict[str, Any]) -> str:
 _MODELS = ("scent_model_sha256", "info_mode_sha256")
 
 
+def _term_diff(ours: dict[str, Any], theirs: Any) -> str:
+    """Name the fields that DIFFER, with both sides — never just the category.
+
+    "terms mismatch" told us nothing mid-match against vibecode while every
+    term we could capture was identical: we could not separate a real value
+    difference from a type difference, an extra key, or a bug in our own
+    comparison. The category is the one thing both peers already know.
+    """
+    if not isinstance(theirs, dict):
+        return f"their terms are {type(theirs).__name__}, not an object"
+    parts = [f"{k}: ours {ours.get(k, '<absent>')!r} vs theirs {theirs.get(k, '<absent>')!r}"
+             for k in sorted(set(ours) | set(theirs)) if ours.get(k) != theirs.get(k)]
+    return "; ".join(parts) if parts else "no field differs (compared equal field-by-field)"
+
+
 class Negotiation:
     def __init__(
         self, terms: dict[str, Any], identity: dict[str, Any], *,
@@ -48,7 +63,9 @@ class Negotiation:
         """Return the peer's identity if terms match and the signature holds."""
         peer_terms = message.get("terms")
         if peer_terms != self.terms:
-            raise HandshakeError("terms mismatch — no game (agree game.json pre-match)")
+            raise HandshakeError(
+                f"terms mismatch — no game (agree game.json pre-match): "
+                f"{_term_diff(self.terms, peer_terms)}")
         try:
             CommitReveal.verify(peer_terms, message.get("nonce", ""), message.get("signature", ""))
         except CryptoError as exc:

@@ -42,9 +42,7 @@ def write_league_series(
     claim, and a false first meeting is a rule-38 disqualification.
     """
     # A series that did not finish has no honest report. Checked against the
-    # SIGNED num_games directly, never inferred from how the loop terminated:
-    # dropping unplayed windows from a report is a different fix, and having
-    # shipped only that one we mailed a two-game "series tie" mid-series.
+    # SIGNED num_games directly, never inferred from how the loop terminated.
     required = int(cfg.shared["network_and_league"]["num_games"])
     settled = settled_summaries(outcome["summaries"])
     if len(settled) < required:
@@ -58,19 +56,15 @@ def write_league_series(
     history: list[str] = json.loads(ledger.read_text()) if ledger.exists() else []
     first_meeting = opponent != cfg.private["game"]["group_id"] and opponent not in history
     played = [*history, opponent] if counted else history
-    # Their declared count, from the identity block they put on the wire.
+    declared_own = int(cfg.private["game"].get("counted_games_played", 0))
     ident = peer_declaration(outcome["summaries"])
     declared = int(ident.get("counted_games_played", 0))
     peer_repos = dict(ident.get("repos", {}))
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
-        games_played=own_counted_total(
-            declared=int(cfg.private['game'].get('counted_games_played', 0)),
-            counted=counted),
+        games_played=own_counted_total(declared=declared_own, counted=counted),
         first_meeting=first_meeting,
-        # "including this": their DECLARED prior plus this game, exactly as ours
-        # counts this game for us. Filing their prior unchanged puts our two
-        # honest files one apart on the opponent's column.
+        # their DECLARED prior plus this game, exactly as ours counts for us
         counted=counted, opponent_counted=declared + (1 if counted else 0),
         # Verified at every audit and dropped before the file: six sub-games
         # shipped as "unknown" while their hash was on the wire throughout.
@@ -131,10 +125,8 @@ def build_series_artifacts(
             **common, sub_game=n,
             summary={k: summary.get(k, "") for k in ("result", "winner", "steps", "role", "note")},
             records=summary.get("records", []), mutual_agreement=agreement))
-    # Truthful and mutually consistent, or it is a rule-38 project-level
-    # disqualification — the bonus rides on the first meeting, never a repeat.
-    # In `final_result`, per-group, where the book's example result carries them:
-    # one location and one shape, so two honest files cannot look contradictory.
+    # Per-group in `final_result`, one location and one shape, so two honest
+    # files cannot look contradictory (rule 38).
     final = {
         **agg,
         "games_played_including_this": {own: games_played, opponent: opponent_counted},
