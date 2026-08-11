@@ -19,7 +19,12 @@ from typing import Any
 
 from cipherchase.report import artifacts, emit, league, links
 from cipherchase.sdk.league_mail import gmail_backend, mail_report
-from cipherchase.sdk.settled import declared_commit, peer_declaration, settled_summaries
+from cipherchase.sdk.settled import (
+    declared_commit,
+    own_counted_total,
+    peer_declaration,
+    settled_summaries,
+)
 from cipherchase.sdk.step0 import git_commit, step0
 from cipherchase.shared.gatekeeper import ApiGatekeeper
 
@@ -59,7 +64,10 @@ def write_league_series(
     peer_repos = dict(ident.get("repos", {}))
     arts = build_series_artifacts(
         cfg, outcome, opponent=opponent, generated_at=generated_at, gate=gate,
-        games_played=played.count(opponent), first_meeting=first_meeting,
+        games_played=own_counted_total(
+            declared=int(cfg.private['game'].get('counted_games_played', 0)),
+            counted=counted),
+        first_meeting=first_meeting,
         # "including this": their DECLARED prior plus this game, exactly as ours
         # counts this game for us. Filing their prior unchanged puts our two
         # honest files one apart on the opponent's column.

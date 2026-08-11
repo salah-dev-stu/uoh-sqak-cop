@@ -68,7 +68,7 @@ def test_including_this_means_including_this_for_both_groups() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         write_league_series(cfg, outcome, tmp, generated_at="x", opponent=THEM, counted=True)
         r = _json.loads((Path(tmp) / "result_imreeyal-vs-uoh-sqak.json").read_text())
-    assert r["final_result"]["games_played_including_this"] == {US: 1, THEM: 2}, (
+    assert r["final_result"]["games_played_including_this"] == {US: 2, THEM: 2}, (
         "their declared 1 plus this game = 2; ours 0 plus this game = 1")
 
 
@@ -84,3 +84,19 @@ def test_a_role_aware_opponent_commit_can_be_filed_per_sub_game() -> None:
         commits={US: "aaaa111", THEM: {1: "27568a1", 2: "24e4687"}})
     assert rows[0]["github_commit"] == {US: "aaaa111", THEM: "27568a1"}
     assert rows[1]["github_commit"] == {US: "aaaa111", THEM: "24e4687"}
+
+
+def test_our_own_counted_total_comes_from_our_declaration_not_the_local_ledger() -> None:
+    # vibecode's filed result put uoh-sqak at 1 (read off the count we SIGN at
+    # the handshake); ours put us at 0. Theirs was right. The field is each
+    # side's TOTAL counted series including this one, and we were computing
+    # "how many times have we played THIS opponent" from a per-directory
+    # ledger — a different quantity that reads 0 in every fresh out-dir.
+    #
+    # Third time this exact field has been wrong on our side, and the second
+    # time an opponent's file was more accurate about us than our own.
+    from cipherchase.sdk.settled import own_counted_total
+    assert own_counted_total(declared=1, counted=True) == 2, "a counted series bumps us"
+    assert own_counted_total(declared=1, counted=False) == 1, "a friendly moves nothing"
+    assert own_counted_total(declared=0, counted=True) == 1
+    assert own_counted_total(declared=0, counted=False) == 0

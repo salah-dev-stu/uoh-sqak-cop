@@ -125,7 +125,7 @@ def test_the_first_meeting_is_claimed_once_and_never_again(tmp_path) -> None:
     write_league_series(cfg, OUTCOME, tmp_path, **kw)
     first = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert first["final_result"]["first_meeting_between_groups"] is True
-    assert first["final_result"]["games_played_including_this"]["uoh-sqak"] == 1
+    assert first["final_result"]["games_played_including_this"]["uoh-sqak"] == 2  # declared 1 + this counted series
     write_league_series(cfg, OUTCOME, tmp_path, **kw)
     again = json.loads((tmp_path / "result_imreeyal-vs-uoh-sqak.json").read_text())
     assert again["final_result"]["first_meeting_between_groups"] is False

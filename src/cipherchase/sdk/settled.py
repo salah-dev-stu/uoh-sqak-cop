@@ -52,3 +52,15 @@ def peer_declaration(summaries: list[Json]) -> Json:
     behalf. An opponent who declared nothing yields an empty mapping.
     """
     return next((s["peer_identity"] for s in summaries if s.get("peer_identity")), {})
+
+
+def own_counted_total(*, declared: int, counted: bool) -> int:
+    """OUR counted-series total including this one — from what we DECLARE.
+
+    Symmetric with how we compute the opponent's: their declaration plus this
+    game if it counts. We were instead using a per-directory ledger count of
+    games against THIS opponent, which is a different quantity and reads 0 in
+    any fresh output directory — so our filed result understated us while the
+    opponent's file, reading the number we signed at the handshake, had it right.
+    """
+    return declared + (1 if counted else 0)

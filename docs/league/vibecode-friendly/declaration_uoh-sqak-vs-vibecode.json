@@ -1,0 +1,55 @@
+{
+  "_schema": "declaration",
+  "schema_version": "1.1",
+  "game_id": "uoh-sqak-vs-vibecode",
+  "game_uid": "e294ea6e-31c6-e5bf-0a27-1bc8e6dad89f",
+  "generated_at": "2026-08-11T20:26:53.638531+00:00",
+  "timezone": "Asia/Jerusalem",
+  "groups": [
+    "uoh-sqak",
+    "vibecode"
+  ],
+  "num_sub_games": 6,
+  "max_tokens": 200000,
+  "links": {
+    "config": "config_uoh-sqak-vs-vibecode_g<NN>.json",
+    "declaration": "declaration_uoh-sqak-vs-vibecode.json",
+    "log": "log_uoh-sqak-vs-vibecode_g<NN>.json",
+    "result": "result_uoh-sqak-vs-vibecode.json",
+    "github": {
+      "uoh-sqak": {
+        "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+        "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+      },
+      "vibecode": {
+        "cop": "https://github.com/AmitKuper/vibecode-cop",
+        "thief": "https://github.com/AmitKuper/vibecode-thief"
+      }
+    }
+  },
+  "step0": {
+    "schema": "declaration/1.0",
+    "team": "uoh-sqak",
+    "players": [
+      "Salah Qadah:323039974",
+      "Andalus Kalash:211435797"
+    ],
+    "role": "police",
+    "git_commit": "8c1bc209b82132915b5c38a6a865adcc41ad95ac",
+    "llm": {
+      "provider": "template",
+      "model": "template",
+      "version": "n/a"
+    },
+    "system": {
+      "os": "Darwin 25.2.0",
+      "cpu": "arm",
+      "cpu_count": 8,
+      "ram_gb": 8.6,
+      "gpu": "Apple Silicon",
+      "python": "3.13.12"
+    },
+    "version": "1.00",
+    "signature": "31ef391b9dd19ead14c75c249a3fb260fb1e3e86ea0ca73e86a6308645dc67ce"
+  }
+}
