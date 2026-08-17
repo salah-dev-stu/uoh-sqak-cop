@@ -6,7 +6,7 @@ group_id = "uoh-sqak"
 role = "thief"
 sub_game_number = 1
 # Counted league series played so far (friendlies never count).
-counted_games_played = 2
+counted_games_played = 3
 # Only this group's agreements may consume a handshake window. Empty =
 # accept whoever answers. Set per match by `peer --opponent <id>`.
 opponent_group_id = ""
