@@ -47,3 +47,23 @@ def test_the_result_file_names_their_revision_not_unknown() -> None:
                          "survival_thief": 10, "tie_score": 2, "technical_loss": 0},
                         game_id="g", commits={"uoh-sqak": "d0bb80f7", "anrbj666": "0a89b476"})
     assert rows[0]["github_commit"] == {"uoh-sqak": "d0bb80f7", "anrbj666": "0a89b476"}
+
+
+def test_a_step_zero_record_is_read_too() -> None:
+    # anrbj666 seal theirs as {"type": "step_zero", "github_commit": ...} — the
+    # book-attached log shape (rule 53, p.40) — while we seal "system_spec" and
+    # read only that. So their commit was on the wire, verified by our audit,
+    # and filed by us as "unknown" for six sub-games. Their reader already
+    # accepts both spellings; ours now does too, because a type name is exactly
+    # the thing two teams shipping independently cannot keep current.
+    for kind in ("system_spec", "step_zero"):
+        payload = {"records": [{"payload": {"step": 0, "type": kind,
+                                            "github_commit": "9347868b"}}]}
+        assert peer_commit(payload) == "9347868b", kind
+
+
+def test_an_unknown_record_type_is_still_not_mined_for_a_commit() -> None:
+    # The set stays closed. A record we do not recognise cannot contribute a
+    # hash we would then file as if the opponent had declared it.
+    assert peer_commit({"records": [{"payload": {"type": "control",
+                                                 "github_commit": "deadbeef"}}]}) == ""

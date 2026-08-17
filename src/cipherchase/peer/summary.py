@@ -27,6 +27,14 @@ def _fsm_step(rt: Any, target: Any) -> None:
         machine.transition(target)
 
 
+# The step-0 record types that may carry a peer's revision. Two spellings are in
+# circulation — ours and the book-attached log shape (rule 53) — and anrbj666
+# filed our commit correctly while we filed theirs as "unknown" for a whole
+# series, purely because we read one name and they seal the other. Closed set:
+# an unrecognised type must never be mined for a hash we would file as theirs.
+STEP_ZERO_TYPES = ("system_spec", "step_zero")
+
+
 def peer_commit(payload: dict[str, Any] | None) -> str:
     """The revision named by THEIR step-0 seal, or "" if they declared none.
 
@@ -37,7 +45,7 @@ def peer_commit(payload: dict[str, Any] | None) -> str:
     """
     for record in (payload or {}).get("records", []):
         spec = record.get("payload", {})
-        if spec.get("type") == "system_spec" and spec.get("github_commit"):
+        if spec.get("type") in STEP_ZERO_TYPES and spec.get("github_commit"):
             return str(spec["github_commit"])
     return ""
 

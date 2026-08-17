@@ -1,0 +1,120 @@
+{
+  "_schema": "config",
+  "schema_version": "1.1",
+  "game_id": "anrbj666-vs-uoh-sqak",
+  "game_uid": "f2765c2f-604d-5a53-b42a-6e5e7245c222",
+  "generated_at": "2026-08-17T19:21:40.814364+00:00",
+  "sub_game_number": 2,
+  "sub_game": 2,
+  "config": {
+    "schema_version": "1.2",
+    "version": "1.00",
+    "agreed_between": [
+      "uoh-sqak",
+      "uoh-sqak"
+    ],
+    "board_and_agents": {
+      "board_size": 7,
+      "num_agents": 2,
+      "thief_start": [
+        3,
+        3
+      ],
+      "cop_start": [
+        0,
+        0
+      ],
+      "axis_origin_corner": "top-left",
+      "axis_start_index": 0
+    },
+    "world": {
+      "map_area": "New York",
+      "hint_max_words": 15
+    },
+    "movement_and_barriers": {
+      "move_set": [
+        "N",
+        "S",
+        "E",
+        "W",
+        "STAY"
+      ],
+      "max_barriers": 14,
+      "max_moves": 35,
+      "survival_threshold": 35
+    },
+    "scoring": {
+      "capture_cop": 20,
+      "capture_thief": 5,
+      "survival_cop": 5,
+      "survival_thief": 10,
+      "tie_score": 2,
+      "technical_loss": 0,
+      "diversity_reward": 10
+    },
+    "pheromones": {
+      "grid_size": 5,
+      "center_intensity": 0.9,
+      "decay": 0.1,
+      "falloff": 0.7,
+      "min_center_intensity": 0.5,
+      "absorb_gain": 1.0
+    },
+    "network_and_league": {
+      "response_timeout_s": 30,
+      "watchdog_s": 60,
+      "num_games": 6,
+      "mini_games_per_match": 6,
+      "diversity_reward": 10,
+      "min_games_to_pass": 2,
+      "max_games_per_team": 10,
+      "token_budget_per_series": 200000
+    },
+    "rate_limiter_gatekeeper": {
+      "requests_per_minute": 30,
+      "concurrent_requests": 2,
+      "retry_backoff_sec": 5,
+      "max_retries": 3,
+      "queue_depth": 100,
+      "response_timeout_sec": 30
+    },
+    "commit_payload_spec": {
+      "keys": [
+        "step",
+        "state",
+        "move",
+        "intent"
+      ],
+      "state_keys": [
+        "pos",
+        "barriers"
+      ],
+      "nonce_separator": "|",
+      "canonical_json": {
+        "sort_keys": true,
+        "ensure_ascii": false,
+        "separators": [
+          ",",
+          ":"
+        ]
+      }
+    }
+  },
+  "config_sha256": "4a129a81a2857a01fedd0b6241283e50d7c51965c3b398566086b46dca833a08",
+  "links": {
+    "config": "config_anrbj666-vs-uoh-sqak_g<NN>.json",
+    "declaration": "declaration_anrbj666-vs-uoh-sqak.json",
+    "log": "log_anrbj666-vs-uoh-sqak_g<NN>.json",
+    "result": "result_anrbj666-vs-uoh-sqak.json",
+    "github": {
+      "uoh-sqak": {
+        "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+        "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+      },
+      "anrbj666": {
+        "cop": "https://github.com/alonengel/P2P-Police",
+        "thief": "https://github.com/alonengel/P2P-Thief"
+      }
+    }
+  }
+}
