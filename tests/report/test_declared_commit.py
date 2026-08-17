@@ -57,7 +57,6 @@ def test_a_role_split_opponent_gets_a_commit_per_sub_game() -> None:
     # us, and a FALSE STATEMENT about theirs: we filed their thief commit
     # against their police windows. Worse than "unknown", because it names code
     # that did not play that sub-game and the column exists to be checked.
-    from cipherchase.sdk.settled import declared_commits
     summaries = [
         {"sub_game_number": 1, "peer_commit": "9347868b"},
         {"sub_game_number": 2, "peer_commit": "2db31179"},
@@ -67,7 +66,6 @@ def test_a_role_split_opponent_gets_a_commit_per_sub_game() -> None:
 
 
 def test_a_row_with_no_seal_falls_back_to_the_declaration_then_to_unknown() -> None:
-    from cipherchase.sdk.settled import declared_commits
     # sub-game 2's audit never round-tripped (the last-window shape) — the
     # plaintext identity still speaks for it rather than leaving a hole.
     out = declared_commits([
