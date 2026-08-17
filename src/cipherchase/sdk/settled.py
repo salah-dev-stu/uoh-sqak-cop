@@ -34,14 +34,28 @@ def settled_summaries(summaries: list[Json]) -> list[Json]:
 
 
 def declared_commit(summaries: list[Json]) -> str:
-    """The opponent's step-0 revision, taken from whichever sub-game revealed it.
+    """The opponent's revision, preferring the SEALED channel over plaintext.
+
+    A peer may say it twice — sealed in the step-0 record (inside the records
+    our audit re-hashes, therefore tamper-evident) and again in the negotiate
+    identity block (plaintext on the wire). anrbj666 run both; reading only one
+    channel is how we filed "unknown" for a whole series.
+
+    The seal wins. The identity block fills in when no seal carried it, because
+    "unknown" should mean the peer was silent, not that we read the wrong
+    channel. And when both spoke and DISAGREE, that is a fact about them — the
+    code they sealed is not the code they announced — so we file the sealed one
+    and say so rather than silently picking a side.
 
     A peer that crashes before one audit still declares the same hash in the
-    others, so the first non-empty answer is the series' answer. "unknown" is
-    reserved for an opponent who genuinely never told us — it is a record of
-    their silence, not a placeholder for our own dropped value.
+    others, so the first non-empty answer is the series' answer.
     """
-    return next((s["peer_commit"] for s in summaries if s.get("peer_commit")), "unknown")
+    sealed = next((s["peer_commit"] for s in summaries if s.get("peer_commit")), "")
+    spoken = str(peer_declaration(summaries).get("github_commit", "") or "")
+    if sealed and spoken and sealed != spoken:
+        print(f"  peer commit CHANNELS DISAGREE — sealed {sealed}, declared {spoken}; "
+              f"filing the sealed one (the audit-verified channel)")
+    return sealed or spoken or "unknown"
 
 
 def peer_declaration(summaries: list[Json]) -> Json:

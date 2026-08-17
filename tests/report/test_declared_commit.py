@@ -18,3 +18,33 @@ def test_an_opponent_who_never_declared_is_recorded_as_unknown() -> None:
     # sub-games against anrbj666, which is the whole reason this exists.
     assert declared_commit([{"peer_commit": ""}, {}]) == "unknown"
     assert declared_commit([]) == "unknown"
+
+
+def test_the_sealed_record_wins_over_the_plaintext_identity() -> None:
+    # anrbj666 run a two-channel declaration: the commit is sealed in the
+    # step-0 record AND repeated in the negotiate identity block. The sealed
+    # copy is inside the records our audit re-hashes, so it is the one that is
+    # tamper-evident; the identity block is plaintext on the wire. Prefer the
+    # seal, always.
+    summaries = [{"peer_commit": "9347868b", "peer_identity": {"github_commit": "9347868b"}}]
+    assert declared_commit(summaries) == "9347868b"
+
+
+def test_the_identity_block_fills_in_when_no_seal_carried_it() -> None:
+    # A peer whose step-0 we cannot read still declares it in plaintext. Filing
+    # that beats filing "unknown" — it is their own statement either way, and
+    # "unknown" should mean silence, not an unread channel.
+    assert declared_commit([{"peer_commit": "", "peer_identity": {"github_commit": "2db31179"}}]) == "2db31179"
+    assert declared_commit([{"peer_commit": ""}]) == "unknown"
+
+
+def test_two_channels_disagreeing_is_evidence_not_a_coin_toss(capsys) -> None:
+    # If a peer's sealed commit and its plaintext declaration differ, that is a
+    # fact about them worth surfacing — the code they sealed is not the code
+    # they announced. We file the SEALED one, because it is the tamper-evident
+    # channel, and we say so out loud rather than silently picking a side.
+    out = declared_commit([{"peer_commit": "9347868b",
+                            "peer_identity": {"github_commit": "deadbeef"}}])
+    assert out == "9347868b"
+    printed = capsys.readouterr().out
+    assert "9347868b" in printed and "deadbeef" in printed, printed
