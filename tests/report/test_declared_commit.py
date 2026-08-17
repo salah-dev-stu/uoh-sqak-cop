@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from cipherchase.sdk.settled import declared_commit
+from cipherchase.sdk.settled import declared_commit, declared_commits
 
 
 def test_the_first_sub_game_that_revealed_it_answers_for_the_series() -> None:
@@ -48,3 +48,32 @@ def test_two_channels_disagreeing_is_evidence_not_a_coin_toss(capsys) -> None:
     assert out == "9347868b"
     printed = capsys.readouterr().out
     assert "9347868b" in printed and "deadbeef" in printed, printed
+
+
+def test_a_role_split_opponent_gets_a_commit_per_sub_game() -> None:
+    # anrbj666 run cop and thief from separate repos, so the revision that
+    # played sub-game 1 is genuinely not the one that played sub-game 2. We
+    # collapsed the series to a single hash — right for a one-tree opponent like
+    # us, and a FALSE STATEMENT about theirs: we filed their thief commit
+    # against their police windows. Worse than "unknown", because it names code
+    # that did not play that sub-game and the column exists to be checked.
+    from cipherchase.sdk.settled import declared_commits
+    summaries = [
+        {"sub_game_number": 1, "peer_commit": "9347868b"},
+        {"sub_game_number": 2, "peer_commit": "2db31179"},
+        {"sub_game_number": 3, "peer_commit": "9347868b"},
+    ]
+    assert declared_commits(summaries) == {1: "9347868b", 2: "2db31179", 3: "9347868b"}
+
+
+def test_a_row_with_no_seal_falls_back_to_the_declaration_then_to_unknown() -> None:
+    from cipherchase.sdk.settled import declared_commits
+    # sub-game 2's audit never round-tripped (the last-window shape) — the
+    # plaintext identity still speaks for it rather than leaving a hole.
+    out = declared_commits([
+        {"sub_game_number": 1, "peer_commit": "9347868b",
+         "peer_identity": {"github_commit": "9347868b"}},
+        {"sub_game_number": 2, "peer_commit": ""},
+    ])
+    assert out == {1: "9347868b", 2: "9347868b"}
+    assert declared_commits([{"sub_game_number": 1, "peer_commit": ""}]) == {1: "unknown"}

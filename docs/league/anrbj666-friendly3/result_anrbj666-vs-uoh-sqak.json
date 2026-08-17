@@ -1,0 +1,254 @@
+{
+  "_schema": "result",
+  "schema_version": "1.1",
+  "game_id": "anrbj666-vs-uoh-sqak",
+  "game_uid": "f2765c2f-604d-5a53-b42a-6e5e7245c222",
+  "generated_at": "2026-08-17T19:53:43.131139+00:00",
+  "report_type": "final_game_result",
+  "timezone": "Asia/Jerusalem",
+  "groups": [
+    "anrbj666",
+    "uoh-sqak"
+  ],
+  "num_sub_games": 6,
+  "sub_games": [
+    {
+      "sub_game_number": 1,
+      "roles": {
+        "uoh-sqak": "police",
+        "anrbj666": "thief"
+      },
+      "result": "survival",
+      "winner_group": "anrbj666",
+      "score": {
+        "uoh-sqak": 5,
+        "anrbj666": 10
+      },
+      "started_at": "2026-08-17T19:48:55.500463+00:00",
+      "ended_at": "2026-08-17T19:50:44.309847+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "79c03626954d1f879f2115183a3a6afb352a6b22",
+        "anrbj666": "9347868bc21e59532bea5f6806983459c1f35c75"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "anrbj666": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_anrbj666-vs-uoh-sqak_g01.json",
+        "anrbj666": "anrbj666/log_anrbj666-vs-uoh-sqak_g01.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 2,
+      "roles": {
+        "uoh-sqak": "thief",
+        "anrbj666": "police"
+      },
+      "result": "capture",
+      "winner_group": "anrbj666",
+      "score": {
+        "uoh-sqak": 5,
+        "anrbj666": 20
+      },
+      "started_at": "2026-08-17T19:50:44.312735+00:00",
+      "ended_at": "2026-08-17T19:51:08.154475+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "79c03626954d1f879f2115183a3a6afb352a6b22",
+        "anrbj666": "9347868bc21e59532bea5f6806983459c1f35c75"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "anrbj666": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_anrbj666-vs-uoh-sqak_g02.json",
+        "anrbj666": "anrbj666/log_anrbj666-vs-uoh-sqak_g02.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 3,
+      "roles": {
+        "uoh-sqak": "police",
+        "anrbj666": "thief"
+      },
+      "result": "survival",
+      "winner_group": "anrbj666",
+      "score": {
+        "uoh-sqak": 5,
+        "anrbj666": 10
+      },
+      "started_at": "2026-08-17T19:51:08.154605+00:00",
+      "ended_at": "2026-08-17T19:52:01.034912+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "79c03626954d1f879f2115183a3a6afb352a6b22",
+        "anrbj666": "9347868bc21e59532bea5f6806983459c1f35c75"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "anrbj666": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_anrbj666-vs-uoh-sqak_g03.json",
+        "anrbj666": "anrbj666/log_anrbj666-vs-uoh-sqak_g03.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 4,
+      "roles": {
+        "uoh-sqak": "thief",
+        "anrbj666": "police"
+      },
+      "result": "capture",
+      "winner_group": "anrbj666",
+      "score": {
+        "uoh-sqak": 5,
+        "anrbj666": 20
+      },
+      "started_at": "2026-08-17T19:52:01.035162+00:00",
+      "ended_at": "2026-08-17T19:52:28.429957+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "79c03626954d1f879f2115183a3a6afb352a6b22",
+        "anrbj666": "9347868bc21e59532bea5f6806983459c1f35c75"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "anrbj666": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_anrbj666-vs-uoh-sqak_g04.json",
+        "anrbj666": "anrbj666/log_anrbj666-vs-uoh-sqak_g04.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 5,
+      "roles": {
+        "uoh-sqak": "police",
+        "anrbj666": "thief"
+      },
+      "result": "survival",
+      "winner_group": "anrbj666",
+      "score": {
+        "uoh-sqak": 5,
+        "anrbj666": 10
+      },
+      "started_at": "2026-08-17T19:52:28.430599+00:00",
+      "ended_at": "2026-08-17T19:53:20.405832+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "79c03626954d1f879f2115183a3a6afb352a6b22",
+        "anrbj666": "9347868bc21e59532bea5f6806983459c1f35c75"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "anrbj666": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_anrbj666-vs-uoh-sqak_g05.json",
+        "anrbj666": "anrbj666/log_anrbj666-vs-uoh-sqak_g05.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    },
+    {
+      "sub_game_number": 6,
+      "roles": {
+        "uoh-sqak": "thief",
+        "anrbj666": "police"
+      },
+      "result": "capture",
+      "winner_group": "anrbj666",
+      "score": {
+        "uoh-sqak": 5,
+        "anrbj666": 20
+      },
+      "started_at": "2026-08-17T19:53:20.406089+00:00",
+      "ended_at": "2026-08-17T19:53:43.130372+00:00",
+      "tie": false,
+      "github_commit": {
+        "uoh-sqak": "79c03626954d1f879f2115183a3a6afb352a6b22",
+        "anrbj666": "9347868bc21e59532bea5f6806983459c1f35c75"
+      },
+      "tokens": {
+        "uoh-sqak": 0,
+        "anrbj666": 0
+      },
+      "log_files": {
+        "uoh-sqak": "uoh-sqak/log_anrbj666-vs-uoh-sqak_g06.json",
+        "anrbj666": "anrbj666/log_anrbj666-vs-uoh-sqak_g06.json"
+      },
+      "audit": {
+        "log_verified": true,
+        "tampered": false
+      }
+    }
+  ],
+  "final_result": {
+    "total_score": {
+      "anrbj666": 90,
+      "uoh-sqak": 30
+    },
+    "sub_games_won": {
+      "anrbj666": 6,
+      "uoh-sqak": 0
+    },
+    "ties": 0,
+    "winner_group": "anrbj666",
+    "series_tie": false,
+    "games_played_including_this": {
+      "uoh-sqak": 2,
+      "anrbj666": 2
+    },
+    "first_meeting_between_groups": true,
+    "diversity_reward_applied": {
+      "uoh-sqak": false,
+      "anrbj666": false
+    },
+    "tokens_total_series": {
+      "uoh-sqak": 0,
+      "anrbj666": 0
+    }
+  },
+  "mutual_agreement": {
+    "sha256": "46dfb4296240eb94521e9569ccc86238c618c0b71cd9da0d2492408f762127ff",
+    "confirmed": true
+  },
+  "links": {
+    "config": "config_anrbj666-vs-uoh-sqak_g<NN>.json",
+    "declaration": "declaration_anrbj666-vs-uoh-sqak.json",
+    "log": "log_anrbj666-vs-uoh-sqak_g<NN>.json",
+    "result": "result_anrbj666-vs-uoh-sqak.json",
+    "github": {
+      "uoh-sqak": {
+        "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+        "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+      },
+      "anrbj666": {
+        "cop": "https://github.com/alonengel/P2P-Police",
+        "thief": "https://github.com/alonengel/P2P-Thief"
+      }
+    }
+  }
+}

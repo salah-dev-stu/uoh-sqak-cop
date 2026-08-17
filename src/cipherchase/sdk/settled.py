@@ -78,3 +78,21 @@ def own_counted_total(*, declared: int, counted: bool) -> int:
     opponent's file, reading the number we signed at the handshake, had it right.
     """
     return declared + (1 if counted else 0)
+
+
+def declared_commits(summaries: list[Json]) -> dict[int, str]:
+    """The peer's revision PER SUB-GAME, not one hash for the whole series.
+
+    An opponent whose cop and thief live in separate repos legitimately plays
+    each sub-game from a different checkout — anrbj666 seal 9347868b on their
+    thief windows and 2db31179 on their police ones. Collapsing that to the
+    first answer files their thief commit against their police games: a false
+    statement about which code played, and worse than "unknown", because the
+    column exists precisely so a grader can fetch the code and check it.
+
+    Per row: their sealed step-0 for THAT sub-game, else their plaintext
+    declaration (series-level, so it is the right fallback), else "unknown".
+    """
+    spoken = str(peer_declaration(summaries).get("github_commit", "") or "")
+    return {int(s["sub_game_number"]): str(s.get("peer_commit") or "") or spoken or "unknown"
+            for s in summaries}

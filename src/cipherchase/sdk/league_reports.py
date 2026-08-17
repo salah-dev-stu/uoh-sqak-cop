@@ -20,7 +20,7 @@ from typing import Any
 from cipherchase.report import artifacts, emit, league, links
 from cipherchase.sdk.league_mail import gmail_backend, mail_report
 from cipherchase.sdk.settled import (
-    declared_commit,
+    declared_commits,
     own_counted_total,
     peer_declaration,
     settled_summaries,
@@ -68,7 +68,7 @@ def write_league_series(
         counted=counted, opponent_counted=declared + (1 if counted else 0),
         # Verified at every audit and dropped before the file: six sub-games
         # shipped as "unknown" while their hash was on the wire throughout.
-        opponent_commits=declared_commit(settled), peer_repos=peer_repos)
+        opponent_commits=declared_commits(settled), peer_repos=peer_repos)
     paths = emit.write_all(directory, arts)
     if counted:
         ledger.parent.mkdir(parents=True, exist_ok=True)

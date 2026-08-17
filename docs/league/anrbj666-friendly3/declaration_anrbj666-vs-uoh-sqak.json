@@ -1,0 +1,55 @@
+{
+  "_schema": "declaration",
+  "schema_version": "1.1",
+  "game_id": "anrbj666-vs-uoh-sqak",
+  "game_uid": "f2765c2f-604d-5a53-b42a-6e5e7245c222",
+  "generated_at": "2026-08-17T19:53:43.131139+00:00",
+  "timezone": "Asia/Jerusalem",
+  "groups": [
+    "anrbj666",
+    "uoh-sqak"
+  ],
+  "num_sub_games": 6,
+  "max_tokens": 200000,
+  "links": {
+    "config": "config_anrbj666-vs-uoh-sqak_g<NN>.json",
+    "declaration": "declaration_anrbj666-vs-uoh-sqak.json",
+    "log": "log_anrbj666-vs-uoh-sqak_g<NN>.json",
+    "result": "result_anrbj666-vs-uoh-sqak.json",
+    "github": {
+      "uoh-sqak": {
+        "cop": "https://github.com/salah-dev-stu/uoh-sqak-cop",
+        "thief": "https://github.com/salah-dev-stu/uoh-sqak-thief"
+      },
+      "anrbj666": {
+        "cop": "https://github.com/alonengel/P2P-Police",
+        "thief": "https://github.com/alonengel/P2P-Thief"
+      }
+    }
+  },
+  "step0": {
+    "schema": "declaration/1.0",
+    "team": "uoh-sqak",
+    "players": [
+      "Salah Qadah:323039974",
+      "Andalus Kalash:211435797"
+    ],
+    "role": "police",
+    "git_commit": "79c03626954d1f879f2115183a3a6afb352a6b22",
+    "llm": {
+      "provider": "template",
+      "model": "template",
+      "version": "n/a"
+    },
+    "system": {
+      "os": "Darwin 25.2.0",
+      "cpu": "arm",
+      "cpu_count": 8,
+      "ram_gb": 8.6,
+      "gpu": "Apple Silicon",
+      "python": "3.13.12"
+    },
+    "version": "1.00",
+    "signature": "3f1e977eb2fa0390b46777c447bf75acf54d5b9853c98bed92ba8d5eeefc7958"
+  }
+}
